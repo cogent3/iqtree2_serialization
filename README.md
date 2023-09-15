@@ -42,6 +42,12 @@ For a quick start you can also try the IQ-TREE web server, which performs online
 <http://iqtree.cibiv.univie.ac.at>
 
 
+Python wrapper `pyqtree2`
+-----------------------
+
+For details on the Python wrapper pyqtree2 please refer to the [pyqtree2 documentation](https://github.com/cogent3/pyqtree2/blob/master/pyqtree/README.md]
+
+
 User support
 ------------
 
