@@ -1,4 +1,4 @@
-# PiQTree2 - a Python wrapper around IQTest2 (https://github.com/iqtree/iqtree2)
+# PiQTree2 - a Python wrapper around IQTree2 (https://github.com/iqtree/iqtree2)
 
 ## IQTree2
 
