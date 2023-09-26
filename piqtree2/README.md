@@ -2,7 +2,7 @@
 
 ## IQTree2
 
-IQTree2 can be summarized as a C++ binary executable that contains a singleton named `Params` (in utils/tools.h) with 697 member variables in about 3000 thousand lines of code.  The main function parses command-line arguments and populates the Params singleton, then calls a function (like runPhyloAnalysis(Params) in phyloanalysis.cpp or 16 other functions) to run the specific analysis.
+IQTree2 can be summarized as a C++ binary executable that contains a singleton named `Params` (in [utils/tools.h](https://github.com/cogent3/PiQTree2/blob/master/utils/tools.h#L596)) with 697 member variables in about 3000 thousand lines of code.  The [main](https://github.com/cogent3/PiQTree2/blob/master/main/main.cpp#L2183)  function parses command-line arguments and populates the Params singleton, then calls a function (like runPhyloAnalysis(Params) in phyloanalysis.cpp or 16 other functions) to run the specific analysis.
 
 ```mermaid
 graph LR;
