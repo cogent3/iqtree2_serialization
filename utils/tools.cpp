@@ -6841,6 +6841,29 @@ Params& Params::getInstance() {
     return instance;
 }
 
+json Params::to_json() const {
+    json j;
+    // Serialize member variables into the json object
+    j["fai"] = this->fai;
+    // ... serialize other members here ...
+    return j;
+}
+
+void Params::from_json(const json& j) {
+    // Deserialize member variables from the json object
+    if (j.contains("fai")) this->fai = j["fai"].get<bool>();
+    // ... deserialize other members here ...
+}
+
+json Params::get_param(const std::string& name) const {
+    json j;
+    // Return the value of the requested parameter
+    if (name == "fai") j[name] = this->fai;
+    // ... handle other parameters here ...
+    else throw std::invalid_argument("Unknown parameter name");
+    return j;
+}
+
 
 int countPhysicalCPUCores() {
     #ifdef _OPENMP

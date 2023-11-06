@@ -1,0 +1,12 @@
+setup.py
+piqtree2/__init__.py
+piqtree2/params.py
+piqtree2/version.py
+piqtree2.egg-info/PKG-INFO
+piqtree2.egg-info/SOURCES.txt
+piqtree2.egg-info/dependency_links.txt
+piqtree2.egg-info/not-zip-safe
+piqtree2.egg-info/requires.txt
+piqtree2.egg-info/top_level.txt
+tests/test_iqtree2core_params.py
+tests/test_iqtree2core_version.py

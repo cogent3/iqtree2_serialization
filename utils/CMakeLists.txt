@@ -21,6 +21,8 @@ else(ZLIB_FOUND)
   target_link_libraries(utils zlibstatic)
 endif(ZLIB_FOUND)
 
+find_package(nlohmann_json 3.2.0 REQUIRED)
+
 target_link_libraries(utils lbfgsb sprng)
 
 add_executable(decentTree
@@ -41,3 +43,4 @@ if(CLANG AND WIN32)
         target_link_libraries(decentTree ${PROJECT_SOURCE_DIR}/lib/libiomp5md.dll)
     endif()
 endif()
+

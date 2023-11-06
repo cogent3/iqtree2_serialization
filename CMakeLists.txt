@@ -936,3 +936,103 @@ endif()
 include (CPack)
 
 #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+
+##############################################################
+# Build iqtree2core shared library
+##############################################################
+
+find_package(nlohmann_json 3.2.0 REQUIRED)
+
+include(FetchContent)
+
+# Fetch pybind11
+FetchContent_Declare(
+  pybind11
+  GIT_REPOSITORY https://github.com/pybind/pybind11.git
+  GIT_TAG v2.11.1  # Last stable release as of 2021-07-11
+)
+FetchContent_MakeAvailable(pybind11)
+
+include_directories(
+    "${PROJECT_BINARY_DIR}"  # Add this line for iqtree_config.h
+    ${PROJECT_SOURCE_DIR}/utils
+)
+
+# Define the path to the piqtree2 sources
+set(IQTREE2CORE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/core)
+
+# Collect the header files for the iqtree2core library
+set(IQTREE2CORE_HEADERS 
+    "${IQTREE2CORE_SOURCE_DIR}/version.h"
+    "${IQTREE2CORE_SOURCE_DIR}/params.h"
+    "${PROJECT_BINARY_DIR}/iqtree_config.h"
+    )
+
+# Collect the source files for the piqtree2 library
+set (IQTREE2CORE_SOURCES 
+    "${IQTREE2CORE_SOURCE_DIR}/version.cpp"
+    "${IQTREE2CORE_SOURCE_DIR}/params.cpp"
+    ${PROJECT_SOURCE_DIR}/utils/tools.cpp
+    )
+
+set (IQTREE2CORE_BINDINGS 
+    "${IQTREE2CORE_SOURCE_DIR}/version_bindings.cpp"
+    "${IQTREE2CORE_SOURCE_DIR}/params_bindings.cpp"
+    )
+
+# Add a shared library target
+add_library(iqtree2core MODULE 
+    ${IQTREE2CORE_SOURCES} 
+    ${IQTREE2CORE_BINDINGS}
+    )
+
+target_include_directories(iqtree2core PRIVATE 
+    ${IQTREE2CORE_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}  # Add this line for iqtree_config.h
+)
+
+# Link the shared library to the required dependencies
+target_link_libraries(iqtree2core PRIVATE 
+    pybind11::module pll ncl nclextra utils pda lbfgsb whtest sprng vectorclass model
+    gsl alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
+
+target_include_directories(iqtree2core PRIVATE ${nlohmann_json_INCLUDE_DIRS})
+
+
+# Define properties for the Python module
+set_target_properties(iqtree2core PROPERTIES
+    PREFIX "${PYTHON_MODULE_PREFIX}"  # this is usually "" on all systems
+    SUFFIX "${PYTHON_MODULE_EXTENSION}"  # this is .pyd on Windows, .so on Linux and MacOS
+)
+
+# Specify the public headers for installation
+set_target_properties(iqtree2core PROPERTIES
+    PUBLIC_HEADER "${IQTREE2CORE_HEADERS}"
+)
+
+# OS-specific library output names and suffixes
+if (WIN32)
+    set_target_properties(iqtree2core PROPERTIES
+        OUTPUT_NAME "iqtree2core"
+        SUFFIX ".dll"
+    )
+elseif (APPLE)
+    set_target_properties(iqtree2core PROPERTIES
+        OUTPUT_NAME "iqtree2core"
+        SUFFIX ".dylib"
+    )
+else()
+    set_target_properties(iqtree2core PROPERTIES
+        OUTPUT_NAME "iqtree2core"
+        SUFFIX ".so"
+    )
+endif()
+
+# Specify installation instructions for the shared library
+install(TARGETS iqtree2core
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # For DLLs on Windows
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)

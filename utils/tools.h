@@ -48,6 +48,10 @@
 #define SPRNG
 #include "sprng/sprng.h"
 
+// add json library for serializing and deserializing Params
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 // redefine assertion
 inline void _my_assert(const char* expression, const char *func, const char* file, int line)
 {
@@ -596,6 +600,10 @@ extern int NNI_MAX_NR_STEP;
 class Params {
 public:
     static Params& getInstance();
+    json to_json() const;
+    void from_json(const json& j);
+    json get_param(const std::string& name) const;
+
 private:
     Params () {}; // Disable constructor
     // Temoprarily commented out because void PhyloSuperTree::readPartition(Params &params)
