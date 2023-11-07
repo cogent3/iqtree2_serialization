@@ -4,7 +4,7 @@ FROM debian:latest
 # Set environment variables to non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
+# Install dependencies including zsh
 RUN apt-get update && apt-get install -y \
     build-essential \
     clang \
@@ -25,7 +25,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     python3.11 \
     python3-pip \
-    python3.11-venv
+    python3.11-venv \
+    zsh
 
 # Download header files for plf_nanotimer and plf_colony
 RUN mkdir -p /usr/local/include/plf && \
@@ -44,8 +45,17 @@ COPY docker/entrypoint.sh /entrypoint.sh
 # Set permissions for the entrypoint script
 RUN chmod +x /entrypoint.sh
 
+# Create a Python virtual environment
+RUN python3 -m venv /venv
+
+# Activate the virtual environment by default whenever a shell is started
+ENV PATH="/venv/bin:$PATH"
+
+# Install Jupyter server in the virtual environment
+RUN pip install jupyter
+
 # Set the entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
 
-# Run an interactive shell when the container launches
-CMD ["/bin/bash"]
+# Run an interactive zsh shell when the container launches
+CMD ["/usr/bin/zsh"]
