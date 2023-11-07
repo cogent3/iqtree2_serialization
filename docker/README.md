@@ -63,12 +63,12 @@ While working within the container, you can commit changes and push to your GitH
 
 Run the following commands within the container's terminal:
 
-'''sh
+```sh
 cd /iqtree2
 git add .
 git commit -m "Your commit message"
 git push origin main
-'''
+```
 
 Replace main with the appropriate branch name if you are working on a different branch.
 
@@ -80,25 +80,26 @@ To use Jupyter notebooks for automating IQTREE2 with PiQTree2, a Jupyter server 
 
 To start a Jupyter server inside the container from the VS code terminal, enter the following command 
 
-'''bash
+```bash
 jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root &
-'''
+```
 
 To stop a running Jupyter server, run the following command in the container's terminal:
 
-'''bash
+```bash
 jupyter notebook stop 8888
-'''
+```
 
 With this setup, you can access the Jupyter server from your host OS by navigating to http://localhost:8888 in your web browser. The Jupyter server will provide a token for the first-time setup, which you can find in the output of the terminal where you started the server. You can also find the token by running the following command in the container's terminal:
 
-'''bash
+```bash
 jupyter notebook list
-'''
+```
 
 ### Notes
 
 - The entrypoint.sh script is executed when the container starts and is responsible for setting up the SSH agent and adding your SSH private key.
 - The Docker container runs an interactive bash shell by default.
+
 
 Make sure to test each of these steps to confirm they work as expected. If there are any additional configurations or dependencies for Jupyter or IQTREE2, you should include those in the Dockerfile or document them as part of the setup process.
