@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y \
     libtbb-dev \
     libgoogle-perftools-dev \
     libopenmpi-dev \
+    nlohmann-json3-dev \
     openmpi-bin \
+    libomp-dev \
     libpll-dev \
     wget \
     python3.11 \
