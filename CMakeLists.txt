@@ -942,6 +942,10 @@ include (CPack)
 # Build iqtree2core shared library
 ##############################################################
 
+#  necessary for creating position-independent code for shared objects 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+
 find_package(nlohmann_json 3.2.0 REQUIRED)
 
 include(FetchContent)
