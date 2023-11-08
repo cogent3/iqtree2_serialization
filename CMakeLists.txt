@@ -63,6 +63,9 @@ set(GCC_MIN_VERSION "4.8")
 project(iqtree)
 add_definitions(-DIQ_TREE)
 
+#  necessary for creating position-independent code for shared objects (ie: piqtree2)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Find Eigen3 library
 if (NOT EIGEN3_INCLUDE_DIR)
     find_package(Eigen3)
@@ -942,8 +945,6 @@ include (CPack)
 # Build iqtree2core shared library
 ##############################################################
 
-#  necessary for creating position-independent code for shared objects 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
@@ -957,11 +958,6 @@ FetchContent_Declare(
   GIT_TAG v2.11.1  # Last stable release as of 2021-07-11
 )
 FetchContent_MakeAvailable(pybind11)
-
-include_directories(
-    "${PROJECT_BINARY_DIR}"  # Add this line for iqtree_config.h
-    ${PROJECT_SOURCE_DIR}/utils
-)
 
 # Define the path to the piqtree2 sources
 set(IQTREE2CORE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/core)
@@ -998,8 +994,7 @@ target_include_directories(iqtree2core PRIVATE
 
 # Link the shared library to the required dependencies
 target_link_libraries(iqtree2core PRIVATE 
-    pybind11::module pll ncl nclextra utils pda lbfgsb whtest sprng vectorclass model
-    gsl alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
+    pybind11::module utils model alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
 
 target_include_directories(iqtree2core PRIVATE ${nlohmann_json_INCLUDE_DIRS})
 
