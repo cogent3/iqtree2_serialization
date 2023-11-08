@@ -30,6 +30,7 @@ class CMakeBuild(build_ext):
         cmake_args = [
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + libs_dir,
             "-DPYTHON_EXECUTABLE=" + sys.executable,
+            "-DIQTREE_FLAGS=static",
         ]
 
         cfg = "Debug" if self.debug else "Release"
