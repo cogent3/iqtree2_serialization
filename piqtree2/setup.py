@@ -7,7 +7,7 @@ from setuptools.command.build_ext import build_ext
 
 # Define the root directory of your Python package (e.g., where setup.py is located)
 package_root_dir = os.path.abspath(os.path.dirname(__file__))
-libs_dir = os.path.join(package_root_dir, 'libs')
+libs_dir = os.path.join(package_root_dir, 'libs')  # output location for compiled libraries
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=""):
@@ -29,8 +29,8 @@ class CMakeBuild(build_ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmake_args = [
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + libs_dir,
-            "-DPYTHON_EXECUTABLE=" + sys.executable,
-            "-DIQTREE_FLAGS=static",
+            "-DPYTHON_EXECUTABLE=" + sys.executable,  # path to the Python executable
+            "-DIQTREE_FLAGS=static", # statically link the iqtree2core library
         ]
 
         cfg = "Debug" if self.debug else "Release"
@@ -47,10 +47,6 @@ class CMakeBuild(build_ext):
             cwd=self.build_temp,
             check=True,
         )
-
-        # Since we removed the call to the `super().build_extension(ext)`,
-        # there's no need for any additional build steps provided by setuptools.
-
 
 setup(
     name="piqtree2",
