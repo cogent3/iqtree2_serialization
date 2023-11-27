@@ -2,7 +2,8 @@
     "name": "PIQtree2",
     "dockerFile": "Dockerfile",
     "settings": { 
-      // VS Code settings 
+      "C_Cpp.default.compilerPath": "/usr/bin/clang",
+      "C_Cpp.default.intelliSenseMode": "clang-x64"
     },
     "extensions": [
       "ms-vscode.cpptools",
