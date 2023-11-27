@@ -1,0 +1,18 @@
+{
+    "name": "PIQtree2",
+    "dockerFile": "Dockerfile",
+    "settings": { 
+      // VS Code settings 
+    },
+    "extensions": [
+      "ms-vscode.cpptools",
+      "ms-vscode.cmake-tools",
+      "ms-python.python",
+      "ms-python.vscode-pytest"
+    ],
+    "forwardPorts": [
+      // Any ports you want to forward
+    ],
+    "remoteUser": "root"
+  }
+  

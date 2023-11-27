@@ -1,0 +1,64 @@
+# Use the official Debian image as the base image
+FROM debian:latest
+
+# Set environment variables to non-interactive
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies including zsh
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    clang \
+    cmake \
+    git \
+    libboost-all-dev \
+    libeigen3-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libtbb-dev \
+    libgoogle-perftools-dev \
+    libopenmpi-dev \
+    nlohmann-json3-dev \
+    openmpi-bin \
+    libomp-dev \
+    libpll-dev \
+    wget \
+    python3.11 \
+    python3-pip \
+    python3.11-venv \
+    zsh
+
+# Download header files for plf_nanotimer and plf_colony
+RUN mkdir -p /usr/local/include/plf && \
+    wget -O /usr/local/include/plf/plf_nanotimer.h https://raw.githubusercontent.com/mattreecebentley/plf_nanotimer/master/plf_nanotimer.h && \
+    wget -O /usr/local/include/plf/plf_colony.h https://raw.githubusercontent.com/mattreecebentley/plf_colony/master/plf_colony.h
+
+# Set the working directory
+WORKDIR /workspaces/PiQTree2
+
+# Clone LSD2 into the expected subdirectory after copying the contents
+RUN git clone https://github.com/tothuhien/lsd2.git lsd2
+
+# Create a Python virtual environment
+RUN python3 -m venv /venv && \
+    . /venv/bin/activate && \
+    pip install --upgrade pip
+
+# Activate the virtual environment by default whenever a shell is started
+ENV PATH="/venv/bin:$PATH"
+
+# Install Oh My Zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Set the default shell to zsh
+SHELL ["/usr/bin/zsh", "-c"]
+
+# Install the zsh-autosuggestions plugin
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Install Jupyter server in the virtual environment
+RUN pip install jupyter
+
+# Run an interactive zsh shell when the container launches
+CMD ["/usr/bin/zsh"]
