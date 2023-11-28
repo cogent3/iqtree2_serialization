@@ -6952,8 +6952,8 @@ json Params::to_json() const {
     j["concatenate_aln"] = std::string(this->concatenate_aln);  // char*
     j["aln_site_list"] = std::string(this->aln_site_list);  // char*
     j["ref_seq_name"] = std::string(this->ref_seq_name);  // char*
-    j["aln_output_format"] = this->aln_output_format;  // InputType
-    j["output_format"] = this->output_format;  // FileFormat
+    //j["aln_output_format"] = this->aln_output_format;  // InputType
+    //j["output_format"] = this->output_format;  // FileFormat
     j["newick_extended_format"] = this->newick_extended_format;  // bool
     j["aln_nogaps"] = this->aln_nogaps;  // bool
     j["aln_no_const_sites"] = this->aln_no_const_sites;  // bool
@@ -7250,7 +7250,7 @@ json Params::to_json() const {
     j["alisim_num_states_morph"] = this->alisim_num_states_morph;  // int
     j["alisim_num_taxa_uniform_start"] = this->alisim_num_taxa_uniform_start;  // int
     j["alisim_num_taxa_uniform_end"] = this->alisim_num_taxa_uniform_end;  // int
-    j["alisim_num_taxa_list"] = this->alisim_num_taxa_list;  // IntVector
+    //j["alisim_num_taxa_list"] = this->alisim_num_taxa_list;  // IntVector
     j["birth_rate"] = this->birth_rate;  // double
     j["death_rate"] = this->death_rate;  // double
     j["alisim_length_ratio"] = this->alisim_length_ratio;  // double
