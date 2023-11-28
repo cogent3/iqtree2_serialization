@@ -3,7 +3,15 @@
     "dockerFile": "Dockerfile",
     "settings": { 
       "C_Cpp.default.compilerPath": "/usr/bin/clang",
-      "C_Cpp.default.intelliSenseMode": "clang-x64"
+      "C_Cpp.default.intelliSenseMode": "clang-x64",
+      "cmake.cmakePath": "/usr/bin/cmake",
+      "cmake.generator": "Unix Makefiles",
+      "cmake.configureSettings": {
+          "CMAKE_C_COMPILER": "/usr/bin/clang",
+          "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+          "CMAKE_C_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_ID": "Clang"
+      }
     },
     "extensions": [
       "ms-vscode.cpptools",

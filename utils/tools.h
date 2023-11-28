@@ -157,6 +157,35 @@ enum INDEL_DIS_TYPE {
     USER_DEFINED
 };
 
+
+/**
+ * Serialize INDEL_DIS_TYPE to json
+ * IMPORTANT: This function must be kept synchronized with the enum INDEL_DIS_TYPE
+*/
+inline void to_json(json& j, const INDEL_DIS_TYPE& value) {
+    switch (value) {
+        case NEG_BIN: j = "NEG_BIN"; break;
+        case ZIPF: j = "ZIPF"; break;
+        case LAV: j = "LAV"; break;
+        case GEO: j = "GEO"; break;
+        case USER_DEFINED: j = "USER_DEFINED"; break;
+    }
+}
+
+/**
+ * Deserialize INDEL_DIS_TYPE from json
+ * IMPORTANT: This function must be kept synchronized with the enum INDEL_DIS_TYPE
+*/
+inline void from_json(const json& j, INDEL_DIS_TYPE& value) {
+    std::string str = j.get<std::string>();
+    if (str == "NEG_BIN") value = NEG_BIN;
+    else if (str == "ZIPF") value = ZIPF;
+    else if (str == "LAV") value = LAV;
+    else if (str == "GEO") value = GEO;
+    else if (str == "USER_DEFINED") value = USER_DEFINED;
+    else throw std::runtime_error("INDEL_DIS_TYPE: unknown value " + str);
+}
+
 /**
  *  Specify 3 options for assigning site freqs, substitution rate to sites
  */
@@ -165,6 +194,29 @@ enum ASSIGNMENT_TYPE {
     POSTERIOR_DIS,
     UNSPECIFIED
 };
+/**
+ * Serialize ASSIGNMENT_TYPE to json 
+ * IMPORTANT: This function must be kept synchronized with the enum ASSIGNMENT_TYPE
+ */
+inline void to_json(json& j, const ASSIGNMENT_TYPE& value) {
+    switch (value) {
+        case POSTERIOR_MEAN: j = "POSTERIOR_MEAN"; break;
+        case POSTERIOR_DIS: j = "POSTERIOR_DIS"; break;
+        case UNSPECIFIED: j = "UNSPECIFIED"; break;
+    }
+}
+
+/**
+ * Deserialize ASSIGNMENT_TYPE from json 
+ * IMPORTANT: This function must be kept synchronized with the enum ASSIGNMENT_TYPE
+ */
+inline void from_json(const json& j, ASSIGNMENT_TYPE& value) {
+    std::string str = j.get<std::string>();
+    if (str == "POSTERIOR_MEAN") value = POSTERIOR_MEAN;
+    else if (str == "POSTERIOR_DIS") value = POSTERIOR_DIS;
+    else if (str == "UNSPECIFIED") value = UNSPECIFIED;
+    else throw std::runtime_error("ASSIGNMENT_TYPE: unknown value " + str);
+}
 
 /**
  *  Specify 2 simulation approaches.
@@ -181,6 +233,26 @@ enum ALI_OPENMP_ALG {
     IM,
     EM
 };
+/**
+ * Serialize ALI_OPENMP_ALG to json 
+ * IMPORTANT: This function must be kept synchronized with the enum ALI_OPENMP_ALG
+ */
+inline void to_json(json& j, const ALI_OPENMP_ALG& value) {
+    switch (value) {
+        case IM: j = "IM"; break;
+        case EM: j = "EM"; break;
+    }
+}
+/**
+ * Deserialize ALI_OPENMP_ALG from json 
+ * IMPORTANT: This function must be kept synchronized with the enum ALI_OPENMP_ALG
+ */
+inline void from_json(const json& j, ALI_OPENMP_ALG& value) {
+    std::string str = j.get<std::string>();
+    if (str == "IM") value = IM;
+    else if (str == "EM") value = EM;
+    else throw std::runtime_error("ALI_OPENMP_ALG: unknown value " + str);
+}
 
 /**
  *  Specify 2 simulation approaches.
@@ -325,6 +397,52 @@ enum RunMode {
     CALC_DIST, PD_USER_SET, PRINT_TAXA, PRINT_AREA, SCALE_BRANCH_LEN,
     SCALE_NODE_NAME, PD_DISTRIBUTION, LINEAR_PROGRAMMING, STATS //, GBO, MPRO
 }; //STATS and GBO added by MA (STATS for some statistics on tree, GBO = guided 'bootstrap'
+/**
+ * Serialize RunMode to json 
+ * IMPORTANT: This function must be kept synchronized with the enum RunMode
+ */
+inline void to_json(json& j, const RunMode& value) {
+    switch (value) {
+        case DETECTED: j = "DETECTED"; break;
+        case GREEDY: j = "GREEDY"; break;
+        case PRUNING: j = "PRUNING"; break;
+        case BOTH_ALG: j = "BOTH_ALG"; break;
+        case EXHAUSTIVE: j = "EXHAUSTIVE"; break;
+        case DYNAMIC_PROGRAMMING: j = "DYNAMIC_PROGRAMMING"; break;
+        case CALC_DIST: j = "CALC_DIST"; break;
+        case PD_USER_SET: j = "PD_USER_SET"; break;
+        case PRINT_TAXA: j = "PRINT_TAXA"; break;
+        case PRINT_AREA: j = "PRINT_AREA"; break;
+        case SCALE_BRANCH_LEN: j = "SCALE_BRANCH_LEN"; break;
+        case SCALE_NODE_NAME: j = "SCALE_NODE_NAME"; break;
+        case PD_DISTRIBUTION: j = "PD_DISTRIBUTION"; break;
+        case LINEAR_PROGRAMMING: j = "LINEAR_PROGRAMMING"; break;
+        case STATS: j = "STATS"; break;
+    }
+}
+/**
+ * Deserialize RunMode from json 
+ * IMPORTANT: This function must be kept synchronized with the enum RunMode
+ */
+inline void from_json(const json& j, RunMode& value) {
+    std::string str = j.get<std::string>();
+    if (str == "DETECTED") value = DETECTED;
+    else if (str == "GREEDY") value = GREEDY;
+    else if (str == "PRUNING") value = PRUNING;
+    else if (str == "BOTH_ALG") value = BOTH_ALG;
+    else if (str == "EXHAUSTIVE") value = EXHAUSTIVE;
+    else if (str == "DYNAMIC_PROGRAMMING") value = DYNAMIC_PROGRAMMING;
+    else if (str == "CALC_DIST") value = CALC_DIST;
+    else if (str == "PD_USER_SET") value = PD_USER_SET;
+    else if (str == "PRINT_TAXA") value = PRINT_TAXA;
+    else if (str == "PRINT_AREA") value = PRINT_AREA;
+    else if (str == "SCALE_BRANCH_LEN") value = SCALE_BRANCH_LEN;
+    else if (str == "SCALE_NODE_NAME") value = SCALE_NODE_NAME;
+    else if (str == "PD_DISTRIBUTION") value = PD_DISTRIBUTION;
+    else if (str == "LINEAR_PROGRAMMING") value = LINEAR_PROGRAMMING;
+    else if (str == "STATS") value = STATS;
+    else throw std::runtime_error("RunMode: unknown value " + str);
+}
 
 /**
         type of generating trees or splits graphs
@@ -333,6 +451,40 @@ enum TreeGenType {
     NONE, YULE_HARDING, UNIFORM, CATERPILLAR, BALANCED, BIRTH_DEATH,
     CIRCULAR_SPLIT_GRAPH, TAXA_SET, STAR_TREE
 };
+/**
+ * Serialize TreeGenType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum TreeGenType
+ */
+inline void to_json(json& j, const TreeGenType& value) {
+    switch (value) {
+        case NONE: j = "NONE"; break;
+        case YULE_HARDING: j = "YULE_HARDING"; break;
+        case UNIFORM: j = "UNIFORM"; break;
+        case CATERPILLAR: j = "CATERPILLAR"; break;
+        case BALANCED: j = "BALANCED"; break;
+        case BIRTH_DEATH: j = "BIRTH_DEATH"; break;
+        case CIRCULAR_SPLIT_GRAPH: j = "CIRCULAR_SPLIT_GRAPH"; break;
+        case TAXA_SET: j = "TAXA_SET"; break;
+        case STAR_TREE: j = "STAR_TREE"; break;
+    }
+}
+/**
+ * Deserialize TreeGenType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum TreeGenType
+ */
+inline void from_json(const json& j, TreeGenType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "NONE") value = NONE;
+    else if (str == "YULE_HARDING") value = YULE_HARDING;
+    else if (str == "UNIFORM") value = UNIFORM;
+    else if (str == "CATERPILLAR") value = CATERPILLAR;
+    else if (str == "BALANCED") value = BALANCED;
+    else if (str == "BIRTH_DEATH") value = BIRTH_DEATH;
+    else if (str == "CIRCULAR_SPLIT_GRAPH") value = CIRCULAR_SPLIT_GRAPH;
+    else if (str == "TAXA_SET") value = TAXA_SET;
+    else if (str == "STAR_TREE") value = STAR_TREE;
+    else throw std::runtime_error("TreeGenType: unknown value " + str);
+}
 
 /**
         when writing tree:
@@ -376,6 +528,32 @@ enum NNI_Type {
     NNI1,
     NNI5
 };
+
+/**
+ * Serialize NNI_Type to json 
+ * IMPORTANT: This function must be kept synchronized with the enum NNI_Type
+*/
+inline void to_json(json& j, const NNI_Type& value) {
+    switch (value) {
+        case TOPO_ONLY: j = "TOPO_ONLY"; break;
+        case TOPO_UPDATE_LV: j = "TOPO_UPDATE_LV"; break;
+        case NNI1: j = "NNI1"; break;
+        case NNI5: j = "NNI5"; break;
+    }
+}
+/**
+ * Deserialize NNI_Type from json 
+ * IMPORTANT: This function must be kept synchronized with the enum NNI_Type
+*/
+inline void from_json(const json& j, NNI_Type& value) {
+    std::string str = j.get<std::string>();
+    if (str == "TOPO_ONLY") value = TOPO_ONLY;
+    else if (str == "TOPO_UPDATE_LV") value = TOPO_UPDATE_LV;
+    else if (str == "NNI1") value = NNI1;
+    else if (str == "NNI5") value = NNI5;
+    else throw std::runtime_error("NNI_Type: unknown value " + str);
+}
+
 
 /**
         when computing Robinson-Foulds distances
@@ -430,10 +608,67 @@ enum ConsensusType {
     CT_ASSIGN_SUPPORT, CT_ASSIGN_SUPPORT_EXTENDED, COMPARE,
     CT_ROOTSTRAP
 };
+/**
+ * Serialize ConsensusType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum ConsensusType
+ */
+inline void to_json(json& j, const ConsensusType& value) {
+    switch (value) {
+        case CT_NONE: j = "CT_NONE"; break;
+        case CT_CONSENSUS_TREE: j = "CT_CONSENSUS_TREE"; break;
+        case CT_CONSENSUS_NETWORK: j = "CT_CONSENSUS_NETWORK"; break;
+        case CT_ASSIGN_SUPPORT: j = "CT_ASSIGN_SUPPORT"; break;
+        case CT_ASSIGN_SUPPORT_EXTENDED: j = "CT_ASSIGN_SUPPORT_EXTENDED"; break;
+        case COMPARE: j = "COMPARE"; break;
+        case CT_ROOTSTRAP: j = "CT_ROOTSTRAP"; break;
+    }
+}
+
+/**
+ * Deserialize ConsensusType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum ConsensusType
+ */
+inline void from_json(const json& j, ConsensusType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "CT_NONE") value = CT_NONE;
+    else if (str == "CT_CONSENSUS_TREE") value = CT_CONSENSUS_TREE;
+    else if (str == "CT_CONSENSUS_NETWORK") value = CT_CONSENSUS_NETWORK;
+    else if (str == "CT_ASSIGN_SUPPORT") value = CT_ASSIGN_SUPPORT;
+    else if (str == "CT_ASSIGN_SUPPORT_EXTENDED") value = CT_ASSIGN_SUPPORT_EXTENDED;
+    else if (str == "COMPARE") value = COMPARE;
+    else if (str == "CT_ROOTSTRAP") value = CT_ROOTSTRAP;
+    else throw std::runtime_error("ConsensusType: unknown value " + str);
+}
 
 enum TestType {
     TEST_NONE, TEST_COMPATIBLE, TEST_CIRCULAR, TEST_WEAKLY_COMPATIBLE, TEST_K_COMPATIBLE
 };
+/**
+ * Serialize TestType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum TestType
+ */
+inline void to_json(json& j, const TestType& value) {
+    switch (value) {
+        case TEST_NONE: j = "TEST_NONE"; break;
+        case TEST_COMPATIBLE: j = "TEST_COMPATIBLE"; break;
+        case TEST_CIRCULAR: j = "TEST_CIRCULAR"; break;
+        case TEST_WEAKLY_COMPATIBLE: j = "TEST_WEAKLY_COMPATIBLE"; break;
+        case TEST_K_COMPATIBLE: j = "TEST_K_COMPATIBLE"; break;
+    }
+}
+/**
+ * Deserialize TestType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum TestType
+ */
+inline void from_json(const json& j, TestType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "TEST_NONE") value = TEST_NONE;
+    else if (str == "TEST_COMPATIBLE") value = TEST_COMPATIBLE;
+    else if (str == "TEST_CIRCULAR") value = TEST_CIRCULAR;
+    else if (str == "TEST_WEAKLY_COMPATIBLE") value = TEST_WEAKLY_COMPATIBLE;
+    else if (str == "TEST_K_COMPATIBLE") value = TEST_K_COMPATIBLE;
+    else throw std::runtime_error("TestType: unknown value " + str);
+}
 
 /**
         State frequency type
@@ -452,6 +687,73 @@ enum StateFreqType {
     FREQ_DNA_1123, FREQ_DNA_1213, FREQ_DNA_1231, 
     FREQ_DNA_2113, FREQ_DNA_2131, FREQ_DNA_2311, 
 };
+/**
+ * Serialize StateFreqType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum StateFreqType
+ */
+inline void to_json(json& j, const StateFreqType& value) {
+    switch (value) {
+        case FREQ_UNKNOWN: j = "FREQ_UNKNOWN"; break;
+        case FREQ_USER_DEFINED: j = "FREQ_USER_DEFINED"; break;
+        case FREQ_EQUAL: j = "FREQ_EQUAL"; break;
+        case FREQ_EMPIRICAL: j = "FREQ_EMPIRICAL"; break;
+        case FREQ_ESTIMATE: j = "FREQ_ESTIMATE"; break;
+        case FREQ_CODON_1x4: j = "FREQ_CODON_1x4"; break;
+        case FREQ_CODON_3x4: j = "FREQ_CODON_3x4"; break;
+        case FREQ_CODON_3x4C: j = "FREQ_CODON_3x4C"; break;
+        case FREQ_MIXTURE: j = "FREQ_MIXTURE"; break;
+        case FREQ_DNA_RY: j = "FREQ_DNA_RY"; break;
+        case FREQ_DNA_WS: j = "FREQ_DNA_WS"; break;
+        case FREQ_DNA_MK: j = "FREQ_DNA_MK"; break;
+        case FREQ_DNA_1112: j = "FREQ_DNA_1112"; break;
+        case FREQ_DNA_1121: j = "FREQ_DNA_1121"; break;
+        case FREQ_DNA_1211: j = "FREQ_DNA_1211"; break;
+        case FREQ_DNA_2111: j = "FREQ_DNA_2111"; break;
+        case FREQ_DNA_1122: j = "FREQ_DNA_1122"; break;
+        case FREQ_DNA_1212: j = "FREQ_DNA_1212"; break;
+        case FREQ_DNA_1221: j = "FREQ_DNA_1221"; break;
+        case FREQ_DNA_1123: j = "FREQ_DNA_1123"; break;
+        case FREQ_DNA_1213: j = "FREQ_DNA_1213"; break;
+        case FREQ_DNA_1231: j = "FREQ_DNA_1231"; break;
+        case FREQ_DNA_2113: j = "FREQ_DNA_2113"; break;
+        case FREQ_DNA_2131: j = "FREQ_DNA_2131"; break;
+        case FREQ_DNA_2311: j = "FREQ_DNA_2311"; break;
+    }
+}
+
+/**
+ * Deserialize StateFreqType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum StateFreqType
+ */
+inline void from_json(const json& j, StateFreqType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "FREQ_UNKNOWN") value = FREQ_UNKNOWN;
+    else if (str == "FREQ_USER_DEFINED") value = FREQ_USER_DEFINED;
+    else if (str == "FREQ_EQUAL") value = FREQ_EQUAL;
+    else if (str == "FREQ_EMPIRICAL") value = FREQ_EMPIRICAL;
+    else if (str == "FREQ_ESTIMATE") value = FREQ_ESTIMATE;
+    else if (str == "FREQ_CODON_1x4") value = FREQ_CODON_1x4;
+    else if (str == "FREQ_CODON_3x4") value = FREQ_CODON_3x4;
+    else if (str == "FREQ_CODON_3x4C") value = FREQ_CODON_3x4C;
+    else if (str == "FREQ_MIXTURE") value = FREQ_MIXTURE;
+    else if (str == "FREQ_DNA_RY") value = FREQ_DNA_RY;
+    else if (str == "FREQ_DNA_WS") value = FREQ_DNA_WS;
+    else if (str == "FREQ_DNA_MK") value = FREQ_DNA_MK;
+    else if (str == "FREQ_DNA_1112") value = FREQ_DNA_1112;
+    else if (str == "FREQ_DNA_1121") value = FREQ_DNA_1121;
+    else if (str == "FREQ_DNA_1211") value = FREQ_DNA_1211;
+    else if (str == "FREQ_DNA_2111") value = FREQ_DNA_2111;
+    else if (str == "FREQ_DNA_1122") value = FREQ_DNA_1122;
+    else if (str == "FREQ_DNA_1212") value = FREQ_DNA_1212;
+    else if (str == "FREQ_DNA_1221") value = FREQ_DNA_1221;
+    else if (str == "FREQ_DNA_1123") value = FREQ_DNA_1123;
+    else if (str == "FREQ_DNA_1213") value = FREQ_DNA_1213;
+    else if (str == "FREQ_DNA_1231") value = FREQ_DNA_1231;
+    else if (str == "FREQ_DNA_2113") value = FREQ_DNA_2113;
+    else if (str == "FREQ_DNA_2131") value = FREQ_DNA_2131;
+    else if (str == "FREQ_DNA_2311") value = FREQ_DNA_2311;
+    else throw std::runtime_error("StateFreqType: unknown value " + str);
+}
 
 /*
     outfile file format
@@ -466,6 +768,31 @@ enum FileFormat {
 enum ModelTestCriterion {
     MTC_AIC, MTC_AICC, MTC_BIC, MTC_ALL
 };
+/**
+ * Serialize ModelTestCriterion to json 
+ * IMPORTANT: This function must be kept synchronized with the enum ModelTestCriterion
+ */
+inline void to_json(json& j, const ModelTestCriterion& value) {
+    switch (value) {
+        case MTC_AIC: j = "MTC_AIC"; break;
+        case MTC_AICC: j = "MTC_AICC"; break;
+        case MTC_BIC: j = "MTC_BIC"; break;
+        case MTC_ALL: j = "MTC_ALL"; break;
+    }
+}
+
+/**
+ * Deserialize ModelTestCriterion from json 
+ * IMPORTANT: This function must be kept synchronized with the enum ModelTestCriterion
+ */
+inline void from_json(const json& j, ModelTestCriterion& value) {
+    std::string str = j.get<std::string>();
+    if (str == "MTC_AIC") value = MTC_AIC;
+    else if (str == "MTC_AICC") value = MTC_AICC;
+    else if (str == "MTC_BIC") value = MTC_BIC;
+    else if (str == "MTC_ALL") value = MTC_ALL;
+    else throw std::runtime_error("ModelTestCriterion: unknown value " + str);
+}
 
 /**
  PartitionFinder merging algorithm
@@ -473,6 +800,32 @@ enum ModelTestCriterion {
 enum PartitionMerge {
     MERGE_NONE, MERGE_GREEDY, MERGE_RCLUSTER, MERGE_RCLUSTERF, MERGE_KMEANS
 };
+/**
+ * Serialize PartitionMerge to json 
+ * IMPORTANT: This function must be kept synchronized with the enum PartitionMerge
+ */
+inline void to_json(json& j, const PartitionMerge& value) {
+    switch (value) {
+        case MERGE_NONE: j = "MERGE_NONE"; break;
+        case MERGE_GREEDY: j = "MERGE_GREEDY"; break;
+        case MERGE_RCLUSTER: j = "MERGE_RCLUSTER"; break;
+        case MERGE_RCLUSTERF: j = "MERGE_RCLUSTERF"; break;
+        case MERGE_KMEANS: j = "MERGE_KMEANS"; break;
+    }
+}
+/**
+ * Deserialize PartitionMerge from json 
+ * IMPORTANT: This function must be kept synchronized with the enum PartitionMerge
+ */
+inline void from_json(const json& j, PartitionMerge& value) {
+    std::string str = j.get<std::string>();
+    if (str == "MERGE_NONE") value = MERGE_NONE;
+    else if (str == "MERGE_GREEDY") value = MERGE_GREEDY;
+    else if (str == "MERGE_RCLUSTER") value = MERGE_RCLUSTER;
+    else if (str == "MERGE_RCLUSTERF") value = MERGE_RCLUSTERF;
+    else if (str == "MERGE_KMEANS") value = MERGE_KMEANS;
+    else throw std::runtime_error("PartitionMerge: unknown value " + str);
+}
 
 /**
         Stopping condition type
@@ -480,18 +833,117 @@ enum PartitionMerge {
 enum STOP_CONDITION {
     SC_FIXED_ITERATION, SC_WEIBULL, SC_UNSUCCESS_ITERATION, SC_BOOTSTRAP_CORRELATION, SC_REAL_TIME
 };
+/**
+ * Serialize STOP_CONDITION to json 
+ * IMPORTANT: This function must be kept synchronized with the enum STOP_CONDITION
+ */
+inline void to_json(json& j, const STOP_CONDITION& value) {
+    switch (value) {
+        case SC_FIXED_ITERATION: j = "SC_FIXED_ITERATION"; break;
+        case SC_WEIBULL: j = "SC_WEIBULL"; break;
+        case SC_UNSUCCESS_ITERATION: j = "SC_UNSUCCESS_ITERATION"; break;
+        case SC_BOOTSTRAP_CORRELATION: j = "SC_BOOTSTRAP_CORRELATION"; break;
+        case SC_REAL_TIME: j = "SC_REAL_TIME"; break;
+    }
+}
+/**
+ * Deserialize STOP_CONDITION from json 
+ * IMPORTANT: This function must be kept synchronized with the enum STOP_CONDITION
+ */
+inline void from_json(const json& j, STOP_CONDITION& value) {
+    std::string str = j.get<std::string>();
+    if (str == "SC_FIXED_ITERATION") value = SC_FIXED_ITERATION;
+    else if (str == "SC_WEIBULL") value = SC_WEIBULL;
+    else if (str == "SC_UNSUCCESS_ITERATION") value = SC_UNSUCCESS_ITERATION;
+    else if (str == "SC_BOOTSTRAP_CORRELATION") value = SC_BOOTSTRAP_CORRELATION;
+    else if (str == "SC_REAL_TIME") value = SC_REAL_TIME;
+    else throw std::runtime_error("STOP_CONDITION: unknown value " + str);
+}
 
 enum IQP_ASSESS_QUARTET {
     IQP_DISTANCE, IQP_PARSIMONY, IQP_BOOTSTRAP
 };
+/**
+ * Serialize IQP_ASSESS_QUARTET to json 
+ * IMPORTANT: This function must be kept synchronized with the enum IQP_ASSESS_QUARTET
+*/
+inline void to_json(json& j, const IQP_ASSESS_QUARTET& value) {
+    switch (value) {
+        case IQP_DISTANCE: j = "IQP_DISTANCE"; break;
+        case IQP_PARSIMONY: j = "IQP_PARSIMONY"; break;
+        case IQP_BOOTSTRAP: j = "IQP_BOOTSTRAP"; break;
+    }
+}
+/**
+ * Deserialize IQP_ASSESS_QUARTET from json 
+ * IMPORTANT: This function must be kept synchronized with the enum IQP_ASSESS_QUARTET
+*/
+inline void from_json(const json& j, IQP_ASSESS_QUARTET& value) {
+    std::string str = j.get<std::string>();
+    if (str == "IQP_DISTANCE") value = IQP_DISTANCE;
+    else if (str == "IQP_PARSIMONY") value = IQP_PARSIMONY;
+    else if (str == "IQP_BOOTSTRAP") value = IQP_BOOTSTRAP;
+    else throw std::runtime_error("IQP_ASSESS_QUARTET: unknown value " + str);
+}
 
 enum LEAST_SQUARE_VAR {
     OLS, WLS_FIRST_TAYLOR, WLS_FITCH_MARGOLIASH, WLS_SECOND_TAYLOR, WLS_PAUPLIN
 };
-
+/**
+ * Serialize LEAST_SQUARE_VAR to json
+ * IMPORTANT: This function must be kept synchronized with the enum LEAST_SQUARE_VAR
+*/
+inline void to_json(json& j, const LEAST_SQUARE_VAR& value) {
+    switch (value) {
+        case OLS: j = "OLS"; break;
+        case WLS_FIRST_TAYLOR: j = "WLS_FIRST_TAYLOR"; break;
+        case WLS_FITCH_MARGOLIASH: j = "WLS_FITCH_MARGOLIASH"; break;
+        case WLS_SECOND_TAYLOR: j = "WLS_SECOND_TAYLOR"; break;
+        case WLS_PAUPLIN: j = "WLS_PAUPLIN"; break;
+    }
+}
+/**
+ * Deserialize LEAST_SQUARE_VAR from json
+ * IMPORTANT: This function must be kept synchronized with the enum LEAST_SQUARE_VAR
+*/
+inline void from_json(const json& j, LEAST_SQUARE_VAR& value) {
+    std::string str = j.get<std::string>();
+    if (str == "OLS") value = OLS;
+    else if (str == "WLS_FIRST_TAYLOR") value = WLS_FIRST_TAYLOR;
+    else if (str == "WLS_FITCH_MARGOLIASH") value = WLS_FITCH_MARGOLIASH;
+    else if (str == "WLS_SECOND_TAYLOR") value = WLS_SECOND_TAYLOR;
+    else if (str == "WLS_PAUPLIN") value = WLS_PAUPLIN;
+    else throw std::runtime_error("LEAST_SQUARE_VAR: unknown value " + str);
+ }
 enum START_TREE_TYPE {
 	STT_BIONJ, STT_PARSIMONY, STT_PLL_PARSIMONY, STT_RANDOM_TREE, STT_USER_TREE
 };
+/**
+ * Serialize START_TREE_TYPE to json 
+ * IMPORTANT: This function must be kept synchronized with the enum START_TREE_TYPE
+ */
+inline void to_json(json& j, const START_TREE_TYPE& value) {
+    switch (value) {
+        case STT_BIONJ: j = "STT_BIONJ"; break;
+        case STT_PARSIMONY: j = "STT_PARSIMONY"; break;
+        case STT_PLL_PARSIMONY: j = "STT_PLL_PARSIMONY"; break;
+        case STT_RANDOM_TREE: j = "STT_RANDOM_TREE"; break;
+        case STT_USER_TREE: j = "STT_USER_TREE"; break;
+    }
+}
+/**
+ * Deserialize START_TREE_TYPE from json 
+ * IMPORTANT: This function must be kept synchronized with the enum START_TREE_TYPE
+ */
+inline void from_json(const json& j, START_TREE_TYPE& value) {
+    std::string str = j.get<std::string>();
+    if (str == "STT_BIONJ") value = STT_BIONJ;
+    else if (str == "STT_PARSIMONY") value = STT_PARSIMONY;
+    else if (str == "STT_PLL_PARSIMONY") value = STT_PLL_PARSIMONY;
+    else if (str == "STT_RANDOM_TREE") value = STT_RANDOM_TREE;
+    else if (str == "STT_USER_TREE") value = STT_USER_TREE;
+    else throw std::runtime_error("START_TREE_TYPE: unknown value " + str);
+}
 
 const int MCAT_LOG = 1; // categorize by log(rate) for Meyer & von Haeseler model
 const int MCAT_MEAN = 2; // take the mean of rates for each category for Meyer & von Haeseler model
@@ -524,18 +976,123 @@ struct NNIInfo {
 enum LikelihoodKernel {
 	LK_386, LK_SSE, LK_SSE2, LK_SSE3, LK_SSSE3, LK_SSE41, LK_SSE42, LK_AVX, LK_AVX_FMA, LK_AVX512
 };
+/**
+ * Serialize LikelihoodKernel to json 
+ * IMPORTANT: This function must be kept synchronized with the enum LikelihoodKernel
+ */
+inline void to_json(json& j, const LikelihoodKernel& value) {
+    switch (value) {
+        case LK_386: j = "LK_386"; break;
+        case LK_SSE: j = "LK_SSE"; break;
+        case LK_SSE2: j = "LK_SSE2"; break;
+        case LK_SSE3: j = "LK_SSE3"; break;
+        case LK_SSSE3: j = "LK_SSSE3"; break;
+        case LK_SSE41: j = "LK_SSE41"; break;
+        case LK_SSE42: j = "LK_SSE42"; break;
+        case LK_AVX: j = "LK_AVX"; break;
+        case LK_AVX_FMA: j = "LK_AVX_FMA"; break;
+        case LK_AVX512: j = "LK_AVX512"; break;
+    }
+}
+/**
+ * Deserialize LikelihoodKernel from json 
+ * IMPORTANT: This function must be kept synchronized with the enum LikelihoodKernel
+ */
+inline void from_json(const json& j, LikelihoodKernel& value) {
+    std::string str = j.get<std::string>();
+    if (str == "LK_386") value = LK_386;
+    else if (str == "LK_SSE") value = LK_SSE;
+    else if (str == "LK_SSE2") value = LK_SSE2;
+    else if (str == "LK_SSE3") value = LK_SSE3;
+    else if (str == "LK_SSSE3") value = LK_SSSE3;
+    else if (str == "LK_SSE41") value = LK_SSE41;
+    else if (str == "LK_SSE42") value = LK_SSE42;
+    else if (str == "LK_AVX") value = LK_AVX;
+    else if (str == "LK_AVX_FMA") value = LK_AVX_FMA;
+    else if (str == "LK_AVX512") value = LK_AVX512;
+    else throw std::runtime_error("LikelihoodKernel: unknown value " + str);
+}
 
 enum LhMemSave {
 	LM_PER_NODE, LM_MEM_SAVE
 };
+/**
+ * Serialize LhMemSave to json 
+ * IMPORTANT: This function must be kept synchronized with the enum LhMemSave
+ */
+inline void to_json(json& j, const LhMemSave& value) {
+    switch (value) {
+        case LM_PER_NODE: j = "LM_PER_NODE"; break;
+        case LM_MEM_SAVE: j = "LM_MEM_SAVE"; break;
+    }
+}
+/**
+ * Deserialize LhMemSave from json 
+ * IMPORTANT: This function must be kept synchronized with the enum LhMemSave
+ */
+inline void from_json(const json& j, LhMemSave& value) {
+    std::string str = j.get<std::string>();
+    if (str == "LM_PER_NODE") value = LM_PER_NODE;
+    else if (str == "LM_MEM_SAVE") value = LM_MEM_SAVE;
+    else throw std::runtime_error("LhMemSave: unknown value " + str);
+}
 
 enum SiteLoglType {
     WSL_NONE, WSL_SITE, WSL_RATECAT, WSL_MIXTURE, WSL_MIXTURE_RATECAT
 };
+/**
+ * Serialize SiteLoglType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum SiteLoglType
+ */
+inline void to_json(json& j, const SiteLoglType& value) {
+    switch (value) {
+        case WSL_NONE: j = "WSL_NONE"; break;
+        case WSL_SITE: j = "WSL_SITE"; break;
+        case WSL_RATECAT: j = "WSL_RATECAT"; break;
+        case WSL_MIXTURE: j = "WSL_MIXTURE"; break;
+        case WSL_MIXTURE_RATECAT: j = "WSL_MIXTURE_RATECAT"; break;
+    }
+}
+
+/**
+ * Deserialize SiteLoglType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum SiteLoglType
+ */
+inline void from_json(const json& j, SiteLoglType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "WSL_NONE") value = WSL_NONE;
+    else if (str == "WSL_SITE") value = WSL_SITE;
+    else if (str == "WSL_RATECAT") value = WSL_RATECAT;
+    else if (str == "WSL_MIXTURE") value = WSL_MIXTURE;
+    else if (str == "WSL_MIXTURE_RATECAT") value = WSL_MIXTURE_RATECAT;
+    else throw std::runtime_error("SiteLoglType: unknown value " + str);
+}
 
 enum SiteFreqType {
     WSF_NONE, WSF_POSTERIOR_MEAN, WSF_POSTERIOR_MAX
 };
+/**
+ * Serialize SiteFreqType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum SiteFreqType
+ */
+inline void to_json(json& j, const SiteFreqType& value) {
+    switch (value) {
+        case WSF_NONE: j = "WSF_NONE"; break;
+        case WSF_POSTERIOR_MEAN: j = "WSF_POSTERIOR_MEAN"; break;
+        case WSF_POSTERIOR_MAX: j = "WSF_POSTERIOR_MAX"; break;
+    }
+}
+/**
+ * Deserialize SiteFreqType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum SiteFreqType
+ */
+inline void from_json(const json& j, SiteFreqType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "WSF_NONE") value = WSF_NONE;
+    else if (str == "WSF_POSTERIOR_MEAN") value = WSF_POSTERIOR_MEAN;
+    else if (str == "WSF_POSTERIOR_MAX") value = WSF_POSTERIOR_MAX;
+    else throw std::runtime_error("SiteFreqType: unknown value " + str);
+}
 
 enum MatrixExpTechnique { 
     MET_SCALING_SQUARING, 
@@ -543,6 +1100,32 @@ enum MatrixExpTechnique {
     MET_EIGEN_DECOMPOSITION, 
     MET_LIE_MARKOV_DECOMPOSITION
 };
+/**
+ * Serialize MatrixExpTechnique to json 
+ * IMPORTANT: This function must be kept synchronized with the enum MatrixExpTechnique
+ */
+inline void to_json(json& j, const MatrixExpTechnique& value) {
+    switch (value) {
+        case MET_SCALING_SQUARING: j = "MET_SCALING_SQUARING"; break;
+        case MET_EIGEN3LIB_DECOMPOSITION: j = "MET_EIGEN3LIB_DECOMPOSITION"; break;
+        case MET_EIGEN_DECOMPOSITION: j = "MET_EIGEN_DECOMPOSITION"; break;
+        case MET_LIE_MARKOV_DECOMPOSITION: j = "MET_LIE_MARKOV_DECOMPOSITION"; break;
+    }
+}
+
+/**
+ * Deserialize MatrixExpTechnique from json 
+ * IMPORTANT: This function must be kept synchronized with the enum MatrixExpTechnique
+ */
+inline void from_json(const json& j, MatrixExpTechnique& value) {
+    std::string str = j.get<std::string>();
+    if (str == "MET_SCALING_SQUARING") value = MET_SCALING_SQUARING;
+    else if (str == "MET_EIGEN3LIB_DECOMPOSITION") value = MET_EIGEN3LIB_DECOMPOSITION;
+    else if (str == "MET_EIGEN_DECOMPOSITION") value = MET_EIGEN_DECOMPOSITION;
+    else if (str == "MET_LIE_MARKOV_DECOMPOSITION") value = MET_LIE_MARKOV_DECOMPOSITION;
+    else throw std::runtime_error("MatrixExpTechnique: unknown value " + str);
+}
+
 
 /** ascertainment bias correction type */
 enum ASCType {
@@ -556,10 +1139,56 @@ enum ASCType {
 enum AncestralSeqType {
     AST_NONE, AST_MARGINAL, AST_JOINT
 };
+/**
+ * Serialize AncestralSeqType to json 
+ * IMPORTANT: This function must be kept synchronized with the enum AncestralSeqType
+ */
+inline void to_json(json& j, const AncestralSeqType& value) {
+    switch (value) {
+        case AST_NONE: j = "AST_NONE"; break;
+        case AST_MARGINAL: j = "AST_MARGINAL"; break;
+        case AST_JOINT: j = "AST_JOINT"; break;
+    }
+}
+
+/**
+ * Deserialize AncestralSeqType from json 
+ * IMPORTANT: This function must be kept synchronized with the enum AncestralSeqType
+ */
+inline void from_json(const json& j, AncestralSeqType& value) {
+    std::string str = j.get<std::string>();
+    if (str == "AST_NONE") value = AST_NONE;
+    else if (str == "AST_MARGINAL") value = AST_MARGINAL;
+    else if (str == "AST_JOINT") value = AST_JOINT;
+    else throw std::runtime_error("AncestralSeqType: unknown value " + str);
+}
 
 enum SymTest {
     SYMTEST_NONE, SYMTEST_BINOM, SYMTEST_MAXDIV
 };
+/**
+ * Serialize SymTest to json 
+ * IMPORTANT: This function must be kept synchronized with the enum SymTest
+ */
+inline void to_json(json& j, const SymTest& value) {
+    switch (value) {
+        case SYMTEST_NONE: j = "SYMTEST_NONE"; break;
+        case SYMTEST_BINOM: j = "SYMTEST_BINOM"; break;
+        case SYMTEST_MAXDIV: j = "SYMTEST_MAXDIV"; break;
+    }
+}
+
+/**
+ * Deserialize SymTest from json 
+ * IMPORTANT: This function must be kept synchronized with the enum SymTest
+ */
+inline void from_json(const json& j, SymTest& value) {
+    std::string str = j.get<std::string>();
+    if (str == "SYMTEST_NONE") value = SYMTEST_NONE;
+    else if (str == "SYMTEST_BINOM") value = SYMTEST_BINOM;
+    else if (str == "SYMTEST_MAXDIV") value = SYMTEST_MAXDIV;
+    else throw std::runtime_error("SymTest: unknown value " + str);
+}
 
 const int BRLEN_OPTIMIZE = 0; // optimize branch lengths
 const int BRLEN_FIX      = 1; // fix branch lengths
