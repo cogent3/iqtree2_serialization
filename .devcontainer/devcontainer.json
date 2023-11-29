@@ -1,6 +1,8 @@
 {
     "name": "PIQtree2",
     "dockerFile": "Dockerfile",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/IQTree2,type=bind",
+    "workspaceFolder": "/IQTree2",
     "settings": { 
       "C_Cpp.default.compilerPath": "/usr/bin/clang",
       "C_Cpp.default.intelliSenseMode": "clang-x64",
@@ -17,7 +19,8 @@
       "ms-vscode.cpptools",
       "ms-vscode.cmake-tools",
       "ms-python.python",
-      "ms-python.vscode-pytest"
+      "ms-python.vscode-pytest",
+      "ms-vscode.cpptools-extension-pack"
     ],
     "forwardPorts": [
       // Any ports you want to forward
