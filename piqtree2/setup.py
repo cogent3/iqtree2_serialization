@@ -38,19 +38,34 @@ class CMakeBuild(build_ext):
 
         cfg = "Debug" if self.debug else "Release"
         build_args = ["--config", cfg]
+        
+        build_temp = os.path.join(package_root_dir, 'build')  # fixed build directory
 
-        if not os.path.exists(self.build_temp):
-            os.makedirs(self.build_temp)
+        if not os.path.exists(build_temp):
+            os.makedirs(build_temp)
 
-        subprocess.run(
-            ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp, check=True
-        )
-        subprocess.run(
-            ["cmake", "--build", ".", "--target", "iqtree2core"] + build_args,
-            cwd=self.build_temp,
-            check=True,
-        )
+        try:
+            print("Running CMake...")
+            process = subprocess.Popen(
+                ["cmake", ext.sourcedir] + cmake_args, cwd=build_temp, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            )
+            for line in iter(process.stdout.readline, b''):
+                print(line.decode(), end='')
 
+            print("Building with CMake...")
+            process = subprocess.Popen(
+                ["cmake", "--build", ".", "--target", "iqtree2core"] + build_args,
+                cwd=build_temp,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            for line in iter(process.stdout.readline, b''):
+                print(line.decode(), end='')
+
+        except subprocess.CalledProcessError as e:
+            print(e.stdout.decode())
+            print(e.stderr.decode())
+            raise RuntimeError("CMake failed!")
 
 setup(
     name="piqtree2",

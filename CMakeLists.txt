@@ -966,6 +966,7 @@ set(IQTREE2CORE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/core)
 set(IQTREE2CORE_HEADERS 
     "${IQTREE2CORE_SOURCE_DIR}/version.h"
     "${IQTREE2CORE_SOURCE_DIR}/params.h"
+    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.h"
     "${PROJECT_BINARY_DIR}/iqtree_config.h"
     )
 
@@ -973,12 +974,14 @@ set(IQTREE2CORE_HEADERS
 set (IQTREE2CORE_SOURCES 
     "${IQTREE2CORE_SOURCE_DIR}/version.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/params.cpp"
+    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.cpp"
     ${PROJECT_SOURCE_DIR}/utils/tools.cpp
     )
 
 set (IQTREE2CORE_BINDINGS 
     "${IQTREE2CORE_SOURCE_DIR}/version_bindings.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/params_bindings.cpp"
+    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree_bindings.cpp"
     )
 
 # Add a shared library target
