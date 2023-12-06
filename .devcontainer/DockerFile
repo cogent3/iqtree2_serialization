@@ -35,7 +35,7 @@ RUN mkdir -p /usr/local/include/plf && \
     wget -O /usr/local/include/plf/plf_colony.h https://raw.githubusercontent.com/mattreecebentley/plf_colony/master/plf_colony.h
 
 # Set the working directory
-WORKDIR /IQTree2
+WORKDIR /iqtree2
 
 # Clone LSD2 into the expected subdirectory after copying the contents
 RUN git clone https://github.com/tothuhien/lsd2.git lsd2

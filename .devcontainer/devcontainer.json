@@ -1,8 +1,8 @@
 {
     "name": "PIQtree2",
     "dockerFile": "Dockerfile",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/IQTree2,type=bind",
-    "workspaceFolder": "/IQTree2",
+    "workspaceMount": "source=.,target=/iqtree2,type=bind",
+    "workspaceFolder": "/iqtree2",
     "settings": { 
       "C_Cpp.default.compilerPath": "/usr/bin/clang",
       "C_Cpp.default.intelliSenseMode": "clang-x64",
