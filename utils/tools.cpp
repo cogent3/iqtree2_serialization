@@ -6952,8 +6952,8 @@ json Params::to_json() const {
     j["concatenate_aln"] = std::string(this->concatenate_aln);  // char*
     j["aln_site_list"] = std::string(this->aln_site_list);  // char*
     j["ref_seq_name"] = std::string(this->ref_seq_name);  // char*
-    //j["aln_output_format"] = this->aln_output_format;  // InputType
-    //j["output_format"] = this->output_format;  // FileFormat
+//TODO     j["aln_output_format"] = this->aln_output_format;  // InputType
+//TODO     j["output_format"] = this->output_format;  // FileFormat
     j["newick_extended_format"] = this->newick_extended_format;  // bool
     j["aln_nogaps"] = this->aln_nogaps;  // bool
     j["aln_no_const_sites"] = this->aln_no_const_sites;  // bool
@@ -6971,7 +6971,7 @@ json Params::to_json() const {
     j["num_splits"] = this->num_splits;  // int
     ::to_json(j["run_mode"], this->run_mode); // RunMode enum
     ::to_json(j["detected_mode"], this->detected_mode); // RunMode enum
-    j["detected_mode"] = this->detected_mode;  // RunMode
+    j["detected_mode"] = this->detected_mode;  // RunMode enum
     j["param_file"] = std::string(this->param_file);  // char*
     j["initial_file"] = std::string(this->initial_file);  // char*
     j["initial_area_file"] = std::string(this->initial_area_file);  // char*
@@ -7250,22 +7250,22 @@ json Params::to_json() const {
     j["alisim_num_states_morph"] = this->alisim_num_states_morph;  // int
     j["alisim_num_taxa_uniform_start"] = this->alisim_num_taxa_uniform_start;  // int
     j["alisim_num_taxa_uniform_end"] = this->alisim_num_taxa_uniform_end;  // int
-    //j["alisim_num_taxa_list"] = this->alisim_num_taxa_list;  // IntVector
+//TODO    j["alisim_num_taxa_list"] = this->alisim_num_taxa_list;  // IntVector
     j["birth_rate"] = this->birth_rate;  // double
     j["death_rate"] = this->death_rate;  // double
     j["alisim_length_ratio"] = this->alisim_length_ratio;  // double
-    //j["alisim_fundi_taxon_set"] = this->alisim_fundi_taxon_set;  // vector<string>
+//TODO    j["alisim_fundi_taxon_set"] = this->alisim_fundi_taxon_set;  // vector<string>
     j["alisim_fundi_proportion"] = this->alisim_fundi_proportion;  // double
     j["alisim_distribution_definitions"] = std::string(this->alisim_distribution_definitions);  // char*
     j["alisim_skip_checking_memory"] = this->alisim_skip_checking_memory;  // bool
     j["alisim_write_internal_sequences"] = this->alisim_write_internal_sequences;  // bool
-    //j["distributions"] = this->distributions;  // map<string, Distribution>
+//TODO    j["distributions"] = this->distributions;  // map<string, Distribution>
     j["alisim_only_unroot_tree"] = this->alisim_only_unroot_tree;  // bool
     j["branch_distribution"] = std::string(this->branch_distribution);  // char*
     j["alisim_insertion_ratio"] = this->alisim_insertion_ratio;  // double
     j["alisim_deletion_ratio"] = this->alisim_deletion_ratio;  // double
-//    j["alisim_insertion_distribution"] = this->alisim_insertion_distribution;  // IndelDistribution
-//    j["alisim_deletion_distribution"] = this->alisim_deletion_distribution;  // IndelDistribution
+//TODO    j["alisim_insertion_distribution"] = this->alisim_insertion_distribution;  // IndelDistribution
+//TODO    j["alisim_deletion_distribution"] = this->alisim_deletion_distribution;  // IndelDistribution
     j["alisim_mean_deletion_size"] = this->alisim_mean_deletion_size;  // double
     j["alisim_simulation_thresh"] = this->alisim_simulation_thresh;  // double
     j["delay_msgs"] = this->delay_msgs;  // string
@@ -7287,20 +7287,1290 @@ json Params::to_json() const {
     j["alignment_id"] = this->alignment_id;  // int
     j["mutation_file"] = this->mutation_file;  // string
     j["site_starting_index"] = this->site_starting_index;  // int
-
+    // ... handle other parameters here ...
     return j;
 }
 
 void Params::from_json(const json& j) {
     // Deserialize member variables from the json object
-    if (j.contains("fai")) this->fai = j["fai"].get<bool>();
+    if (j.contains("fai")) this->fai = j["fai"].get<bool>(); // bool
+    if (j.contains("memCheck")) this->memCheck = j["memCheck"].get<bool>(); // bool
+    if (j.contains("stableSplitThreshold")) this->stableSplitThreshold = j["stableSplitThreshold"].get<double>(); // double
+    if (j.contains("adaptPertubation")) this->adaptPertubation = j["adaptPertubation"].get<bool>(); // bool
+    if (j.contains("testAlpha")) this->testAlpha = j["testAlpha"].get<bool>(); // bool
+    if (j.contains("opt_gammai")) this->opt_gammai = j["opt_gammai"].get<bool>(); // bool
+    if (j.contains("opt_gammai_fast")) this->opt_gammai_fast = j["opt_gammai_fast"].get<bool>(); // bool
+    if (j.contains("opt_gammai_keep_bran")) this->opt_gammai_keep_bran = j["opt_gammai_keep_bran"].get<bool>(); // bool
+    if (j.contains("testAlphaEpsAdaptive")) this->testAlphaEpsAdaptive = j["testAlphaEpsAdaptive"].get<bool>(); // bool
+    if (j.contains("randomAlpha")) this->randomAlpha = j["randomAlpha"].get<bool>(); // bool
+    if (j.contains("testAlphaEps")) this->testAlphaEps = j["testAlphaEps"].get<double>(); // double
+    if (j.contains("exh_ai")) this->exh_ai = j["exh_ai"].get<bool>(); // bool
+    if (j.contains("alpha_invar_file")) {
+        std::string str = j["alpha_invar_file"].get<std::string>();
+        this->alpha_invar_file = new char[str.length() + 1];
+        std::strcpy(this->alpha_invar_file, str.c_str());
+    } // char*
+    if (j.contains("tabu")) this->tabu = j["tabu"].get<bool>(); // bool
+    if (j.contains("five_plus_five")) this->five_plus_five = j["five_plus_five"].get<bool>(); // bool
+    if (j.contains("fixStableSplits")) this->fixStableSplits = j["fixStableSplits"].get<bool>();// bool
+    if (j.contains("numSupportTrees")) this->numSupportTrees = j["numSupportTrees"].get<int>();// int
+    if (j.contains("maxCandidates")) this->maxCandidates = j["maxCandidates"].get<int>(); // int
+    if (j.contains("numInitTrees")) this->numInitTrees = j["numInitTrees"].get<int>(); // int
+    if (j.contains("sprDist")) this->sprDist = j["sprDist"].get<int>(); // int
+    if (j.contains("sankoff_cost_file")) {
+        std::string str = j["sankoff_cost_file"].get<std::string>();
+        if (this->sankoff_cost_file != nullptr) {
+            delete[] this->sankoff_cost_file; // Deallocate existing memory
+        }
+        this->sankoff_cost_file = new char[str.length() + 1];
+        std::strcpy(this->sankoff_cost_file, str.c_str());
+    }
+    if (j.contains("numNNITrees")) this->numNNITrees = j["numNNITrees"].get<int>(); // int
+    if (j.contains("popSize")) this->popSize = j["popSize"].get<int>(); // int
+    if (j.contains("speednni")) this->speednni = j["speednni"].get<bool>(); // bool
+    if (j.contains("initPS")) this->initPS = j["initPS"].get<double>(); // double   
+    if (j.contains("modelEps")) this->modelEps = j["modelEps"].get<double>(); // double
+    if (j.contains("modelfinder_eps")) this->modelfinder_eps = j["modelfinder_eps"].get<double>(); // double
+    if (j.contains("snni")) this->snni = j["snni"].get<bool>(); // bool
+    if (j.contains("nni_type")) ::from_json(j["nni_type"], this->nni_type); // NNI_TYPE enum
+    if (j.contains("ls_var_type")) ::from_json(j["ls_var_type"], this->ls_var_type); // LS_VAR_TYPE enum
+    if (j.contains("nniThresHold")) this->nniThresHold = j["nniThresHold"].get<double>(); // double
+    if (j.contains("nni5")) this->nni5 = j["nni5"].get<bool>(); // bool
+    if (j.contains("nni5_num_eval")) this->nni5_num_eval = j["nni5_num_eval"].get<int>(); // int
+    if (j.contains("brlen_num_traversal")) this->brlen_num_traversal = j["brlen_num_traversal"].get<int>(); // int
+    if (j.contains("numSmoothTree")) this->numSmoothTree = j["numSmoothTree"].get<int>(); // int
+    if (j.contains("leastSquareBranch")) this->leastSquareBranch = j["leastSquareBranch"].get<bool>(); // bool
+    if (j.contains("manuel_analytic_approx")) this->manuel_analytic_approx = j["manuel_analytic_approx"].get<bool>(); // bool
+    if (j.contains("pars_branch_length")) this->pars_branch_length = j["pars_branch_length"].get<bool>(); // bool
+    if (j.contains("bayes_branch_length")) this->bayes_branch_length = j["bayes_branch_length"].get<bool>(); // bool
+    if (j.contains("leastSquareNNI")) this->leastSquareNNI = j["leastSquareNNI"].get<bool>(); // bool
+    if (j.contains("loglh_epsilon")) this->loglh_epsilon = j["loglh_epsilon"].get<double>(); // double
+    if (j.contains("reinsert_par")) this->reinsert_par = j["reinsert_par"].get<bool>(); // bool
+    if (j.contains("bestStart")) this->bestStart = j["bestStart"].get<bool>(); // bool
+    if (j.contains("maxtime")) this->maxtime = j["maxtime"].get<double>(); // double
+    if (j.contains("parbran")) this->parbran = j["parbran"].get<bool>(); // bool
+    if (j.contains("pll")) this->pll = j["pll"].get<bool>(); // bool
+    if (j.contains("unsuccess_iteration")) this->unsuccess_iteration = j["unsuccess_iteration"].get<int>();     // int
+    if (j.contains("binary_aln_file")) {
+        std::string str = j["binary_aln_file"].get<std::string>();
+        if (this->binary_aln_file != nullptr) {
+            delete[] this->binary_aln_file; // Deallocate existing memory
+        }
+        this->binary_aln_file = new char[str.length() + 1];
+        std::strcpy(this->binary_aln_file, str.c_str());
+    } //char*
+    if (j.contains("speedup_iter")) this->speedup_iter = j["speedup_iter"].get<int>(); // int
+    if (j.contains("startCPUTime")) this->startCPUTime = j["startCPUTime"].get<double>(); // double
+    if (j.contains("start_real_time")) this->start_real_time = j["start_real_time"].get<double>(); // double
+    if (j.contains("iteration_multiple")) this->iteration_multiple = j["iteration_multiple"].get<int>(); // int
+    if (j.contains("user_file")) {
+        std::string str = j["user_file"].get<std::string>();
+        if (this->user_file != nullptr) {
+            delete[] this->user_file; // Deallocate existing memory
+        }
+        this->user_file = new char[str.length() + 1];
+        std::strcpy(this->user_file, str.c_str());
+    } // char*
+    if (j.contains("start_tree")) ::from_json(j["start_tree"], this->start_tree); // StartTree enum
+    if (j.contains("start_tree_subtype_name")) {
+        this->start_tree_subtype_name = j["start_tree_subtype_name"].get<std::string>();
+    } // string
+    if (j.contains("modelfinder_ml_tree")) this->modelfinder_ml_tree = j["modelfinder_ml_tree"].get<bool>(); // bool
+    if (j.contains("final_model_opt")) this->final_model_opt = j["final_model_opt"].get<bool>(); // bool
+    if (j.contains("constraint_tree_file")) {
+        std::string str = j["constraint_tree_file"].get<std::string>();
+        if (this->constraint_tree_file != nullptr) {
+            delete[] this->constraint_tree_file; // Deallocate existing memory
+        }
+        this->constraint_tree_file = new char[str.length() + 1];
+        std::strcpy(this->constraint_tree_file, str.c_str());
+    } // char*
+    if (j.contains("out_prefix")) {
+        std::string str = j["out_prefix"].get<std::string>();
+        if (this->out_prefix != nullptr) {
+            delete[] this->out_prefix; // Deallocate existing memory
+        }
+        this->out_prefix = new char[str.length() + 1];
+        std::strcpy(this->out_prefix, str.c_str());
+    } // char*
+    if (j.contains("aln_file")) {
+        std::string str = j["aln_file"].get<std::string>();
+        if (this->aln_file != nullptr) {
+            delete[] this->aln_file; // Deallocate existing memory
+        }
+        this->aln_file = new char[str.length() + 1];
+        std::strcpy(this->aln_file, str.c_str());
+    } // char*
+    if (j.contains("phylip_sequential_format")) this->phylip_sequential_format = j["phylip_sequential_format"].get<bool>(); // bool
+    if (j.contains("symtest")) ::from_json(j["symtest"], this->symtest); // SymTest enum
+    if (j.contains("symtest_only")) this->symtest_only = j["symtest_only"].get<bool>(); // bool
+    if (j.contains("symtest_remove")) this->symtest_remove = j["symtest_remove"].get<int>(); // int
+    if (j.contains("symtest_keep_zero")) this->symtest_keep_zero = j["symtest_keep_zero"].get<bool>(); // bool
+    if (j.contains("symtest_type")) this->symtest_type = j["symtest_type"].get<int>(); // int
+    if (j.contains("symtest_pcutoff")) this->symtest_pcutoff = j["symtest_pcutoff"].get<double>(); // double
+    if (j.contains("symtest_stat")) this->symtest_stat = j["symtest_stat"].get<double>(); // double
+    if (j.contains("symtest_shuffle")) this->symtest_shuffle = j["symtest_shuffle"].get<int>(); // int
+    if (j.contains("treeset_file")) this->treeset_file = j["treeset_file"].get<std::string>(); // char*
+    if (j.contains("topotest_replicates")) this->topotest_replicates = j["topotest_replicates"].get<int>(); // int
+    if (j.contains("topotest_optimize_model")) this->topotest_optimize_model = j["topotest_optimize_model"].get<bool>(); // bool
+    if (j.contains("do_weighted_test")) this->do_weighted_test = j["do_weighted_test"].get<bool>(); // bool
+    if (j.contains("do_au_test")) this->do_au_test = j["do_au_test"].get<bool>(); // bool
+    if (j.contains("partition_file")) {
+        std::string str = j["partition_file"].get<std::string>();
+        if (this->partition_file != nullptr) {
+            delete[] this->partition_file; // Deallocate existing memory
+        }
+        this->partition_file = new char[str.length() + 1];
+        std::strcpy(this->partition_file, str.c_str());
+    }
+    if (j.contains("partition_type")) this->partition_type = j["partition_type"].get<int>(); // int
+    if (j.contains("partition_merge")) ::from_json(j["partition_merge"], this->partition_merge);  // PartitionMerge enum
+    if (j.contains("partfinder_rcluster")) this->partfinder_rcluster = j["partfinder_rcluster"].get<double>(); // double
+    if (j.contains("partfinder_rcluster_max")) this->partfinder_rcluster_max = j["partfinder_rcluster_max"].get<size_t>(); // size_t
+    if (j.contains("merge_models")) this->merge_models = j["merge_models"].get<std::string>(); // string
+    if (j.contains("merge_rates")) this->merge_rates = j["merge_rates"].get<std::string>(); // string
+    if (j.contains("partfinder_log_rate")) this->partfinder_log_rate = j["partfinder_log_rate"].get<bool>(); // bool
+    if (j.contains("remove_empty_seq")) this->remove_empty_seq = j["remove_empty_seq"].get<bool>(); // bool
+    if (j.contains("terrace_aware")) this->terrace_aware = j["terrace_aware"].get<bool>(); // bool
+    if (j.contains("terrace_analysis_tphast")) this->terrace_analysis_tphast = j["terrace_analysis_tphast"].get<bool>(); // bool
+    if (j.contains("terrace_check")) this->terrace_check = j["terrace_check"].get<bool>(); // bool
+    if (j.contains("terrace_analysis")) this->terrace_analysis = j["terrace_analysis"].get<bool>(); // bool
+    if (j.contains("pr_ab_matrix")) {
+        std::string str = j["pr_ab_matrix"].get<std::string>();
+        this->pr_ab_matrix = str.c_str();
+    } // const char*
+    if (j.contains("print_terrace_trees")) this->print_terrace_trees = j["print_terrace_trees"].get<bool>(); // bool
+    if (j.contains("print_induced_trees")) this->print_induced_trees = j["print_induced_trees"].get<bool>();// bool
+    if (j.contains("print_pr_ab_matrix")) this->print_pr_ab_matrix = j["print_pr_ab_matrix"].get<bool>();// bool
+    if (j.contains("print_m_overlap")) this->print_m_overlap = j["print_m_overlap"].get<bool>(); // bool
+    if (j.contains("terrace_query_set")) {
+        std::string str = j["terrace_query_set"].get<std::string>();
+        if (this->terrace_query_set != nullptr) {
+            delete[] this->terrace_query_set; // Deallocate existing memory
+        }
+        this->terrace_query_set = new char[str.length() + 1];
+        std::strcpy(this->terrace_query_set, str.c_str());
+    }
+    if (j.contains("terrace_stop_intermediate_num")) this->terrace_stop_intermediate_num = j["terrace_stop_intermediate_num"].get<int>(); // int
+    if (j.contains("terrace_stop_terrace_trees_num")) this->terrace_stop_terrace_trees_num = j["terrace_stop_terrace_trees_num"].get<int>(); // int
+    if (j.contains("terrace_stop_time")) this->terrace_stop_time = j["terrace_stop_time"].get<double>(); // double
+    if (j.contains("terrace_non_stop")) this->terrace_non_stop = j["terrace_non_stop"].get<bool>(); // bool
+    if (j.contains("terrace_remove_m_leaves")) this->terrace_remove_m_leaves = j["terrace_remove_m_leaves"].get<int>(); // int
+    if (j.contains("terrace_print_lim")) this->terrace_print_lim = j["terrace_print_lim"].get<int>(); // int
+    if (j.contains("matrix_order")) this->matrix_order = j["matrix_order"].get<bool>(); // bool
+    if (j.contains("gen_all_NNI")) this->gen_all_NNI = j["gen_all_NNI"].get<bool>(); // bool
+    if (j.contains("sequence_type")) {
+        std::string str = j["sequence_type"].get<std::string>();
+        if (this->sequence_type != nullptr) {
+            delete[] this->sequence_type; // Deallocate existing memory
+        }
+        this->sequence_type = new char[str.length() + 1];
+        std::strcpy(this->sequence_type, str.c_str());
+    }
+    if (j.contains("aln_output")) {
+        std::string str = j["aln_output"].get<std::string>();
+        if (this->aln_output != nullptr) {
+            delete[] this->aln_output; // Deallocate existing memory
+        }
+        this->aln_output = new char[str.length() + 1];
+        std::strcpy(this->aln_output, str.c_str());
+    }
+    if (j.contains("siteLL_file")) {
+        std::string str = j["siteLL_file"].get<std::string>();
+        if (this->siteLL_file != nullptr) {
+            delete[] this->siteLL_file; // Deallocate existing memory
+        }
+        this->siteLL_file = new char[str.length() + 1];
+        std::strcpy(this->siteLL_file, str.c_str());
+    }
+    if (j.contains("gap_masked_aln")) {
+        std::string str = j["gap_masked_aln"].get<std::string>();
+        if (this->gap_masked_aln != nullptr) {
+            delete[] this->gap_masked_aln; // Deallocate existing memory
+        }
+        this->gap_masked_aln = new char[str.length() + 1];
+        std::strcpy(this->gap_masked_aln, str.c_str());
+    }
+    if (j.contains("concatenate_aln")) {
+        std::string str = j["concatenate_aln"].get<std::string>();
+        if (this->concatenate_aln != nullptr) {
+            delete[] this->concatenate_aln; // Deallocate existing memory
+        }
+        this->concatenate_aln = new char[str.length() + 1];
+        std::strcpy(this->concatenate_aln, str.c_str());
+    }
+    if (j.contains("aln_site_list")) {
+        std::string str = j["aln_site_list"].get<std::string>();
+        if (this->aln_site_list != nullptr) {
+            delete[] this->aln_site_list; // Deallocate existing memory
+        }
+        this->aln_site_list = new char[str.length() + 1];
+        std::strcpy(this->aln_site_list, str.c_str());
+    }
+    if (j.contains("ref_seq_name")) {
+        std::string str = j["ref_seq_name"].get<std::string>();
+        if (this->ref_seq_name != nullptr) {
+            delete[] this->ref_seq_name; // Deallocate existing memory
+        }
+        this->ref_seq_name = new char[str.length() + 1];
+        std::strcpy(this->ref_seq_name, str.c_str());
+    }
+//TODO this->aln_output_format;  // InputType
+//TODO this->output_format;  // FileFormat
+    if (j.contains("newick_extended_format")) this->newick_extended_format = j["newick_extended_format"].get<bool>(); //bool
+    if (j.contains("aln_nogaps")) this->aln_nogaps = j["aln_nogaps"].get<bool>(); //bool
+    if (j.contains("aln_no_const_sites")) this->aln_no_const_sites = j["aln_no_const_sites"].get<bool>(); // bool
+    if (j.contains("print_aln_info")) this->print_aln_info = j["print_aln_info"].get<bool>(); // bool
+    if (j.contains("out_file")) {
+        std::string str = j["out_file"].get<std::string>();
+        if (this->out_file != nullptr) {
+            delete[] this->out_file; // Deallocate existing memory
+        }
+        this->out_file = new char[str.length() + 1];
+        std::strcpy(this->out_file, str.c_str()); 
+    } // char*
+    if (j.contains("sub_size")) this->sub_size = j["sub_size"].get<int>(); // int
+    if (j.contains("min_size")) this->min_size = j["min_size"].get<int>(); // int
+    if (j.contains("step_size")) this->step_size = j["step_size"].get<int>(); // int
+    if (j.contains("pd_proportion")) this->pd_proportion = j["pd_proportion"].get<double>(); // double
+    if (j.contains("min_proportion")) this->min_proportion = j["min_proportion"].get<double>(); // double
+    if (j.contains("step_proportion")) this->step_proportion = j["step_proportion"].get<double>(); // double
+    if (j.contains("sample_size")) this->sample_size = j["sample_size"].get<int>(); // int
+    if (j.contains("find_all")) this->find_all = j["find_all"].get<bool>(); // bool
+    if (j.contains("tree_gen")) this->tree_gen = j["tree_gen"].get<TreeGenType>(); // TreeGenType
+    if (j.contains("num_splits")) this->num_splits = j["num_splits"].get<int>(); // int
+    if (j.contains("run_mode")) this->run_mode = j["run_mode"].get<RunMode>(); // RunMode enum
+    if (j.contains("detected_mode")) this->detected_mode = j["detected_mode"].get<RunMode>(); // RunMode enum
+    if (j.contains("param_file")) {
+        std::string str = j["param_file"].get<std::string>();
+        if (this->param_file != nullptr) {
+            delete[] this->param_file; // Deallocate existing memory
+        }
+        this->param_file = new char[str.length() + 1];
+        std::strcpy(this->param_file, str.c_str());
+    } // char*
+    if (j.contains("initial_file")) {
+        std::string str = j["initial_file"].get<std::string>();
+        if (this->initial_file != nullptr) {
+            delete[] this->initial_file; // Deallocate existing memory
+        }
+        this->initial_file = new char[str.length() + 1];
+        std::strcpy(this->initial_file, str.c_str());
+    } // char*
+    if (j.contains("initial_area_file")) {
+        std::string str = j["initial_area_file"].get<std::string>();
+        if (this->initial_area_file != nullptr) {
+            delete[] this->initial_area_file; // Deallocate existing memory
+        }
+        this->initial_area_file = new char[str.length() + 1];
+        std::strcpy(this->initial_area_file, str.c_str());
+    } // char*
+    if (j.contains("pdtaxa_file")) {
+        std::string str = j["pdtaxa_file"].get<std::string>();
+        if (this->pdtaxa_file != nullptr) {
+            delete[] this->pdtaxa_file; // Deallocate existing memory
+        }
+        this->pdtaxa_file = new char[str.length() + 1];
+        std::strcpy(this->pdtaxa_file, str.c_str());
+    } // char*
+    if (j.contains("areas_boundary_file")) {
+        std::string str = j["areas_boundary_file"].get<std::string>();
+        if (this->areas_boundary_file != nullptr) {
+            delete[] this->areas_boundary_file; // Deallocate existing memory
+        }
+        this->areas_boundary_file = new char[str.length() + 1];
+        std::strcpy(this->areas_boundary_file, str.c_str());
+    } // char*
+    if (j.contains("boundary_modifier")) this->boundary_modifier = j["boundary_modifier"].get<double>(); // double
+    if (j.contains("compute_obs_dist")) this->compute_obs_dist = j["compute_obs_dist"].get<bool>(); // bool
+    if (j.contains("compute_jc_dist")) this->compute_jc_dist = j["compute_jc_dist"].get<bool>(); // bool
+    if (j.contains("experimental")) this->experimental = j["experimental"].get<bool>(); // bool
+    if (j.contains("compute_ml_dist")) this->compute_ml_dist = j["compute_ml_dist"].get<bool>(); // bool
+    if (j.contains("compute_ml_tree")) this->compute_ml_tree = j["compute_ml_tree"].get<bool>(); // bool
+    if (j.contains("compute_ml_tree_only")) this->compute_ml_tree_only = j["compute_ml_tree_only"].get<bool>(); // bool
+    if (j.contains("budget_file")) {
+        std::string str = j["budget_file"].get<std::string>();
+        if (this->budget_file != nullptr) {
+            delete[] this->budget_file; // Deallocate existing memory
+        }
+        this->budget_file = new char[str.length() + 1];
+        std::strcpy(this->budget_file, str.c_str());
+    } // char*
+    if (j.contains("overlap")) this->overlap = j["overlap"].get<int>(); // int
+    if (j.contains("repeated_time")) this->repeated_time = j["repeated_time"].get<int>(); // int
+    if (j.contains("nr_output")) this->nr_output = j["nr_output"].get<int>(); // int
+    if (j.contains("intype")) this->intype = j["intype"].get<InputType>(); // InputType enum
+    if (j.contains("budget")) this->budget = j["budget"].get<int>(); // int
+    if (j.contains("min_budget")) this->min_budget = j["min_budget"].get<int>();    // int
+    if (j.contains("step_budget")) this->step_budget = j["step_budget"].get<int>(); // int
+    if (j.contains("root")) {
+        std::string str = j["root"].get<std::string>();
+        this->root = str.c_str();
+    } // const char*
+    if (j.contains("is_rooted")) this->is_rooted = j["is_rooted"].get<bool>(); // bool
+    if (j.contains("root_move_dist")) this->root_move_dist = j["root_move_dist"].get<int>(); // int
+    if (j.contains("root_find")) this->root_find = j["root_find"].get<bool>(); // bool
+    if (j.contains("root_test")) this->root_test = j["root_test"].get<bool>(); // bool
+    if (j.contains("min_len")) this->min_len = j["min_len"].get<double>(); // double
+    if (j.contains("mean_len")) this->mean_len = j["mean_len"].get<double>(); // double
+    if (j.contains("max_len")) this->max_len = j["max_len"].get<double>(); // double
+    if (j.contains("num_zero_len")) this->num_zero_len = j["num_zero_len"].get<int>(); // int
+    if (j.contains("ran_seed")) this->ran_seed = j["ran_seed"].get<int>(); // int
+    if (j.contains("run_time")) this->run_time = j["run_time"].get<double>(); // double
+    if (j.contains("pd_limit")) this->pd_limit = j["pd_limit"].get<int>(); // int
+    if (j.contains("calc_pdgain")) this->calc_pdgain = j["calc_pdgain"].get<bool>(); // bool
+    if (j.contains("multi_tree")) this->multi_tree = j["multi_tree"].get<bool>(); // bool
+    if (j.contains("second_tree")) {
+        std::string str = j["second_tree"].get<std::string>();
+        if (this->second_tree != nullptr) {
+            delete[] this->second_tree; // Deallocate existing memory
+        }
+        this->second_tree = new char[str.length() + 1];
+        std::strcpy(this->second_tree, str.c_str());
+    } // char*
+    if (j.contains("support_tag")) {
+        std::string str = j["support_tag"].get<std::string>();
+        if (this->support_tag != nullptr) {
+            delete[] this->support_tag; // Deallocate existing memory
+        }
+        this->support_tag = new char[str.length() + 1];
+        std::strcpy(this->support_tag, str.c_str());
+    } // char*
+    if (j.contains("site_concordance")) this->site_concordance = j["site_concordance"].get<int>(); // int
+    if (j.contains("ancestral_site_concordance")) this->ancestral_site_concordance = j["ancestral_site_concordance"].get<int>(); // int
+    if (j.contains("site_concordance_partition")) this->site_concordance_partition = j["site_concordance_partition"].get<bool>(); // bool
+    if (j.contains("print_cf_quartets")) this->print_cf_quartets = j["print_cf_quartets"].get<bool>(); // bool
+    if (j.contains("print_df1_trees")) this->print_df1_trees = j["print_df1_trees"].get<bool>(); // bool
+    if (j.contains("internode_certainty")) this->internode_certainty = j["internode_certainty"].get<int>(); // int
+    if (j.contains("second_align")) {
+        std::string str = j["second_align"].get<std::string>();
+        if (this->second_align != nullptr) {
+            delete[] this->second_align; // Deallocate existing memory
+        }
+        this->second_align = new char[str.length() + 1];
+        std::strcpy(this->second_align, str.c_str());
+    } // char*
+    if (j.contains("consensus_type")) this->consensus_type = j["consensus_type"].get<ConsensusType>(); // ConsensusType enum
+    if (j.contains("tree_weight_file")) {
+        std::string str = j["tree_weight_file"].get<std::string>();
+        if (this->tree_weight_file != nullptr) {
+            delete[] this->tree_weight_file; // Deallocate existing memory
+        }
+        this->tree_weight_file = new char[str.length() + 1];
+        std::strcpy(this->tree_weight_file, str.c_str());
+    } // char*
+    if (j.contains("find_pd_min")) this->find_pd_min = j["find_pd_min"].get<bool>(); // bool
+    if (j.contains("endemic_pd")) this->endemic_pd = j["endemic_pd"].get<bool>(); // bool
+    if (j.contains("exclusive_pd")) this->exclusive_pd = j["exclusive_pd"].get<bool>();     // bool
+    if (j.contains("complement_area")) {
+        std::string str = j["complement_area"].get<std::string>();
+        if (this->complement_area != nullptr) {
+            delete[] this->complement_area; // Deallocate existing memory
+        }
+        this->complement_area = new char[str.length() + 1];
+        std::strcpy(this->complement_area, str.c_str());
+    } // char*
+    if (j.contains("branch_cluster")) this->branch_cluster = j["branch_cluster"].get<int>(); // int
+    if (j.contains("taxa_order_file")) {
+        std::string str = j["taxa_order_file"].get<std::string>();
+        if (this->taxa_order_file != nullptr) {
+            delete[] this->taxa_order_file; // Deallocate existing memory
+        }
+        this->taxa_order_file = new char[str.length() + 1];
+        std::strcpy(this->taxa_order_file, str.c_str());
+    } // char*
+    if (j.contains("scaling_factor")) this->scaling_factor = j["scaling_factor"].get<double>(); // double
+    if (j.contains("binary_programming")) this->binary_programming = j["binary_programming"].get<bool>(); // bool
+    if (j.contains("test_input")) this->test_input = j["test_input"].get<TestType>(); // TestType enum
+    if (j.contains("tree_burnin")) this->tree_burnin = j["tree_burnin"].get<int>(); // int
+    if (j.contains("tree_max_count")) this->tree_max_count = j["tree_max_count"].get<int>(); // int
+    if (j.contains("split_threshold")) this->split_threshold = j["split_threshold"].get<double>(); // double
+    if (j.contains("split_threshold_str")) {
+        std::string str = j["split_threshold_str"].get<std::string>();
+        if (this->split_threshold_str != nullptr) {
+            delete[] this->split_threshold_str; // Deallocate existing memory
+        }
+        this->split_threshold_str = new char[str.length() + 1];
+        std::strcpy(this->split_threshold_str, str.c_str());
+    } // char*
+    if (j.contains("split_weight_threshold")) this->split_weight_threshold = j["split_weight_threshold"].get<double>(); // double
+    if (j.contains("collapse_zero_branch")) this->collapse_zero_branch = j["collapse_zero_branch"].get<bool>(); // bool
+    if (j.contains("split_weight_summary")) this->split_weight_summary = j["split_weight_summary"].get<double>(); // double
+    if (j.contains("quad_programming")) this->quad_programming = j["quad_programming"].get<bool>(); // bool
+    if (j.contains("tree_spr")) this->tree_spr = j["tree_spr"].get<bool>(); // bool
+    if (j.contains("nexus_output")) this->nexus_output = j["nexus_output"].get<bool>(); // bool
+    if (j.contains("k_representative")) this->k_representative = j["k_representative"].get<int>(); // int
+    if (j.contains("p_delete")) this->p_delete = j["p_delete"].get<double>(); // double
+    if (j.contains("min_iterations")) this->min_iterations = j["min_iterations"].get<int>(); // int
+    if (j.contains("max_iterations")) this->max_iterations = j["max_iterations"].get<int>(); // int
+    if (j.contains("stop_condition")) this->stop_condition = j["stop_condition"].get<STOP_CONDITION>(); // STOP_CONDITION enum
+    if (j.contains("stop_confidence")) this->stop_confidence = j["stop_confidence"].get<double>(); // double
+    if (j.contains("num_param_iterations")) this->num_param_iterations = j["num_param_iterations"].get<int>(); // int
+    if (j.contains("num_runs")) this->num_runs = j["num_runs"].get<int>(); // int
+    if (j.contains("model_name")) this->model_name = j["model_name"].get<std::string>(); // string
+    if (j.contains("model_name_init")) {
+        std::string str = j["model_name_init"].get<std::string>();
+        if (this->model_name_init != nullptr) {
+            delete[] this->model_name_init; // Deallocate existing memory
+        }
+        this->model_name_init = new char[str.length() + 1];
+        std::strcpy(this->model_name_init, str.c_str());
+    } // char*
+    if (j.contains("model_opt_steps")) this->model_opt_steps = j["model_opt_steps"].get<int>(); // int
+    if (j.contains("model_set")) this->model_set = j["model_set"].get<std::string>(); // string
+    if (j.contains("model_extra_set")) {
+        std::string str = j["model_extra_set"].get<std::string>();
+        if (this->model_extra_set != nullptr) {
+            delete[] this->model_extra_set; // Deallocate existing memory
+        }
+        this->model_extra_set = new char[str.length() + 1];
+        std::strcpy(this->model_extra_set, str.c_str());
+    } // char*
+    if (j.contains("model_subset")) {
+        std::string str = j["model_subset"].get<std::string>();
+        if (this->model_subset != nullptr) {
+            delete[] this->model_subset; // Deallocate existing memory
+        }
+        this->model_subset = new char[str.length() + 1];
+        std::strcpy(this->model_subset, str.c_str());
+    } // char*
+    if (j.contains("state_freq_set")) {
+        std::string str = j["state_freq_set"].get<std::string>();
+        if (this->state_freq_set != nullptr) {
+            delete[] this->state_freq_set; // Deallocate existing memory
+        }
+        this->state_freq_set = new char[str.length() + 1];
+        std::strcpy(this->state_freq_set, str.c_str());
+    } // char*
+    if (j.contains("ratehet_set")) this->ratehet_set = j["ratehet_set"].get<std::string>(); // string
+    if (j.contains("score_diff_thres")) this->score_diff_thres = j["score_diff_thres"].get<double>();   // double
+    if (j.contains("model_def_file")) {
+        std::string str = j["model_def_file"].get<std::string>();
+        if (this->model_def_file != nullptr) {
+            delete[] this->model_def_file; // Deallocate existing memory
+        }
+        this->model_def_file = new char[str.length() + 1];
+        std::strcpy(this->model_def_file, str.c_str());
+    } // char*
+    if (j.contains("modelomatic")) this->modelomatic = j["modelomatic"].get<bool>(); // bool
+    if (j.contains("model_test_again")) this->model_test_again = j["model_test_again"].get<bool>(); // bool
+    if (j.contains("model_test_and_tree")) this->model_test_and_tree = j["model_test_and_tree"].get<short int>(); // short int
+    if (j.contains("model_test_separate_rate")) this->model_test_separate_rate = j["model_test_separate_rate"].get<bool>(); // bool
+    if (j.contains("optimize_mixmodel_weight")) this->optimize_mixmodel_weight = j["optimize_mixmodel_weight"].get<bool>(); // bool
+    if (j.contains("num_mixlen")) this->num_mixlen = j["num_mixlen"].get<int>(); // int
+    if (j.contains("optimize_rate_matrix")) this->optimize_rate_matrix = j["optimize_rate_matrix"].get<bool>(); // bool
+    if (j.contains("store_trans_matrix")) this->store_trans_matrix = j["store_trans_matrix"].get<bool>(); // bool
+    if (j.contains("freq_type")) this->freq_type = j["freq_type"].get<StateFreqType>(); // StateFreqType enum
+    if (j.contains("keep_zero_freq")) this->keep_zero_freq = j["keep_zero_freq"].get<bool>(); // bool
+    if (j.contains("min_state_freq")) this->min_state_freq = j["min_state_freq"].get<double>(); // double
+    if (j.contains("num_rate_cats")) this->num_rate_cats = j["num_rate_cats"].get<int>(); // int
+    if (j.contains("min_rate_cats")) this->min_rate_cats = j["min_rate_cats"].get<int>(); // int
+    if (j.contains("max_rate_cats")) this->max_rate_cats = j["max_rate_cats"].get<int>(); // int
+    if (j.contains("gamma_shape")) this->gamma_shape = j["gamma_shape"].get<double>(); // double
+    if (j.contains("min_gamma_shape")) this->min_gamma_shape = j["min_gamma_shape"].get<bool>(); // bool
+    if (j.contains("gamma_median")) this->gamma_median = j["gamma_median"].get<double>(); // double
+    if (j.contains("p_invar_sites")) this->p_invar_sites = j["p_invar_sites"].get<bool>(); // bool
+    if (j.contains("optimize_model_rate_joint")) this->optimize_model_rate_joint = j["optimize_model_rate_joint"].get<bool>(); // bool
+    if (j.contains("optimize_by_newton")) this->optimize_by_newton = j["optimize_by_newton"].get<std::string>(); // string
+    if (j.contains("optimize_alg_freerate")) this->optimize_alg_freerate = j["optimize_alg_freerate"].get<std::string>(); // string
+    if (j.contains("optimize_alg_mixlen")) this->optimize_alg_mixlen = j["optimize_alg_mixlen"].get<std::string>(); // string
+    if (j.contains("optimize_alg_gammai")) this->optimize_alg_gammai = j["optimize_alg_gammai"].get<std::string>(); // string
+    if (j.contains("optimize_alg_treeweight")) this->optimize_alg_treeweight = j["optimize_alg_treeweight"].get<std::string>(); // string
+    if (j.contains("optimize_from_given_params")) this->optimize_from_given_params = j["optimize_from_given_params"].get<bool>();
+    if (j.contains("fixed_branch_length")) this->fixed_branch_length = j["fixed_branch_length"].get<int>(); // int
+    if (j.contains("min_branch_length")) this->min_branch_length = j["min_branch_length"].get<double>(); // double
+    if (j.contains("max_branch_length")) this->max_branch_length = j["max_branch_length"].get<double>(); // double
+    if (j.contains("iqp_assess_quartet")) this->iqp_assess_quartet = j["iqp_assess_quartet"].get<IQP_ASSESS_QUARTET>(); // IQP_ASSESS_QUARTET enum
+    if (j.contains("iqp")) this->iqp = j["iqp"].get<bool>(); // bool
+    if (j.contains("gurobi_format")) this->gurobi_format = j["gurobi_format"].get<bool>(); // bool
+    if (j.contains("gurobi_threads")) this->gurobi_threads = j["gurobi_threads"].get<bool>(); // bool
+    if (j.contains("num_bootstrap_samples")) this->num_bootstrap_samples = j["num_bootstrap_samples"].get<int>(); // int
+    if (j.contains("bootstrap_spec")) {
+        std::string str = j["bootstrap_spec"].get<std::string>();
+        if (this->bootstrap_spec != nullptr) {
+            delete[] this->bootstrap_spec; // Deallocate existing memory
+        }
+        this->bootstrap_spec = new char[str.length() + 1];
+        std::strcpy(this->bootstrap_spec, str.c_str());
+    } // char*
+    if (j.contains("transfer_bootstrap")) this->transfer_bootstrap = j["transfer_bootstrap"].get<int>(); // int
+    if (j.contains("subsampling")) this->subsampling = j["subsampling"].get<int>(); // int
+    if (j.contains("subsampling_seed")) this->subsampling_seed = j["subsampling_seed"].get<int>(); // int
+    if (j.contains("write_intermediate_trees")) this->write_intermediate_trees = j["write_intermediate_trees"].get<bool>(); // bool
+    if (j.contains("writeDistImdTrees")) this->writeDistImdTrees = j["writeDistImdTrees"].get<bool>();  // bool
+    if (j.contains("write_candidate_trees")) this->write_candidate_trees = j["write_candidate_trees"].get<int>(); // int
+    if (j.contains("rf_dist_mode")) this->rf_dist_mode = j["rf_dist_mode"].get<int>(); // int
+    if (j.contains("rf_same_pair")) this->rf_same_pair = j["rf_same_pair"].get<bool>(); // bool
+    if (j.contains("normalize_tree_dist")) this->normalize_tree_dist = j["normalize_tree_dist"].get<bool>(); // bool
+    if (j.contains("mvh_site_rate")) this->mvh_site_rate = j["mvh_site_rate"].get<bool>(); // bool
+    if (j.contains("rate_mh_type")) this->rate_mh_type = j["rate_mh_type"].get<bool>(); // bool
+    if (j.contains("discard_saturated_site")) this->discard_saturated_site = j["discard_saturated_site"].get<bool>(); // bool
+    if (j.contains("mean_rate")) this->mean_rate = j["mean_rate"].get<double>(); // double
+    if (j.contains("aLRT_threshold")) this->aLRT_threshold = j["aLRT_threshold"].get<int>(); // int
+    if (j.contains("aLRT_replicates")) this->aLRT_replicates = j["aLRT_replicates"].get<int>(); // int
+    if (j.contains("aLRT_test")) this->aLRT_test = j["aLRT_test"].get<bool>(); // bool
+    if (j.contains("aBayes_test")) this->aBayes_test = j["aBayes_test"].get<bool>(); // bool
+    if (j.contains("localbp_replicates")) this->localbp_replicates = j["localbp_replicates"].get<int>();
+    if (j.contains("SSE")) this->SSE = j["SSE"].get<LikelihoodKernel>();
+    if (j.contains("lk_safe_scaling")) this->lk_safe_scaling = j["lk_safe_scaling"].get<bool>();
+    if (j.contains("numseq_safe_scaling")) this->numseq_safe_scaling = j["numseq_safe_scaling"].get<int>();
+    if (j.contains("kernel_nonrev")) this->kernel_nonrev = j["kernel_nonrev"].get<bool>();
+    if (j.contains("print_site_lh")) this->print_site_lh = j["print_site_lh"].get<SiteLoglType>();
+    if (j.contains("print_partition_lh")) this->print_partition_lh = j["print_partition_lh"].get<bool>();
+    if (j.contains("print_site_prob")) this->print_site_prob = j["print_site_prob"].get<SiteLoglType>();
+    if (j.contains("print_ancestral_sequence")) this->print_ancestral_sequence = j["print_ancestral_sequence"].get<AncestralSeqType>();
+    if (j.contains("min_ancestral_prob")) this->min_ancestral_prob = j["min_ancestral_prob"].get<double>();
+    if (j.contains("print_site_state_freq")) this->print_site_state_freq = j["print_site_state_freq"].get<SiteFreqType>();
+    if (j.contains("print_site_rate")) this->print_site_rate = j["print_site_rate"].get<int>();
+    if (j.contains("print_trees_site_posterior")) this->print_trees_site_posterior = j["print_trees_site_posterior"].get<int>();
+    if (j.contains("print_tree_lh")) this->print_tree_lh = j["print_tree_lh"].get<bool>();
+    if (j.contains("print_branch_lengths")) this->print_branch_lengths = j["print_branch_lengths"].get<bool>();
+    if (j.contains("nni_lh")) this->nni_lh = j["nni_lh"].get<bool>();
+    if (j.contains("speedUpFromIter")) this->speedUpFromIter = j["speedUpFromIter"].get<int>();
+    if (j.contains("lambda")) this->lambda = j["lambda"].get<double>();
+    if (j.contains("speed_conf")) this->speed_conf = j["speed_conf"].get<double>();
+    if (j.contains("new_heuristic")) this->new_heuristic = j["new_heuristic"].get<bool>();
+    if (j.contains("whtest_simulations")) this->whtest_simulations = j["whtest_simulations"].get<double>();
+    if (j.contains("whtest_delta")) this->whtest_delta = j["whtest_delta"].get<double>();
+    if (j.contains("whtest_delta_quantile")) this->whtest_delta_quantile = j["whtest_delta_quantile"].get<double>();
+    if (j.contains("whtest_p_value")) this->whtest_p_value = j["whtest_p_value"].get<double>();
+    if (j.contains("mcat_type")) this->mcat_type = j["mcat_type"].get<int>();
+    if (j.contains("rate_file")) {
+        std::string str = j["rate_file"].get<std::string>();
+        if (this->rate_file != nullptr) {
+            delete[] this->rate_file; // Deallocate existing memory
+        }
+        this->rate_file = new char[str.length() + 1];
+        std::strcpy(this->rate_file, str.c_str());
+    }
+    if (j.contains("ngs_file")) {
+        std::string str = j["ngs_file"].get<std::string>();
+        if (this->ngs_file != nullptr) {
+            delete[] this->ngs_file; // Deallocate existing memory
+        }
+        this->ngs_file = new char[str.length() + 1];
+        std::strcpy(this->ngs_file, str.c_str());
+    }
+    if (j.contains("ngs_mapped_reads")) {
+        std::string str = j["ngs_mapped_reads"].get<std::string>();
+        if (this->ngs_mapped_reads != nullptr) {
+            delete[] this->ngs_mapped_reads; // Deallocate existing memory
+        }
+        this->ngs_mapped_reads = new char[str.length() + 1];
+        std::strcpy(this->ngs_mapped_reads, str.c_str());
+    }
+    if (j.contains("ngs_ignore_gaps")) this->ngs_ignore_gaps = j["ngs_ignore_gaps"].get<bool>();
+    if (j.contains("do_pars_multistate")) this->do_pars_multistate = j["do_pars_multistate"].get<bool>();
+    if (j.contains("gene_pvalue_file")) {
+        std::string str = j["gene_pvalue_file"].get<std::string>();
+        if (this->gene_pvalue_file != nullptr) {
+            delete[] this->gene_pvalue_file; // Deallocate existing memory
+        }
+        this->gene_pvalue_file = new char[str.length() + 1];
+        std::strcpy(this->gene_pvalue_file, str.c_str()); 
+    } // char*
+    if (j.contains("gene_scale_factor")) this->gene_scale_factor = j["gene_scale_factor"].get<double>(); // double
+    if (j.contains("gene_pvalue_loga")) this->gene_pvalue_loga = j["gene_pvalue_loga"].get<bool>(); // bool
+    if (j.contains("ncbi_taxid")) this->ncbi_taxid = j["ncbi_taxid"].get<int>(); // int
+
+    if (j.contains("ncbi_taxon_level")) {
+        std::string str = j["ncbi_taxon_level"].get<std::string>();
+        this->ncbi_taxon_level = str.c_str();
+    } // const char*
+    if (j.contains("ncbi_ignore_level")) {
+        std::string str = j["ncbi_ignore_level"].get<std::string>();
+        this->ncbi_ignore_level = str.c_str();
+    } // const char*
+    if (j.contains("ncbi_names_file")) {
+        std::string str = j["ncbi_names_file"].get<std::string>();
+        this->ncbi_names_file = str.c_str();
+    } // const char*
+    if (j.contains("eco_dag_file")) {
+        std::string str = j["eco_dag_file"].get<std::string>();
+        if (this->eco_dag_file != nullptr) {
+            delete[] this->eco_dag_file; // Deallocate existing memory
+        }
+        this->eco_dag_file = new char[str.length() + 1];
+        std::strcpy(this->eco_dag_file, str.c_str());
+    } // char*
+    if (j.contains("eco_detail_file")) {
+        std::string str = j["eco_detail_file"].get<std::string>();
+        this->eco_detail_file = str.c_str();
+    } // const char*
+    if (j.contains("eco_type")) {
+        std::string str = j["eco_type"].get<std::string>();
+        this->eco_type = str.c_str();
+    } // const char*
+    if (j.contains("k_percent")) this->k_percent = j["k_percent"].get<int>(); // int
+    if (j.contains("diet_min")) this->diet_min = j["diet_min"].get<int>(); // int
+    if (j.contains("diet_max")) this->diet_max = j["diet_max"].get<int>(); // int
+    if (j.contains("diet_step")) this->diet_step = j["diet_step"].get<int>(); // int
+    if (j.contains("eco_run")) this->eco_run = j["eco_run"].get<int>(); // int
+    if (j.contains("eco_weighted")) this->eco_weighted = j["eco_weighted"].get<bool>(); // bool
+    if (j.contains("upper_bound")) this->upper_bound = j["upper_bound"].get<bool>(); // bool   
+
+    if (j.contains("upper_bound_NNI")) this->upper_bound_NNI = j["upper_bound_NNI"].get<bool>();
+    if (j.contains("upper_bound_frac")) this->upper_bound_frac = j["upper_bound_frac"].get<double>();
+    if (j.contains("gbo_replicates")) this->gbo_replicates = j["gbo_replicates"].get<int>();
+    if (j.contains("ufboot_epsilon")) this->ufboot_epsilon = j["ufboot_epsilon"].get<double>();
+    if (j.contains("check_gbo_sample_size")) this->check_gbo_sample_size = j["check_gbo_sample_size"].get<bool>();
+    if (j.contains("use_rell_method")) this->use_rell_method = j["use_rell_method"].get<bool>();
+    if (j.contains("use_elw_method")) this->use_elw_method = j["use_elw_method"].get<bool>();
+    if (j.contains("use_weighted_bootstrap")) this->use_weighted_bootstrap = j["use_weighted_bootstrap"].get<bool>();
+    if (j.contains("use_max_tree_per_bootstrap")) this->use_max_tree_per_bootstrap = j["use_max_tree_per_bootstrap"].get<bool>();
+    if (j.contains("max_candidate_trees")) this->max_candidate_trees = j["max_candidate_trees"].get<int>();
+    if (j.contains("distinct_trees")) this->distinct_trees = j["distinct_trees"].get<bool>();
+    if (j.contains("online_bootstrap")) this->online_bootstrap = j["online_bootstrap"].get<bool>();
+    if (j.contains("min_correlation")) this->min_correlation = j["min_correlation"].get<double>();
+    if (j.contains("step_iterations")) this->step_iterations = j["step_iterations"].get<int>();
+    if (j.contains("print_ufboot_trees")) this->print_ufboot_trees = j["print_ufboot_trees"].get<double>();
+    if (j.contains("jackknife_prop")) this->jackknife_prop = j["jackknife_prop"].get<double>();
+    if (j.contains("robust_phy_keep")) this->robust_phy_keep = j["robust_phy_keep"].get<double>();
+    if (j.contains("robust_median")) this->robust_median = j["robust_median"].get<bool>();
+    if (j.contains("estimate_nni_cutoff")) this->estimate_nni_cutoff = j["estimate_nni_cutoff"].get<bool>();
+    if (j.contains("nni_cutoff")) this->nni_cutoff = j["nni_cutoff"].get<double>();
+    if (j.contains("nni_sort")) this->nni_sort = j["nni_sort"].get<bool>();
+    if (j.contains("testNNI")) this->testNNI = j["testNNI"].get<bool>();
+    if (j.contains("approximate_nni")) this->approximate_nni = j["approximate_nni"].get<bool>();
+    if (j.contains("do_compression")) this->do_compression = j["do_compression"].get<bool>();
+    if (j.contains("avh_test")) this->avh_test = j["avh_test"].get<int>();
+    if (j.contains("bootlh_test")) this->bootlh_test = j["bootlh_test"].get<int>();
+    if (j.contains("bootlh_partitions")) {
+        std::string str = j["bootlh_partitions"].get<std::string>();
+        if (this->bootlh_partitions != nullptr) {
+            delete[] this->bootlh_partitions; // Deallocate existing memory
+        }
+        this->bootlh_partitions = new char[str.length() + 1];
+        std::strcpy(this->bootlh_partitions, str.c_str());
+    }
+    if (j.contains("numeric_precision")) this->numeric_precision = j["numeric_precision"].get<int>();
+    if (j.contains("site_freq_file")) {
+        std::string str = j["site_freq_file"].get<std::string>();
+        if (this->site_freq_file != nullptr) {
+            delete[] this->site_freq_file; // Deallocate existing memory
+        }
+        this->site_freq_file = new char[str.length() + 1];
+        std::strcpy(this->site_freq_file, str.c_str());
+    }
+    if (j.contains("tree_freq_file")) {
+        std::string str = j["tree_freq_file"].get<std::string>();
+        if (this->tree_freq_file != nullptr) {
+            delete[] this->tree_freq_file; // Deallocate existing memory
+        }
+        this->tree_freq_file = new char[str.length() + 1];
+        std::strcpy(this->tree_freq_file, str.c_str());
+    }
+    if (j.contains("num_threads")) this->num_threads = j["num_threads"].get<int>();
+    if (j.contains("num_threads_max")) this->num_threads_max = j["num_threads_max"].get<int>();
+    if (j.contains("openmp_by_model")) this->openmp_by_model = j["openmp_by_model"].get<bool>();
+    //TODO if (j.contains("model_test_criterion")) this->model_test_criterion = j["model_test_criterion"].get<ModelTestCriterion>();
+    if (j.contains("model_test_sample_size")) this->model_test_sample_size = j["model_test_sample_size"].get<int>();
+    if (j.contains("root_state")) {
+        std::string str = j["root_state"].get<std::string>();
+        if (this->root_state != nullptr) {
+            delete[] this->root_state; // Deallocate existing memory
+        }
+        this->root_state = new char[str.length() + 1];
+        std::strcpy(this->root_state, str.c_str());
+    }
+    if (j.contains("print_bootaln")) this->print_bootaln = j["print_bootaln"].get<bool>();
+    if (j.contains("print_boot_site_freq")) this->print_boot_site_freq = j["print_boot_site_freq"].get<bool>();
+    if (j.contains("print_subaln")) this->print_subaln = j["print_subaln"].get<bool>();
+    if (j.contains("print_partition_info")) this->print_partition_info = j["print_partition_info"].get<bool>();
+    if (j.contains("print_conaln")) this->print_conaln = j["print_conaln"].get<bool>();
+    if (j.contains("link_alpha")) this->link_alpha = j["link_alpha"].get<bool>();
+    if (j.contains("link_model")) this->link_model = j["link_model"].get<bool>();
+    if (j.contains("model_joint")) {
+        std::string str = j["model_joint"].get<std::string>();
+        if (this->model_joint != nullptr) {
+            delete[] this->model_joint; // Deallocate existing memory
+        }
+        this->model_joint = new char[str.length() + 1];
+        std::strcpy(this->model_joint, str.c_str());
+    }
+    if (j.contains("count_trees")) this->count_trees = j["count_trees"].get<bool>();
+    if (j.contains("pomo")) this->pomo = j["pomo"].get<bool>();
+    if (j.contains("pomo_random_sampling")) this->pomo_random_sampling = j["pomo_random_sampling"].get<bool>();
+    if (j.contains("pomo_pop_size")) this->pomo_pop_size = j["pomo_pop_size"].get<int>();
+    //TODO if (j.contains("lh_mem_save")) this->lh_mem_save = j["lh_mem_save"].get<LhMemSave>();
+    if (j.contains("buffer_mem_save")) this->buffer_mem_save = j["buffer_mem_save"].get<bool>();
+    if (j.contains("max_mem_size")) this->max_mem_size = j["max_mem_size"].get<double>();
+    if (j.contains("print_splits_file")) this->print_splits_file = j["print_splits_file"].get<bool>();
+    if (j.contains("print_splits_nex_file")) this->print_splits_nex_file = j["print_splits_nex_file"].get<bool>();
+    if (j.contains("ignore_identical_seqs")) this->ignore_identical_seqs = j["ignore_identical_seqs"].get<bool>();
+    if (j.contains("write_init_tree")) this->write_init_tree = j["write_init_tree"].get<bool>();
+    if (j.contains("write_branches")) this->write_branches = j["write_branches"].get<bool>();
+    if (j.contains("freq_const_patterns")) {
+        std::string str = j["freq_const_patterns"].get<std::string>();
+        if (this->freq_const_patterns != nullptr) {
+            delete[] this->freq_const_patterns; // Deallocate existing memory
+        }
+        this->freq_const_patterns = new char[str.length() + 1];
+        std::strcpy(this->freq_const_patterns, str.c_str());
+    }
+    if (j.contains("no_rescale_gamma_invar")) this->no_rescale_gamma_invar = j["no_rescale_gamma_invar"].get<bool>();
+    if (j.contains("compute_seq_identity_along_tree")) this->compute_seq_identity_along_tree = j["compute_seq_identity_along_tree"].get<bool>();
+    if (j.contains("compute_seq_composition")) this->compute_seq_composition = j["compute_seq_composition"].get<bool>();
+    if (j.contains("ignore_checkpoint")) this->ignore_checkpoint = j["ignore_checkpoint"].get<bool>();
+    if (j.contains("lmap_num_quartets")) this->lmap_num_quartets = j["lmap_num_quartets"].get<int64_t>();
+    if (j.contains("lmap_cluster_file")) {
+        std::string str = j["lmap_cluster_file"].get<std::string>();
+        if (this->lmap_cluster_file != nullptr) {
+            delete[] this->lmap_cluster_file; // Deallocate existing memory
+        }
+        this->lmap_cluster_file = new char[str.length() + 1];
+        std::strcpy(this->lmap_cluster_file, str.c_str());
+    }
+    if (j.contains("checkpoint_dump_interval")) this->checkpoint_dump_interval = j["checkpoint_dump_interval"].get<int>();
+    if (j.contains("print_lmap_quartet_lh")) this->print_lmap_quartet_lh = j["print_lmap_quartet_lh"].get<bool>();
+    if (j.contains("force_unfinished")) this->force_unfinished = j["force_unfinished"].get<bool>();
+    if (j.contains("print_all_checkpoints")) this->print_all_checkpoints = j["print_all_checkpoints"].get<bool>();
+    if (j.contains("suppress_output_flags")) this->suppress_output_flags = j["suppress_output_flags"].get<int>();
+    //TODO if (j.contains("matrix_exp_technique")) this->matrix_exp_technique = j["matrix_exp_technique"].get<MatrixExpTechnique>();
+    if (j.contains("ufboot2corr")) this->ufboot2corr = j["ufboot2corr"].get<bool>();
+    if (j.contains("u2c_nni5")) this->u2c_nni5 = j["u2c_nni5"].get<bool>();
+    if (j.contains("dating_method")) this->dating_method = j["dating_method"].get<std::string>();
+    if (j.contains("dating_options")) this->dating_options = j["dating_options"].get<std::string>();
+    if (j.contains("date_file")) this->date_file = j["date_file"].get<std::string>();
+    if (j.contains("date_tip")) this->date_tip = j["date_tip"].get<std::string>();
+    if (j.contains("date_root")) this->date_root = j["date_root"].get<std::string>();
+    if (j.contains("date_with_outgroup")) this->date_with_outgroup = j["date_with_outgroup"].get<bool>();
+    if (j.contains("date_debug")) this->date_debug = j["date_debug"].get<bool>();
+    if (j.contains("date_replicates")) this->date_replicates = j["date_replicates"].get<int>();
+    if (j.contains("clock_stddev")) this->clock_stddev = j["clock_stddev"].get<double>();
+    if (j.contains("date_outlier")) this->date_outlier = j["date_outlier"].get<double>();
+    if (j.contains("suppress_list_of_sequences")) this->suppress_list_of_sequences = j["suppress_list_of_sequences"].get<double>();
+    if (j.contains("suppress_zero_distance_warnings")) this->suppress_zero_distance_warnings = j["suppress_zero_distance_warnings"].get<double>();
+    if (j.contains("suppress_duplicate_sequence_warnings")) this->suppress_duplicate_sequence_warnings = j["suppress_duplicate_sequence_warnings"].get<bool>();
+    if (j.contains("alisim_active")) this->alisim_active = j["alisim_active"].get<bool>();
+    if (j.contains("alisim_inference_mode")) this->alisim_inference_mode = j["alisim_inference_mode"].get<bool>();
+    if (j.contains("alisim_no_copy_gaps")) this->alisim_no_copy_gaps = j["alisim_no_copy_gaps"].get<bool>();
+    if (j.contains("original_params")) this->original_params = j["original_params"].get<std::string>();
+    if (j.contains("alisim_output_filename")) this->alisim_output_filename = j["alisim_output_filename"].get<std::string>();
+    if (j.contains("alisim_sequence_length")) this->alisim_sequence_length = j["alisim_sequence_length"].get<int>();
+    if (j.contains("alisim_dataset_num")) this->alisim_dataset_num = j["alisim_dataset_num"].get<int>();
+
+    if (j.contains("alisim_ancestral_sequence_aln_filepath")) {
+        std::string str = j["alisim_ancestral_sequence_aln_filepath"].get<std::string>();
+        if (this->alisim_ancestral_sequence_aln_filepath != nullptr) {
+            delete[] this->alisim_ancestral_sequence_aln_filepath; // Deallocate existing memory
+        }
+        this->alisim_ancestral_sequence_aln_filepath = new char[str.length() + 1];
+        std::strcpy(this->alisim_ancestral_sequence_aln_filepath, str.c_str());
+    }
+
+    if (j.contains("alisim_ancestral_sequence_name")) this->alisim_ancestral_sequence_name = j["alisim_ancestral_sequence_name"].get<std::string>();
+    if (j.contains("alisim_max_rate_categories_for_applying_caching")) this->alisim_max_rate_categories_for_applying_caching = j["alisim_max_rate_categories_for_applying_caching"].get<int>();
+    if (j.contains("alisim_num_states_morph")) this->alisim_num_states_morph = j["alisim_num_states_morph"].get<int>();
+    if (j.contains("alisim_num_taxa_uniform_start")) this->alisim_num_taxa_uniform_start = j["alisim_num_taxa_uniform_start"].get<int>();
+    if (j.contains("alisim_num_taxa_uniform_end")) this->alisim_num_taxa_uniform_end = j["alisim_num_taxa_uniform_end"].get<int>();
+    //TODO if (j.contains("alisim_num_taxa_list")) this->alisim_num_taxa_list = j["alisim_num_taxa_list"].get<IntVector>();
+    if (j.contains("birth_rate")) this->birth_rate = j["birth_rate"].get<double>();
+    if (j.contains("death_rate")) this->death_rate = j["death_rate"].get<double>();
+    if (j.contains("alisim_length_ratio")) this->alisim_length_ratio = j["alisim_length_ratio"].get<double>();
+    //TODO if (j.contains("alisim_fundi_taxon_set")) this->alisim_fundi_taxon_set = j["alisim_fundi_taxon_set"].get<IntVector>();
+    if (j.contains("alisim_fundi_proportion")) this->alisim_fundi_proportion = j["alisim_fundi_proportion"].get<double>();
+    if (j.contains("alisim_distribution_definitions")) {
+        std::string str = j["alisim_distribution_definitions"].get<std::string>();
+        if (this->alisim_distribution_definitions != nullptr) {
+            delete[] this->alisim_distribution_definitions; // Deallocate existing memory
+        }
+        this->alisim_distribution_definitions = new char[str.length() + 1];
+        std::strcpy(this->alisim_distribution_definitions, str.c_str());
+    }
+    if (j.contains("alisim_skip_checking_memory")) this->alisim_skip_checking_memory = j["alisim_skip_checking_memory"].get<bool>();
+    if (j.contains("alisim_write_internal_sequences")) this->alisim_write_internal_sequences = j["alisim_write_internal_sequences"].get<bool>();
+    //TODO if (j.contains("distributions")) this->distributions = j["distributions"].get<IntVector>();
+    if (j.contains("alisim_only_unroot_tree")) this->alisim_only_unroot_tree = j["alisim_only_unroot_tree"].get<bool>();
+
+    if (j.contains("branch_distribution")) {
+        std::string str = j["branch_distribution"].get<std::string>();
+        if (this->branch_distribution != nullptr) {
+            delete[] this->branch_distribution; // Deallocate existing memory
+        }
+        this->branch_distribution = new char[str.length() + 1];
+        std::strcpy(this->branch_distribution, str.c_str());
+    }
+
+    if (j.contains("alisim_insertion_ratio")) this->alisim_insertion_ratio = j["alisim_insertion_ratio"].get<double>();
+    if (j.contains("alisim_deletion_ratio")) this->alisim_deletion_ratio = j["alisim_deletion_ratio"].get<double>();
+    //TODO if (j.contains("alisim_insertion_distribution")) this->alisim_insertion_distribution = j["alisim_insertion_distribution"].get<IndelDistribution>();
+    //TODO if (j.contains("alisim_deletion_distribution")) this->alisim_deletion_distribution = j["alisim_deletion_distribution"].get<IndelDistribution>();
+    if (j.contains("alisim_mean_deletion_size")) this->alisim_mean_deletion_size = j["alisim_mean_deletion_size"].get<double>();
+    if (j.contains("alisim_simulation_thresh")) this->alisim_simulation_thresh = j["alisim_simulation_thresh"].get<double>();
+    if (j.contains("delay_msgs")) this->delay_msgs = j["delay_msgs"].get<std::string>();
+    if (j.contains("alisim_no_export_sequence_wo_gaps")) this->alisim_no_export_sequence_wo_gaps = j["alisim_no_export_sequence_wo_gaps"].get<bool>();
+    if (j.contains("alisim_mixture_at_sub_level")) this->alisim_mixture_at_sub_level = j["alisim_mixture_at_sub_level"].get<bool>();
+    if (j.contains("alisim_branch_scale")) this->alisim_branch_scale = j["alisim_branch_scale"].get<double>();
+    if (j.contains("alisim_single_output")) this->alisim_single_output = j["alisim_single_output"].get<bool>();
+    //TODO ::from_json(j["alisim_rate_heterogeneity"], this->alisim_rate_heterogeneity);
+    //TODO ::from_json(j["alisim_stationarity_heterogeneity"], this->alisim_stationarity_heterogeneity);
+    if (j.contains("tmp_data_filename")) this->tmp_data_filename = j["tmp_data_filename"].get<std::string>();
+    if (j.contains("keep_seq_order")) this->keep_seq_order = j["keep_seq_order"].get<bool>();
+    if (j.contains("delete_output")) this->delete_output = j["delete_output"].get<bool>();
+    if (j.contains("rebuild_indel_history_param")) this->rebuild_indel_history_param = j["rebuild_indel_history_param"].get<double>();
+    if (j.contains("mem_limit_factor")) this->mem_limit_factor = j["mem_limit_factor"].get<double>();
+    if (j.contains("indel_rate_variation")) this->indel_rate_variation = j["indel_rate_variation"].get<bool>();
+    //TODO ::from_json(j["alisim_openmp_alg"], this->alisim_openmp_alg);
+    if (j.contains("no_merge")) this->no_merge = j["no_merge"].get<bool>();
+    if (j.contains("include_pre_mutations")) this->include_pre_mutations = j["include_pre_mutations"].get<bool>();
+    if (j.contains("alignment_id")) this->alignment_id = j["alignment_id"].get<int>();
+    if (j.contains("mutation_file")) this->mutation_file = j["mutation_file"].get<std::string>();
+    if (j.contains("site_starting_index")) this->site_starting_index = j["site_starting_index"].get<int>();
     // ... deserialize other members here ...
 }
 
 json Params::get_param(const std::string& name) const {
     json j;
     // Return the value of the requested parameter
-    if (name == "fai") j[name] = this->fai;
+    if (name == "fai") j[name] = this->fai; 
+    else if (name == "memCheck") j[name] = this->memCheck;
+    else if (name == "stableSplitThreshold") j[name] = this->stableSplitThreshold;
+    else if (name == "adaptPertubation") j[name] = this->adaptPertubation;
+    else if (name == "testAlpha") j[name] = this->testAlpha;
+    else if (name == "opt_gammai") j[name] = this->opt_gammai;
+    else if (name == "opt_gammai_fast") j[name] = this->opt_gammai_fast;
+    else if (name == "opt_gammai_keep_bran") j[name] = this->opt_gammai_keep_bran;
+    else if (name == "testAlphaEpsAdaptive") j[name] = this->testAlphaEpsAdaptive;
+    else if (name == "randomAlpha") j[name] = this->randomAlpha;
+    else if (name == "testAlphaEps") j[name] = this->testAlphaEps;
+    else if (name == "exh_ai") j[name] = this->exh_ai;
+    else if (name == "alpha_invar_file") j[name] = std::string(this->alpha_invar_file);
+    else if (name == "tabu") j[name] = this->tabu;
+    else if (name == "five_plus_five") j[name] = this->five_plus_five;
+    else if (name == "fixStableSplits") j[name] = this->fixStableSplits;
+    else if (name == "numSupportTrees") j[name] = this->numSupportTrees;
+    else if (name == "maxCandidates") j[name] = this->maxCandidates;
+    else if (name == "numInitTrees") j[name] = this->numInitTrees;
+    else if (name == "sprDist") j[name] = this->sprDist;
+    else if (name == "sankoff_cost_file") j[name] = std::string(this->sankoff_cost_file);
+    else if (name == "numNNITrees") j[name] = this->numNNITrees;
+    else if (name == "popSize") j[name] = this->popSize;
+    else if (name == "speednni") j[name] = this->speednni;
+    else if (name == "initPS") j[name] = this->initPS;
+    else if (name == "modelEps") j[name] = this->modelEps;
+    else if (name == "modelfinder_eps") j[name] = this->modelfinder_eps;
+    else if (name == "snni") j[name] = this->snni;
+    else if (name == "nni_type") ::to_json(j[name], this->nni_type);
+    else if (name == "ls_var_type") ::to_json(j[name], this->ls_var_type);
+    else if (name == "nniThresHold") j[name] = this->nniThresHold;
+    else if (name == "nni5") j[name] = this->nni5;
+    else if (name == "nni5_num_eval") j[name] = this->nni5_num_eval;
+    else if (name == "brlen_num_traversal") j[name] = this->brlen_num_traversal;
+    else if (name == "numSmoothTree") j[name] = this->numSmoothTree;
+    else if (name == "leastSquareBranch") j[name] = this->leastSquareBranch;
+    else if (name == "manuel_analytic_approx") j[name] = this->manuel_analytic_approx;
+    else if (name == "pars_branch_length") j[name] = this->pars_branch_length;
+    else if (name == "bayes_branch_length") j[name] = this->bayes_branch_length;
+    else if (name == "leastSquareNNI") j[name] = this->leastSquareNNI;
+    else if (name == "loglh_epsilon") j[name] = this->loglh_epsilon;
+    else if (name == "reinsert_par") j[name] = this->reinsert_par;
+    else if (name == "bestStart") j[name] = this->bestStart;
+    else if (name == "maxtime") j[name] = this->maxtime;
+    else if (name == "parbran") j[name] = this->parbran;
+    else if (name == "pll") j[name] = this->pll;
+    else if (name == "unsuccess_iteration") j[name] = this->unsuccess_iteration;
+    else if (name == "binary_aln_file") j[name] = std::string(this->binary_aln_file);
+    else if (name == "speedup_iter") j[name] = this->speedup_iter;
+    else if (name == "startCPUTime") j[name] = this->startCPUTime;
+    else if (name == "start_real_time") j[name] = this->start_real_time;
+    else if (name == "iteration_multiple") j[name] = this->iteration_multiple;
+    else if (name == "user_file") j[name] = std::string(this->user_file);
+    else if (name == "start_tree") ::to_json(j[name], this->start_tree);
+    else if (name == "start_tree_subtype_name") j[name] = this->start_tree_subtype_name;
+    else if (name == "modelfinder_ml_tree") j[name] = this->modelfinder_ml_tree;
+    else if (name == "final_model_opt") j[name] = this->final_model_opt;
+    else if (name == "constraint_tree_file") j[name] = std::string(this->constraint_tree_file);
+    else if (name == "out_prefix") j[name] = std::string(this->out_prefix);
+    else if (name == "aln_file") j[name] = std::string(this->aln_file);
+    else if (name == "phylip_sequential_format") j[name] = this->phylip_sequential_format;
+    else if (name == "symtest") ::to_json(j[name], this->symtest);
+    else if (name == "symtest_only") j[name] = this->symtest_only;
+    else if (name == "symtest_remove") j[name] = this->symtest_remove;
+    else if (name == "symtest_keep_zero") j[name] = this->symtest_keep_zero;
+    else if (name == "symtest_type") j[name] = this->symtest_type;
+    else if (name == "symtest_pcutoff") j[name] = this->symtest_pcutoff;
+    else if (name == "symtest_stat") j[name] = this->symtest_stat;
+    else if (name == "symtest_shuffle") j[name] = this->symtest_shuffle;
+    else if (name == "treeset_file") j[name] = std::string(this->treeset_file);
+    else if (name == "topotest_replicates") j[name] = this->topotest_replicates;
+    else if (name == "topotest_optimize_model") j[name] = this->topotest_optimize_model;
+    else if (name == "do_weighted_test") j[name] = this->do_weighted_test;
+    else if (name == "do_au_test") j[name] = this->do_au_test;
+    else if (name == "partition_file") j[name] = std::string(this->partition_file);
+    else if (name == "partition_type") j[name] = this->partition_type;
+    else if (name == "partition_merge") ::to_json(j[name], this->partition_merge);
+    else if (name == "partfinder_rcluster") j[name] = this->partfinder_rcluster;
+    else if (name == "partfinder_rcluster_max") j[name] = this->partfinder_rcluster_max;
+    else if (name == "merge_models") j[name] = std::string(this->merge_models);
+    else if (name == "merge_rates") j[name] = std::string(this->merge_rates);
+    else if (name == "partfinder_log_rate") j[name] = this->partfinder_log_rate;
+    else if (name == "remove_empty_seq") j[name] = this->remove_empty_seq;
+    else if (name == "terrace_aware") j[name] = this->terrace_aware;
+    else if (name == "terrace_analysis_tphast") j[name] = this->terrace_analysis_tphast;
+    else if (name == "terrace_check") j[name] = this->terrace_check;
+    else if (name == "terrace_analysis") j[name] = this->terrace_analysis;
+    else if (name == "pr_ab_matrix") j[name] = std::string(this->pr_ab_matrix);
+
+    else if (name == "print_terrace_trees") j[name] = this->print_terrace_trees;
+    else if (name == "print_induced_trees") j[name] = this->print_induced_trees;
+    else if (name == "print_pr_ab_matrix") j[name] = this->print_pr_ab_matrix;
+    else if (name == "print_m_overlap") j[name] = this->print_m_overlap;
+    else if (name == "terrace_query_set") j[name] = std::string(this->terrace_query_set);
+    else if (name == "terrace_stop_intermediate_num") j[name] = this->terrace_stop_intermediate_num;
+    else if (name == "terrace_stop_terrace_trees_num") j[name] = this->terrace_stop_terrace_trees_num;
+    else if (name == "terrace_stop_time") j[name] = this->terrace_stop_time;
+    else if (name == "terrace_non_stop") j[name] = this->terrace_non_stop;
+    else if (name == "terrace_remove_m_leaves") j[name] = this->terrace_remove_m_leaves;
+    else if (name == "terrace_print_lim") j[name] = this->terrace_print_lim;
+    else if (name == "matrix_order") j[name] = this->matrix_order;
+    else if (name == "gen_all_NNI") j[name] = this->gen_all_NNI;
+    else if (name == "sequence_type") j[name] = std::string(this->sequence_type);
+    else if (name == "aln_output") j[name] = std::string(this->aln_output);
+    else if (name == "siteLL_file") j[name] = std::string(this->siteLL_file);
+    else if (name == "gap_masked_aln") j[name] = std::string(this->gap_masked_aln);
+    else if (name == "concatenate_aln") j[name] = std::string(this->concatenate_aln);
+    else if (name == "aln_site_list") j[name] = std::string(this->aln_site_list);
+    else if (name == "ref_seq_name") j[name] = std::string(this->ref_seq_name);
+    //TODO     j["aln_output_format"] = this->aln_output_format;  // InputType
+    //TODO     j["output_format"] = this->output_format;  // FileFormat
+    else if (name == "newick_extended_format") j[name] = this->newick_extended_format;
+    else if (name == "aln_nogaps") j[name] = this->aln_nogaps;
+    else if (name == "aln_no_const_sites") j[name] = this->aln_no_const_sites;
+    else if (name == "print_aln_info") j[name] = this->print_aln_info;
+    else if (name == "out_file") j[name] = std::string(this->out_file);
+    else if (name == "sub_size") j[name] = this->sub_size;
+    else if (name == "min_size") j[name] = this->min_size;
+    else if (name == "step_size") j[name] = this->step_size;
+    else if (name == "pd_proportion") j[name] = this->pd_proportion;
+    else if (name == "min_proportion") j[name] = this->min_proportion;
+    else if (name == "step_proportion") j[name] = this->step_proportion;
+    else if (name == "sample_size") j[name] = this->sample_size;
+    else if (name == "find_all") j[name] = this->find_all;
+    else if (name == "tree_gen") ::to_json(j[name], this->tree_gen);
+    else if (name == "num_splits") j[name] = this->num_splits;
+    else if (name == "run_mode") ::to_json(j[name], this->run_mode);
+    else if (name == "detected_mode") ::to_json(j[name], this->detected_mode);
+    else if (name == "param_file") j[name] = std::string(this->param_file);
+    else if (name == "initial_file") j[name] = std::string(this->initial_file);
+    else if (name == "initial_area_file") j[name] = std::string(this->initial_area_file);
+    else if (name == "pdtaxa_file") j[name] = std::string(this->pdtaxa_file);
+    else if (name == "areas_boundary_file") j[name] = std::string(this->areas_boundary_file);
+    else if (name == "boundary_modifier") j[name] = this->boundary_modifier;
+    else if (name == "dist_file") j[name] = std::string(this->dist_file);
+    else if (name == "compute_obs_dist") j[name] = this->compute_obs_dist;
+    else if (name == "compute_jc_dist") j[name] = this->compute_jc_dist;
+    else if (name == "experimental") j[name] = this->experimental;
+    else if (name == "compute_ml_dist") j[name] = this->compute_ml_dist;
+    else if (name == "compute_ml_tree") j[name] = this->compute_ml_tree;
+    else if (name == "compute_ml_tree_only") j[name] = this->compute_ml_tree_only;
+    else if (name == "budget_file") j[name] = std::string(this->budget_file);
+    else if (name == "overlap") j[name] = this->overlap;
+    else if (name == "repeated_time") j[name] = this->repeated_time;
+    else if (name == "nr_output") j[name] = this->nr_output;
+    //TODO     j["intype"] = this->intype;  // InputType
+    else if (name == "budget") j[name] = this->budget;
+    else if (name == "min_budget") j[name] = this->min_budget;
+    else if (name == "step_budget") j[name] = this->step_budget;
+    else if (name == "root") j[name] = std::string(this->root);
+    else if (name == "is_rooted") j[name] = this->is_rooted;
+    else if (name == "root_move_dist") j[name] = this->root_move_dist;
+    else if (name == "root_find") j[name] = this->root_find;
+    else if (name == "root_test") j[name] = this->root_test;
+    else if (name == "min_len") j[name] = this->min_len;
+    else if (name == "mean_len") j[name] = this->mean_len;
+    else if (name == "max_len") j[name] = this->max_len;
+    else if (name == "num_zero_len") j[name] = this->num_zero_len;
+    else if (name == "ran_seed") j[name] = this->ran_seed;
+    else if (name == "run_time") j[name] = this->run_time;
+    else if (name == "pd_limit") j[name] = this->pd_limit;
+    else if (name == "calc_pdgain") j[name] = this->calc_pdgain;
+    else if (name == "multi_tree") j[name] = this->multi_tree;
+    else if (name == "second_tree") j[name] = std::string(this->second_tree);
+    else if (name == "support_tag") j[name] = std::string(this->support_tag);
+    else if (name == "site_concordance") j[name] = this->site_concordance;
+    else if (name == "ancestral_site_concordance") j[name] = this->ancestral_site_concordance;
+    else if (name == "site_concordance_partition") j[name] = this->site_concordance_partition;
+    else if (name == "print_cf_quartets") j[name] = this->print_cf_quartets;
+    else if (name == "print_df1_trees") j[name] = this->print_df1_trees;
+    else if (name == "internode_certainty") j[name] = this->internode_certainty;
+    else if (name == "second_align") j[name] = std::string(this->second_align);
+    else if (name == "consensus_type") ::to_json(j[name], this->consensus_type);
+    else if (name == "tree_weight_file") j[name] = std::string(this->tree_weight_file);
+    else if (name == "find_pd_min") j[name] = this->find_pd_min;
+    else if (name == "endemic_pd") j[name] = this->endemic_pd;
+    else if (name == "exclusive_pd") j[name] = this->exclusive_pd;
+    else if (name == "complement_area") j[name] = std::string(this->complement_area);
+    else if (name == "branch_cluster") j[name] = this->branch_cluster;
+    else if (name == "taxa_order_file") j[name] = std::string(this->taxa_order_file);
+    else if (name == "scaling_factor") j[name] = this->scaling_factor;
+    else if (name == "binary_programming") j[name] = this->binary_programming;
+    else if (name == "test_input") ::to_json(j[name], this->test_input);
+    else if (name == "tree_burnin") j[name] = this->tree_burnin;
+    else if (name == "tree_max_count") j[name] = this->tree_max_count;
+    else if (name == "split_threshold") j[name] = this->split_threshold;
+    else if (name == "split_threshold_str") j[name] = std::string(this->split_threshold_str);
+    else if (name == "split_weight_threshold") j[name] = this->split_weight_threshold;
+    else if (name == "collapse_zero_branch") j[name] = this->collapse_zero_branch;
+    else if (name == "split_weight_summary") j[name] = this->split_weight_summary;
+    else if (name == "quad_programming") j[name] = this->quad_programming;
+    else if (name == "tree_spr") j[name] = this->tree_spr;
+    else if (name == "nexus_output") j[name] = this->nexus_output;
+    else if (name == "k_representative") j[name] = this->k_representative;
+    else if (name == "p_delete") j[name] = this->p_delete;
+    else if (name == "min_iterations") j[name] = this->min_iterations;
+    else if (name == "max_iterations") j[name] = this->max_iterations;
+    else if (name == "stop_condition") ::to_json(j[name], this->stop_condition);
+    else if (name == "stop_confidence") j[name] = this->stop_confidence;
+    else if (name == "num_param_iterations") j[name] = this->num_param_iterations;
+    else if (name == "num_runs") j[name] = this->num_runs;
+    else if (name == "model_name") j[name] = this->model_name;
+    else if (name == "model_name_init") j[name] = std::string(this->model_name_init);
+    else if (name == "model_opt_steps") j[name] = this->model_opt_steps;
+    else if (name == "model_set") j[name] = this->model_set;
+    else if (name == "model_extra_set") j[name] = std::string(this->model_extra_set);
+    else if (name == "model_subset") j[name] = std::string(this->model_subset);
+    else if (name == "state_freq_set") j[name] = std::string(this->state_freq_set);
+    else if (name == "ratehet_set") j[name] = this->ratehet_set;
+    else if (name == "score_diff_thres") j[name] = this->score_diff_thres;
+    else if (name == "model_def_file") j[name] = std::string(this->model_def_file);
+    else if (name == "modelomatic") j[name] = this->modelomatic;
+    else if (name == "model_test_again") j[name] = this->model_test_again;
+    else if (name == "model_test_and_tree") j[name] = this->model_test_and_tree;
+    else if (name == "model_test_separate_rate") j[name] = this->model_test_separate_rate;
+    else if (name == "optimize_mixmodel_weight") j[name] = this->optimize_mixmodel_weight;
+    else if (name == "num_mixlen") j[name] = this->num_mixlen;
+    else if (name == "optimize_rate_matrix") j[name] = this->optimize_rate_matrix;
+    else if (name == "store_trans_matrix") j[name] = this->store_trans_matrix;
+    else if (name == "freq_type") ::to_json(j[name], this->freq_type);
+
+    else if (name == "keep_zero_freq") j[name] = this->keep_zero_freq;
+    else if (name == "min_state_freq") j[name] = this->min_state_freq;
+    else if (name == "num_rate_cats") j[name] = this->num_rate_cats;
+    else if (name == "min_rate_cats") j[name] = this->min_rate_cats;
+    else if (name == "max_rate_cats") j[name] = this->max_rate_cats;
+    else if (name == "gamma_shape") j[name] = this->gamma_shape;
+    else if (name == "min_gamma_shape") j[name] = this->min_gamma_shape;
+    else if (name == "gamma_median") j[name] = this->gamma_median;
+    else if (name == "p_invar_sites") j[name] = this->p_invar_sites;
+    else if (name == "optimize_model_rate_joint") j[name] = this->optimize_model_rate_joint;
+    else if (name == "optimize_by_newton") j[name] = std::string(this->optimize_by_newton);
+    else if (name == "optimize_alg_freerate") j[name] = std::string(this->optimize_alg_freerate);
+    else if (name == "optimize_alg_mixlen") j[name] = std::string(this->optimize_alg_mixlen);
+    else if (name == "optimize_alg_gammai") j[name] = std::string(this->optimize_alg_gammai);
+    else if (name == "optimize_alg_treeweight") j[name] = std::string(this->optimize_alg_treeweight);
+    else if (name == "optimize_from_given_params") j[name] = this->optimize_from_given_params;
+    else if (name == "fixed_branch_length") j[name] = this->fixed_branch_length;
+    else if (name == "min_branch_length") j[name] = this->min_branch_length;
+    else if (name == "max_branch_length") j[name] = this->max_branch_length;
+    else if (name == "iqp_assess_quartet") ::to_json(j[name], this->iqp_assess_quartet);
+    else if (name == "iqp") j[name] = this->iqp;
+    else if (name == "gurobi_format") j[name] = this->gurobi_format;
+    else if (name == "gurobi_threads") j[name] = this->gurobi_threads;
+    else if (name == "num_bootstrap_samples") j[name] = this->num_bootstrap_samples;
+    else if (name == "bootstrap_spec") j[name] = std::string(this->bootstrap_spec);
+    else if (name == "transfer_bootstrap") j[name] = this->transfer_bootstrap;
+    else if (name == "subsampling") j[name] = this->subsampling;
+    else if (name == "subsampling_seed") j[name] = this->subsampling_seed;
+
+    else if (name == "write_intermediate_trees") j[name] = this->write_intermediate_trees;
+    else if (name == "writeDistImdTrees") j[name] = this->writeDistImdTrees;
+    else if (name == "write_candidate_trees") j[name] = this->write_candidate_trees;
+    else if (name == "rf_dist_mode") j[name] = this->rf_dist_mode;
+    else if (name == "rf_same_pair") j[name] = this->rf_same_pair;
+    else if (name == "normalize_tree_dist") j[name] = this->normalize_tree_dist;
+    else if (name == "mvh_site_rate") j[name] = this->mvh_site_rate;
+    else if (name == "rate_mh_type") j[name] = this->rate_mh_type;
+    else if (name == "discard_saturated_site") j[name] = this->discard_saturated_site;
+    else if (name == "mean_rate") j[name] = this->mean_rate;
+    else if (name == "aLRT_threshold") j[name] = this->aLRT_threshold;
+    else if (name == "aLRT_replicates") j[name] = this->aLRT_replicates;
+    else if (name == "aLRT_test") j[name] = this->aLRT_test;
+    else if (name == "aBayes_test") j[name] = this->aBayes_test;
+    else if (name == "localbp_replicates") j[name] = this->localbp_replicates;
+    else if (name == "SSE") ::to_json(j[name], this->SSE);
+    else if (name == "lk_safe_scaling") j[name] = this->lk_safe_scaling;
+    else if (name == "numseq_safe_scaling") j[name] = this->numseq_safe_scaling;
+    else if (name == "kernel_nonrev") j[name] = this->kernel_nonrev;
+    else if (name == "print_site_lh") ::to_json(j[name], this->print_site_lh);
+    else if (name == "print_partition_lh") j[name] = this->print_partition_lh;
+    else if (name == "print_site_prob") ::to_json(j[name], this->print_site_prob);
+    else if (name == "print_ancestral_sequence") ::to_json(j[name], this->print_ancestral_sequence);
+    else if (name == "min_ancestral_prob") j[name] = this->min_ancestral_prob;
+    else if (name == "print_site_state_freq") ::to_json(j[name], this->print_site_state_freq);
+    else if (name == "print_site_rate") j[name] = this->print_site_rate;
+    else if (name == "print_trees_site_posterior") j[name] = this->print_trees_site_posterior;
+    else if (name == "print_tree_lh") j[name] = this->print_tree_lh;
+    else if (name == "print_branch_lengths") j[name] = this->print_branch_lengths;
+    else if (name == "nni_lh") j[name] = this->nni_lh;
+    else if (name == "speedUpFromIter") j[name] = this->speedUpFromIter;
+    else if (name == "lambda") j[name] = this->lambda;
+    else if (name == "speed_conf") j[name] = this->speed_conf;
+    else if (name == "new_heuristic") j[name] = this->new_heuristic;
+    else if (name == "whtest_simulations") j[name] = this->whtest_simulations;
+    else if (name == "whtest_delta") j[name] = this->whtest_delta;
+    else if (name == "whtest_delta_quantile") j[name] = this->whtest_delta_quantile;
+    else if (name == "whtest_p_value") j[name] = this->whtest_p_value;
+    else if (name == "mcat_type") j[name] = this->mcat_type;
+    else if (name == "rate_file") j[name] = std::string(this->rate_file);
+    else if (name == "ngs_file") j[name] = std::string(this->ngs_file);
+    else if (name == "ngs_mapped_reads") j[name] = std::string(this->ngs_mapped_reads);
+    else if (name == "ngs_ignore_gaps") j[name] = this->ngs_ignore_gaps;
+    else if (name == "do_pars_multistate") j[name] = this->do_pars_multistate;
+    else if (name == "gene_pvalue_file") j[name] = std::string(this->gene_pvalue_file);
+    else if (name == "gene_scale_factor") j[name] = this->gene_scale_factor;
+    else if (name == "gene_pvalue_loga") j[name] = this->gene_pvalue_loga;
+    else if (name == "ncbi_taxid") j[name] = this->ncbi_taxid;
+    else if (name == "ncbi_taxon_level") j[name] = std::string(this->ncbi_taxon_level);
+    else if (name == "ncbi_ignore_level") j[name] = std::string(this->ncbi_ignore_level);
+    else if (name == "ncbi_names_file") j[name] = std::string(this->ncbi_names_file);
+    else if (name == "eco_dag_file") j[name] = std::string(this->eco_dag_file);
+    else if (name == "eco_detail_file") j[name] = std::string(this->eco_detail_file);
+    else if (name == "eco_type") j[name] = std::string(this->eco_type);
+    else if (name == "k_percent") j[name] = this->k_percent;
+    else if (name == "diet_min") j[name] = this->diet_min;
+    else if (name == "diet_max") j[name] = this->diet_max;
+    else if (name == "diet_step") j[name] = this->diet_step;
+    else if (name == "eco_run") j[name] = this->eco_run;
+    else if (name == "eco_weighted") j[name] = this->eco_weighted;
+    else if (name == "upper_bound") j[name] = this->upper_bound;
+    else if (name == "upper_bound_NNI") j[name] = this->upper_bound_NNI;
+    else if (name == "upper_bound_frac") j[name] = this->upper_bound_frac;
+    else if (name == "gbo_replicates") j[name] = this->gbo_replicates;
+    else if (name == "ufboot_epsilon") j[name] = this->ufboot_epsilon;
+    else if (name == "check_gbo_sample_size") j[name] = this->check_gbo_sample_size;
+    else if (name == "use_rell_method") j[name] = this->use_rell_method;
+    else if (name == "use_elw_method") j[name] = this->use_elw_method;
+    else if (name == "use_weighted_bootstrap") j[name] = this->use_weighted_bootstrap;
+    else if (name == "use_max_tree_per_bootstrap") j[name] = this->use_max_tree_per_bootstrap;
+    else if (name == "max_candidate_trees") j[name] = this->max_candidate_trees;
+    else if (name == "distinct_trees") j[name] = this->distinct_trees;
+    else if (name == "online_bootstrap") j[name] = this->online_bootstrap;
+    else if (name == "min_correlation") j[name] = this->min_correlation;
+    else if (name == "step_iterations") j[name] = this->step_iterations;
+    else if (name == "print_ufboot_trees") j[name] = this->print_ufboot_trees;
+    else if (name == "jackknife_prop") j[name] = this->jackknife_prop;
+
+    else if (name == "robust_phy_keep") j[name] = this->robust_phy_keep;
+    else if (name == "robust_median") j[name] = this->robust_median;
+    else if (name == "estimate_nni_cutoff") j[name] = this->estimate_nni_cutoff;
+    else if (name == "nni_cutoff") j[name] = this->nni_cutoff;
+    else if (name == "nni_sort") j[name] = this->nni_sort;
+    else if (name == "testNNI") j[name] = this->testNNI;
+    else if (name == "approximate_nni") j[name] = this->approximate_nni;
+    else if (name == "do_compression") j[name] = this->do_compression;
+    else if (name == "avh_test") j[name] = this->avh_test;
+    else if (name == "bootlh_test") j[name] = this->bootlh_test;
+    else if (name == "bootlh_partitions") j[name] = std::string(this->bootlh_partitions);
+    else if (name == "numeric_precision") j[name] = this->numeric_precision;
+    else if (name == "site_freq_file") j[name] = std::string(this->site_freq_file);
+    else if (name == "tree_freq_file") j[name] = std::string(this->tree_freq_file);
+    else if (name == "num_threads") j[name] = this->num_threads;
+    else if (name == "num_threads_max") j[name] = this->num_threads_max;
+    else if (name == "openmp_by_model") j[name] = this->openmp_by_model;
+    else if (name == "model_test_criterion") ::to_json(j[name], this->model_test_criterion);
+    else if (name == "model_test_sample_size") j[name] = this->model_test_sample_size;
+    else if (name == "root_state") j[name] = std::string(this->root_state);
+    else if (name == "print_bootaln") j[name] = this->print_bootaln;
+    else if (name == "print_boot_site_freq") j[name] = this->print_boot_site_freq;
+    else if (name == "print_subaln") j[name] = this->print_subaln;
+    else if (name == "print_partition_info") j[name] = this->print_partition_info;
+    else if (name == "print_conaln") j[name] = this->print_conaln;
+    else if (name == "link_alpha") j[name] = this->link_alpha;
+    else if (name == "link_model") j[name] = this->link_model;
+    else if (name == "model_joint") j[name] = std::string(this->model_joint);
+    else if (name == "count_trees") j[name] = this->count_trees;
+    else if (name == "pomo") j[name] = this->pomo;
+    else if (name == "pomo_random_sampling") j[name] = this->pomo_random_sampling;
+    else if (name == "pomo_pop_size") j[name] = this->pomo_pop_size;
+    else if (name == "lh_mem_save") ::to_json(j[name], this->lh_mem_save);
+    else if (name == "buffer_mem_save") j[name] = this->buffer_mem_save;
+    else if (name == "max_mem_size") j[name] = this->max_mem_size;
+    else if (name == "print_splits_file") j[name] = this->print_splits_file;
+    else if (name == "print_splits_nex_file") j[name] = this->print_splits_nex_file;
+    else if (name == "ignore_identical_seqs") j[name] = this->ignore_identical_seqs;
+    else if (name == "write_init_tree") j[name] = this->write_init_tree;
+    else if (name == "write_branches") j[name] = this->write_branches;
+    else if (name == "freq_const_patterns") j[name] = std::string(this->freq_const_patterns);
+    else if (name == "no_rescale_gamma_invar") j[name] = this->no_rescale_gamma_invar;
+    else if (name == "compute_seq_identity_along_tree") j[name] = this->compute_seq_identity_along_tree;
+    else if (name == "compute_seq_composition") j[name] = this->compute_seq_composition;
+    else if (name == "ignore_checkpoint") j[name] = this->ignore_checkpoint;
+    else if (name == "lmap_num_quartets") j[name] = this->lmap_num_quartets;
+    else if (name == "lmap_cluster_file") j[name] = std::string(this->lmap_cluster_file);
+    else if (name == "checkpoint_dump_interval") j[name] = this->checkpoint_dump_interval;
+    else if (name == "print_lmap_quartet_lh") j[name] = this->print_lmap_quartet_lh;
+    else if (name == "force_unfinished") j[name] = this->force_unfinished;
+    else if (name == "print_all_checkpoints") j[name] = this->print_all_checkpoints;
+    else if (name == "suppress_output_flags") j[name] = this->suppress_output_flags;
+    else if (name == "matrix_exp_technique") ::to_json(j[name], this->matrix_exp_technique);
+    else if (name == "ufboot2corr") j[name] = this->ufboot2corr;
+    else if (name == "u2c_nni5") j[name] = this->u2c_nni5;
+    else if (name == "dating_method") j[name] = this->dating_method;
+
+    else if (name == "dating_options") j[name] = std::string(this->dating_options);
+    else if (name == "date_file") j[name] = std::string(this->date_file);
+    else if (name == "date_tip") j[name] = std::string(this->date_tip);
+    else if (name == "date_root") j[name] = std::string(this->date_root);
+    else if (name == "date_with_outgroup") j[name] = this->date_with_outgroup;
+    else if (name == "date_debug") j[name] = this->date_debug;
+    else if (name == "date_replicates") j[name] = this->date_replicates;
+    else if (name == "clock_stddev") j[name] = this->clock_stddev;
+    else if (name == "date_outlier") j[name] = this->date_outlier;
+    else if (name == "suppress_list_of_sequences") j[name] = this->suppress_list_of_sequences;
+    else if (name == "suppress_zero_distance_warnings") j[name] = this->suppress_zero_distance_warnings;
+    else if (name == "suppress_duplicate_sequence_warnings") j[name] = this->suppress_duplicate_sequence_warnings;
+    else if (name == "alisim_active") j[name] = this->alisim_active;
+    else if (name == "alisim_inference_mode") j[name] = this->alisim_inference_mode;
+    else if (name == "alisim_no_copy_gaps") j[name] = this->alisim_no_copy_gaps;
+    else if (name == "original_params") j[name] = std::string(this->original_params);
+    else if (name == "alisim_output_filename") j[name] = std::string(this->alisim_output_filename);
+    else if (name == "alisim_sequence_length") j[name] = this->alisim_sequence_length;
+    else if (name == "alisim_dataset_num") j[name] = this->alisim_dataset_num;
+    else if (name == "alisim_ancestral_sequence_aln_filepath") j[name] = std::string(this->alisim_ancestral_sequence_aln_filepath);
+    else if (name == "alisim_ancestral_sequence_name") j[name] = std::string(this->alisim_ancestral_sequence_name);
+    else if (name == "alisim_max_rate_categories_for_applying_caching") j[name] = this->alisim_max_rate_categories_for_applying_caching;
+    else if (name == "alisim_num_states_morph") j[name] = this->alisim_num_states_morph;
+    else if (name == "alisim_num_taxa_uniform_start") j[name] = this->alisim_num_taxa_uniform_start;
+    else if (name == "alisim_num_taxa_uniform_end") j[name] = this->alisim_num_taxa_uniform_end;
+    // TODO: handle "alisim_num_taxa_list"
+
+    else if (name == "birth_rate") j[name] = this->birth_rate;
+    else if (name == "death_rate") j[name] = this->death_rate;
+    else if (name == "alisim_length_ratio") j[name] = this->alisim_length_ratio;
+    // TODO: handle "alisim_fundi_taxon_set"
+    else if (name == "alisim_fundi_proportion") j[name] = this->alisim_fundi_proportion;
+    else if (name == "alisim_distribution_definitions") j[name] = std::string(this->alisim_distribution_definitions);
+    else if (name == "alisim_skip_checking_memory") j[name] = this->alisim_skip_checking_memory;
+    else if (name == "alisim_write_internal_sequences") j[name] = this->alisim_write_internal_sequences;
+    // TODO: handle "distributions"
+    else if (name == "alisim_only_unroot_tree") j[name] = this->alisim_only_unroot_tree;
+    else if (name == "branch_distribution") j[name] = std::string(this->branch_distribution);
+    else if (name == "alisim_insertion_ratio") j[name] = this->alisim_insertion_ratio;
+    else if (name == "alisim_deletion_ratio") j[name] = this->alisim_deletion_ratio;
+    // TODO: handle "alisim_insertion_distribution"
+    // TODO: handle "alisim_deletion_distribution"
+    else if (name == "alisim_mean_deletion_size") j[name] = this->alisim_mean_deletion_size;
+    else if (name == "alisim_simulation_thresh") j[name] = this->alisim_simulation_thresh;
+    else if (name == "delay_msgs") j[name] = std::string(this->delay_msgs);
+    else if (name == "alisim_no_export_sequence_wo_gaps") j[name] = this->alisim_no_export_sequence_wo_gaps;
+    else if (name == "alisim_mixture_at_sub_level") j[name] = this->alisim_mixture_at_sub_level;
+    else if (name == "alisim_branch_scale") j[name] = this->alisim_branch_scale;
+    else if (name == "alisim_single_output") j[name] = this->alisim_single_output;
+    else if (name == "alisim_rate_heterogeneity") ::to_json(j[name], this->alisim_rate_heterogeneity);
+    else if (name == "alisim_stationarity_heterogeneity") ::to_json(j[name], this->alisim_stationarity_heterogeneity);
+    else if (name == "tmp_data_filename") j[name] = std::string(this->tmp_data_filename);
+    else if (name == "keep_seq_order") j[name] = this->keep_seq_order;
+    else if (name == "delete_output") j[name] = this->delete_output;
+    else if (name == "rebuild_indel_history_param") j[name] = this->rebuild_indel_history_param;
+    else if (name == "mem_limit_factor") j[name] = this->mem_limit_factor;
+    else if (name == "indel_rate_variation") j[name] = this->indel_rate_variation;
+    else if (name == "alisim_openmp_alg") ::to_json(j[name], this->alisim_openmp_alg);
+    else if (name == "no_merge") j[name] = this->no_merge;
+    else if (name == "include_pre_mutations") j[name] = this->include_pre_mutations;
+    else if (name == "alignment_id") j[name] = this->alignment_id;
+    else if (name == "mutation_file") j[name] = std::string(this->mutation_file);
+    else if (name == "site_starting_index") j[name] = this->site_starting_index;
     // ... handle other parameters here ...
     else throw std::invalid_argument("Unknown parameter name");
     return j;
