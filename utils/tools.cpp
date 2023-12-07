@@ -7074,7 +7074,7 @@ json Params::to_json() const {
     j["gamma_median"] = this->gamma_median;  // double
     j["p_invar_sites"] = this->p_invar_sites;  // bool
     j["optimize_model_rate_joint"] = this->optimize_model_rate_joint;  // bool
-    j["optimize_by_newton"] = this->optimize_by_newton;  // string
+    j["optimize_by_newton"] = this->optimize_by_newton;  // bool
     j["optimize_alg_freerate"] = this->optimize_alg_freerate;  // string
     j["optimize_alg_mixlen"] = this->optimize_alg_mixlen;  // string
     j["optimize_alg_gammai"] = this->optimize_alg_gammai;  // string
@@ -7771,7 +7771,7 @@ void Params::from_json(const json& j) {
     if (j.contains("gamma_median")) this->gamma_median = j["gamma_median"].get<double>(); // double
     if (j.contains("p_invar_sites")) this->p_invar_sites = j["p_invar_sites"].get<bool>(); // bool
     if (j.contains("optimize_model_rate_joint")) this->optimize_model_rate_joint = j["optimize_model_rate_joint"].get<bool>(); // bool
-    if (j.contains("optimize_by_newton")) this->optimize_by_newton = j["optimize_by_newton"].get<std::string>(); // string
+    if (j.contains("optimize_by_newton")) this->optimize_by_newton = j["optimize_by_newton"].get<bool>(); // bool
     if (j.contains("optimize_alg_freerate")) this->optimize_alg_freerate = j["optimize_alg_freerate"].get<std::string>(); // string
     if (j.contains("optimize_alg_mixlen")) this->optimize_alg_mixlen = j["optimize_alg_mixlen"].get<std::string>(); // string
     if (j.contains("optimize_alg_gammai")) this->optimize_alg_gammai = j["optimize_alg_gammai"].get<std::string>(); // string
@@ -8353,8 +8353,8 @@ json Params::get_param(const std::string& name) const {
     else if (name == "min_gamma_shape") j[name] = this->min_gamma_shape;
     else if (name == "gamma_median") j[name] = this->gamma_median;
     else if (name == "p_invar_sites") j[name] = this->p_invar_sites;
-    else if (name == "optimize_model_rate_joint") j[name] = this->optimize_model_rate_joint;
-    else if (name == "optimize_by_newton") j[name] = std::string(this->optimize_by_newton);
+    else if (name == "optimize_model_rate_joint") j[name] = this->optimize_model_rate_joint; 
+    else if (name == "optimize_by_newton") j[name] = this->optimize_by_newton; 
     else if (name == "optimize_alg_freerate") j[name] = std::string(this->optimize_alg_freerate);
     else if (name == "optimize_alg_mixlen") j[name] = std::string(this->optimize_alg_mixlen);
     else if (name == "optimize_alg_gammai") j[name] = std::string(this->optimize_alg_gammai);
