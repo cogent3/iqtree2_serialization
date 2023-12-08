@@ -25,6 +25,12 @@
     "forwardPorts": [
       // Any ports you want to forward
     ],
-    "remoteUser": "root"
+    "remoteUser": "root",
+    "runArgs": [
+      "-v", 
+      "/run/host-services/ssh-auth.sock:/ssh-auth.sock", 
+      "-e", 
+      "SSH_AUTH_SOCK=/ssh-auth.sock"
+    ]
   }
   
