@@ -3,9 +3,9 @@
 #include "iqtree_config.h"
 
 // Assuming iqtree_VERSION_MAJOR, iqtree_VERSION_MINOR, and iqtree_VERSION_PATCH are defined somewhere globally
-extern const int iqtree_version_major = iqtree_VERSION_MAJOR;
-extern const int iqtree_version_minor = iqtree_VERSION_MINOR;
-extern const char* iqtree_version_patch = iqtree_VERSION_PATCH;
+const int iqtree_version_major = iqtree_VERSION_MAJOR;
+const int iqtree_version_minor = iqtree_VERSION_MINOR;
+const char* iqtree_version_patch = iqtree_VERSION_PATCH;
 
 
 std::string getIqTreeVersion() {

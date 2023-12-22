@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include "params.h"
 #include "nlohmann/json.hpp"
-#include "../utils/tools.h"
+#include "utils/tools.h"
 
 using json = nlohmann::json;
 namespace py = pybind11;

@@ -25,4 +25,4 @@ sequencechunkstr.cpp
 sequencechunkstr.h
 )
 
-target_link_libraries(alignment simulator ncl gsl model)
+target_link_libraries(alignment simulator ncl gsl model phyloYAML)

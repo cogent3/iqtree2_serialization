@@ -4,6 +4,6 @@
 
 #include <string>
 
-void generate_random_tree(const std::string& json_str);
+void generate_random_tree();
 
 #endif // GENERATE_RANDOM_TREE_H

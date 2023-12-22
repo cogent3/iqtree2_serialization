@@ -709,12 +709,16 @@ endif()
 ##################################################################
 
 add_library(kernelsse tree/phylokernelsse.cpp)
+target_link_libraries(kernelsse vectorclass)
 
 if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
 add_library(kernelavx tree/phylotreeavx.cpp)
+target_link_libraries(kernelavx vectorclass)
 add_library(kernelfma tree/phylokernelfma.cpp)
+target_link_libraries(kernelfma vectorclass)
     if (IQTREE_FLAGS MATCHES "KNL")
         add_library(kernelavx512 tree/phylokernelavx512.cpp)
+        target_link_libraries(kernelavx512 vectorclass)
     endif()
 endif()
 
@@ -975,7 +979,7 @@ set (IQTREE2CORE_SOURCES
     "${IQTREE2CORE_SOURCE_DIR}/version.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/params.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.cpp"
-    ${PROJECT_SOURCE_DIR}/utils/tools.cpp
+    "${PROJECT_SOURCE_DIR}/utils/tools.cpp"
     )
 
 set (IQTREE2CORE_BINDINGS 
@@ -990,17 +994,81 @@ add_library(iqtree2core MODULE
     ${IQTREE2CORE_BINDINGS}
     )
 
-target_include_directories(iqtree2core PRIVATE 
+target_include_directories(iqtree2core PRIVATE
     ${IQTREE2CORE_SOURCE_DIR}
     ${PROJECT_BINARY_DIR}  # Add this line for iqtree_config.h
-)
+    )
+
+target_include_directories(iqtree2core PRIVATE
+    ${nlohmann_json_INCLUDE_DIRS}
+    )
+
+target_link_libraries(iqtree2core PRIVATE pybind11::module)
+
+if(Backtrace_FOUND)
+  target_link_libraries(iqtree2core PRIVATE ${Backtrace_LIBRARY})
+endif(Backtrace_FOUND)
+
+if (USE_BOOSTER)
+    target_link_libraries(iqtree2core PRIVATE booster)
+endif()
+
+if (NOT IQTREE_FLAGS MATCHES "single")
+    if(CLANG AND WIN32)
+        if (BINARY32)
+            target_link_libraries(iqtree2core PRIVATE ${PROJECT_SOURCE_DIR}/lib32/libiomp5md.dll)
+        else()
+            target_link_libraries(iqtree2core PRIVATE ${PROJECT_SOURCE_DIR}/lib/libiomp5md.dll)
+        endif()
+    endif()
+endif()
+
+if(ZLIB_FOUND)
+  target_link_libraries(iqtree2core PRIVATE ${ZLIB_LIBRARIES})
+else(ZLIB_FOUND)
+  target_link_libraries(iqtree2core PRIVATE zlibstatic)
+endif(ZLIB_FOUND)
+
 
 # Link the shared library to the required dependencies
-target_link_libraries(iqtree2core PRIVATE 
-    pybind11::module utils model alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
+# target_link_libraries(iqtree2core PRIVATE
+#    pybind11::module utils model alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
 
-target_include_directories(iqtree2core PRIVATE ${nlohmann_json_INCLUDE_DIRS})
+# basic linking librararies
+target_link_libraries(iqtree2core PRIVATE pll ncl lbfgsb sprng vectorclass gsl yaml-cpp nclextra whtest model phyloYAML alignment utils simulator tree pda terrace main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
 
+if (USE_TERRAPHAST)
+   target_link_libraries(iqtree2core PRIVATE terraphast terracetphast)
+endif()
+
+if (USE_LSD2)
+    target_link_libraries(iqtree2core PRIVATE lsd2)
+endif()
+
+if (NOT IQTREE_FLAGS MATCHES "nosse")
+    target_link_libraries(iqtree2core PRIVATE kernelsse)
+endif()
+
+# MPI libraries
+if (IQTREE_FLAGS MATCHES "mpi")
+    if (NOT CMAKE_CXX_COMPILER MATCHES "mpi")
+        target_link_libraries(iqtree2core PRIVATE ${MPI_CXX_LIBRARIES})
+    endif()
+endif()
+
+# SSE, AVX etc. libraries
+if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
+    target_link_libraries(iqtree2core PRIVATE pllavx kernelavx kernelfma)
+    if (IQTREE_FLAGS MATCHES "KNL")
+        target_link_libraries(iqtree2core PRIVATE kernelavx512)
+    endif()
+endif()
+
+if (NOT IQTREE_FLAGS MATCHES "avx" AND NOT IQTREE_FLAGS MATCHES "fma")
+    if (NOT IQTREE_FLAGS MATCHES "nosse")
+        set_target_properties(iqtree2core PROPERTIES COMPILE_FLAGS "${SSE_FLAGS}")
+    endif()
+endif()
 
 # Define properties for the Python module
 set_target_properties(iqtree2core PROPERTIES
