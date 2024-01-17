@@ -972,6 +972,7 @@ set(IQTREE2CORE_HEADERS
     "${IQTREE2CORE_SOURCE_DIR}/params.h"
     "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.h"
     "${PROJECT_BINARY_DIR}/iqtree_config.h"
+    "${IQTREE2CORE_SOURCE_DIR}/iqtree2core_init.h"
     )
 
 # Collect the source files for the piqtree2 library
@@ -979,6 +980,7 @@ set (IQTREE2CORE_SOURCES
     "${IQTREE2CORE_SOURCE_DIR}/version.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/params.cpp"
     "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.cpp"
+    "${IQTREE2CORE_SOURCE_DIR}/iqtree2core_init.cpp"
     "${PROJECT_SOURCE_DIR}/utils/tools.cpp"
     )
 
