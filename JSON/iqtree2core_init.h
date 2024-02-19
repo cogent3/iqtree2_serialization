@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include <Python.h>
+#include <pybind11/pybind11.h>
 
 PyMODINIT_FUNC PyInit_iqtree2core(void);
 

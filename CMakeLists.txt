@@ -658,6 +658,15 @@ else(ZLIB_FOUND)
   add_subdirectory(zlib-1.2.7)
 endif(ZLIB_FOUND)
 
+######################################################################
+# Find the JSON library used for serializing and deserializing params
+# To install this package;
+#  mac `brew install nlohmann_json`
+#  linux `sudo apt-get install nlohmann-json3-dev`
+#  windows `vcpkg install nlohmann-json`
+######################################################################
+find_package(nlohmann_json 3.11 REQUIRED)
+
 ##################################################################
 # subdirectories containing necessary libraries for the build
 ##################################################################
@@ -949,162 +958,82 @@ include (CPack)
 # Build iqtree2core shared library
 ##############################################################
 
+cmake_minimum_required(VERSION 3.12)
 
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(nlohmann_json 3.2.0 REQUIRED)
+# Add compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -fPIC")
 
-include(FetchContent)
+# Get the path to the currently active Python interpreter
+execute_process(COMMAND which python3
+                RESULT_VARIABLE result
+                OUTPUT_VARIABLE Python3_EXECUTABLE
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-# Fetch pybind11
-FetchContent_Declare(
-  pybind11
-  GIT_REPOSITORY https://github.com/pybind/pybind11.git
-  GIT_TAG v2.11.1  # Last stable release as of 2021-07-11
-)
-FetchContent_MakeAvailable(pybind11)
-
-# Define the path to the piqtree2 sources
-set(IQTREE2CORE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/core)
-
-# Collect the header files for the iqtree2core library
-set(IQTREE2CORE_HEADERS 
-    "${IQTREE2CORE_SOURCE_DIR}/version.h"
-    "${IQTREE2CORE_SOURCE_DIR}/params.h"
-    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.h"
-    "${PROJECT_BINARY_DIR}/iqtree_config.h"
-    "${IQTREE2CORE_SOURCE_DIR}/iqtree2core_init.h"
-    )
-
-# Collect the source files for the piqtree2 library
-set (IQTREE2CORE_SOURCES 
-    "${IQTREE2CORE_SOURCE_DIR}/version.cpp"
-    "${IQTREE2CORE_SOURCE_DIR}/params.cpp"
-    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree.cpp"
-    "${IQTREE2CORE_SOURCE_DIR}/iqtree2core_init.cpp"
-    "${PROJECT_SOURCE_DIR}/utils/tools.cpp"
-    )
-
-set (IQTREE2CORE_BINDINGS 
-    "${IQTREE2CORE_SOURCE_DIR}/version_bindings.cpp"
-    "${IQTREE2CORE_SOURCE_DIR}/params_bindings.cpp"
-    "${IQTREE2CORE_SOURCE_DIR}/generate_random_tree_bindings.cpp"
-    )
-
-# Add a shared library target
-add_library(iqtree2core MODULE 
-    ${IQTREE2CORE_SOURCES} 
-    ${IQTREE2CORE_BINDINGS}
-    )
-
-target_include_directories(iqtree2core PRIVATE
-    ${IQTREE2CORE_SOURCE_DIR}
-    ${PROJECT_BINARY_DIR}  # Add this line for iqtree_config.h
-    )
-
-target_include_directories(iqtree2core PRIVATE
-    ${nlohmann_json_INCLUDE_DIRS}
-    )
-
-target_link_libraries(iqtree2core PRIVATE pybind11::module)
-
-if(Backtrace_FOUND)
-  target_link_libraries(iqtree2core PRIVATE ${Backtrace_LIBRARY})
-endif(Backtrace_FOUND)
-
-if (USE_BOOSTER)
-    target_link_libraries(iqtree2core PRIVATE booster)
+if(result)
+  message(FATAL_ERROR "Failed to find the currently active Python interpreter")
 endif()
 
-if (NOT IQTREE_FLAGS MATCHES "single")
-    if(CLANG AND WIN32)
-        if (BINARY32)
-            target_link_libraries(iqtree2core PRIVATE ${PROJECT_SOURCE_DIR}/lib32/libiomp5md.dll)
-        else()
-            target_link_libraries(iqtree2core PRIVATE ${PROJECT_SOURCE_DIR}/lib/libiomp5md.dll)
-        endif()
-    endif()
+# Add python header files from the currently select python env
+include_directories(${PYTHON_INCLUDE_DIRS}) 
+
+# Find Python interpreter, libraries, and headers
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+
+# Get the site-packages directory
+execute_process(COMMAND ${Python3_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+                RESULT_VARIABLE result
+                OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(result)
+  message(FATAL_ERROR "Failed to find the Python site-packages directory")
 endif()
 
-if(ZLIB_FOUND)
-  target_link_libraries(iqtree2core PRIVATE ${ZLIB_LIBRARIES})
-else(ZLIB_FOUND)
-  target_link_libraries(iqtree2core PRIVATE zlibstatic)
-endif(ZLIB_FOUND)
+# Set pybind11 directory
+# Set pybind11 directory
+set(PYBIND11_INCLUDE_DIRS "${PYTHON_SITE_PACKAGES}/pybind11/include")
+set(pybind11_DIR "${PYTHON_SITE_PACKAGES}/pybind11/share/cmake/pybind11")
+
+# Find pybind11 package
+find_package(pybind11 REQUIRED)
+
+# Add the include directories to the compiler's search path
+include_directories(${PYBIND11_INCLUDE_DIRS})
+
+# Add the module
+add_library(core SHARED 
+  core/core.cpp 
+  core/core.h
+  iqtree_config.h)
+
+# Add the include directories to the core target
+target_include_directories(core PRIVATE core)
+
+# Link against the pybind11::pybind11 target
+target_link_libraries(core PRIVATE pybind11::pybind11 Python3::Python)
+
+message(STATUS "pybind11 include directories: ${PYBIND11_INCLUDE_DIRS}")
 
 
-# Link the shared library to the required dependencies
-# target_link_libraries(iqtree2core PRIVATE
-#    pybind11::module utils model alignment tree simulator terrace yaml-cpp phyloYAML main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
-
-# basic linking librararies
-target_link_libraries(iqtree2core PRIVATE pll ncl lbfgsb sprng vectorclass gsl yaml-cpp nclextra whtest model phyloYAML alignment utils simulator tree pda terrace main ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB} ${ATOMIC_LIB})
-
-if (USE_TERRAPHAST)
-   target_link_libraries(iqtree2core PRIVATE terraphast terracetphast)
+set_target_properties(core PROPERTIES PREFIX "")
+# Set the output name to include the Python extension suffix
+if(WIN32)
+  set_target_properties(core PROPERTIES SUFFIX ".dll")
+elseif(UNIX)
+  set_target_properties(core PROPERTIES SUFFIX ".so")
 endif()
 
-if (USE_LSD2)
-    target_link_libraries(iqtree2core PRIVATE lsd2)
-endif()
+# Set the RPATH to be relative to the executable
+set_target_properties(core PROPERTIES MACOSX_RPATH FALSE)
 
-if (NOT IQTREE_FLAGS MATCHES "nosse")
-    target_link_libraries(iqtree2core PRIVATE kernelsse)
-endif()
+# copy the built library to the piqtree2/libs directory
+add_custom_command(TARGET core POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:core> ${CMAKE_SOURCE_DIR}/piqtree2/libs)
 
-# MPI libraries
-if (IQTREE_FLAGS MATCHES "mpi")
-    if (NOT CMAKE_CXX_COMPILER MATCHES "mpi")
-        target_link_libraries(iqtree2core PRIVATE ${MPI_CXX_LIBRARIES})
-    endif()
-endif()
-
-# SSE, AVX etc. libraries
-if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
-    target_link_libraries(iqtree2core PRIVATE pllavx kernelavx kernelfma)
-    if (IQTREE_FLAGS MATCHES "KNL")
-        target_link_libraries(iqtree2core PRIVATE kernelavx512)
-    endif()
-endif()
-
-if (NOT IQTREE_FLAGS MATCHES "avx" AND NOT IQTREE_FLAGS MATCHES "fma")
-    if (NOT IQTREE_FLAGS MATCHES "nosse")
-        set_target_properties(iqtree2core PROPERTIES COMPILE_FLAGS "${SSE_FLAGS}")
-    endif()
-endif()
-
-# Define properties for the Python module
-set_target_properties(iqtree2core PROPERTIES
-    PREFIX "${PYTHON_MODULE_PREFIX}"  # this is usually "" on all systems
-    SUFFIX "${PYTHON_MODULE_EXTENSION}"  # this is .pyd on Windows, .so on Linux and MacOS
-)
-
-# Specify the public headers for installation
-set_target_properties(iqtree2core PROPERTIES
-    PUBLIC_HEADER "${IQTREE2CORE_HEADERS}"
-)
-
-# OS-specific library output names and suffixes
-if (WIN32)
-    set_target_properties(iqtree2core PROPERTIES
-        OUTPUT_NAME "iqtree2core"
-        SUFFIX ".dll"
-    )
-elseif (APPLE)
-    set_target_properties(iqtree2core PROPERTIES
-        OUTPUT_NAME "iqtree2core"
-        SUFFIX ".dylib"
-    )
-else()
-    set_target_properties(iqtree2core PROPERTIES
-        OUTPUT_NAME "iqtree2core"
-        SUFFIX ".so"
-    )
-endif()
-
-# Specify installation instructions for the shared library
-install(TARGETS iqtree2core
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # For DLLs on Windows
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+# Copy the built library to the core directory
+add_custom_command(TARGET core POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:core> ${CMAKE_SOURCE_DIR}/core)                   
