@@ -957,15 +957,7 @@ include (CPack)
 ##############################################################
 # Build iqtree2core shared library
 ##############################################################
-
 cmake_minimum_required(VERSION 3.12)
-
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-# Add compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -fPIC")
 
 # Get the path to the currently active Python interpreter
 execute_process(COMMAND which python3
@@ -1004,36 +996,45 @@ find_package(pybind11 REQUIRED)
 # Add the include directories to the compiler's search path
 include_directories(${PYBIND11_INCLUDE_DIRS})
 
-# Add the module
-add_library(core SHARED 
-  core/core.cpp 
-  core/core.h
-  iqtree_config.h)
+# Add the module and any dependencies
+add_library(libiqtree2 SHARED
+  libiqtree2/src/libiqtree2_functions.cpp
+  libiqtree2/src/libiqtree2_binding.cpp)
 
-# Add the include directories to the core target
-target_include_directories(core PRIVATE core)
+# Add the include directories 
+target_include_directories(libiqtree2
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libiqtree2/include>
+    $<INSTALL_INTERFACE:include>
+)
 
-# Link against the pybind11::pybind11 target
-target_link_libraries(core PRIVATE pybind11::pybind11 Python3::Python)
-
-message(STATUS "pybind11 include directories: ${PYBIND11_INCLUDE_DIRS}")
+# Link against the pybind11::module target
+target_link_libraries(libiqtree2 PRIVATE pybind11::module Python3::Python)
 
 
-set_target_properties(core PROPERTIES PREFIX "")
+set_target_properties(libiqtree2 PROPERTIES PREFIX "")
 # Set the output name to include the Python extension suffix
 if(WIN32)
-  set_target_properties(core PROPERTIES SUFFIX ".dll")
+  set_target_properties(libiqtree2 PROPERTIES SUFFIX ".dll")
 elseif(UNIX)
-  set_target_properties(core PROPERTIES SUFFIX ".so")
+  set_target_properties(libiqtree2 PROPERTIES SUFFIX ".so")
 endif()
 
 # Set the RPATH to be relative to the executable
-set_target_properties(core PROPERTIES MACOSX_RPATH FALSE)
+set_target_properties(libiqtree2 PROPERTIES MACOSX_RPATH FALSE)
 
 # copy the built library to the piqtree2/libs directory
-add_custom_command(TARGET core POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:core> ${CMAKE_SOURCE_DIR}/piqtree2/libs)
+add_custom_command(TARGET libiqtree2 POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libiqtree2> ${CMAKE_SOURCE_DIR}/piqtree2/libs
+                   COMMAND ${CMAKE_COMMAND} -E echo "Copying $<TARGET_FILE:libiqtree2> to ${CMAKE_SOURCE_DIR}/piqtree2/libs")
 
-# Copy the built library to the core directory
-add_custom_command(TARGET core POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:core> ${CMAKE_SOURCE_DIR}/core)                   
+# Copy the built library to the libiqtree2/libs directory
+add_custom_command(TARGET libiqtree2 POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libiqtree2> ${CMAKE_SOURCE_DIR}/libiqtree2/libs
+                   COMMAND ${CMAKE_COMMAND} -E echo "Copying $<TARGET_FILE:libiqtree2> to ${CMAKE_SOURCE_DIR}/libiqtree2/libs")
+
+option(BUILD_LIBIQTREE2_TESTS "Build libiqtree2 tests" ON)                   
+if (BUILD_LIBIQTREE2_TESTS)
+    enable_testing() 
+    add_subdirectory(libiqtree2/tests)
+endif()

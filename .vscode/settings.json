@@ -1,7 +1,7 @@
 {
     "cmake.configureOnOpen": true,
     "python.testing.pytestArgs": [
-        "piqtree2"
+        "."
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
