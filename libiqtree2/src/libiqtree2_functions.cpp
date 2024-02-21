@@ -22,8 +22,8 @@ int calculate_RF_distance(const std::string& tree1, const std::string& tree2) {
     return 0; // Example RF distance
 }
 
-// Performs phylogenetic analysis
-std::string phylogenetic_analysis(const std::string& alignment, const std::string& partition, const std::string& initial_tree) {
+// Performs phylogenic analysis
+std::string phylogenic_analysis(const std::string& alignment, const std::string& partition, const std::string& initial_tree) {
     // Placeholder implementation
     return "Analysis results"; // Example analysis result
 }

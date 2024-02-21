@@ -26,10 +26,10 @@ FetchContent_MakeAvailable(pybind11)
 add_library(example MODULE example.cpp)
 
 # Link against the Python libraries and the pybind11 libraries
-target_link_libraries(example PRIVATE pybind11::module ${PYTHON_LIBRARIES})
+target_link_libraries(example PRIVATE pybind11::module )
 
 # Include the Python headers and the pybind11 headers
-target_include_directories(example PRIVATE ${PYTHON_INCLUDE_DIRS})
+# target_include_directories(example PRIVATE ${PYTHON_INCLUDE_DIRS})
 
 # Set the output name to include the Python extension suffix
 set_target_properties(example PROPERTIES PREFIX ""

@@ -6,8 +6,6 @@ namespace py = pybind11;
 PYBIND11_MODULE(libiqtree2, m) {
     m.doc() = "IQTree2 C++ library for phylogenetic analysis";
 
-    m.def("version", &version, "Returns the version of the IQTree2");
-
     m.def("generate_random_tree", &generate_random_tree, 
           py::arg("numtaxa"), 
           py::arg("seed") = -1, 
@@ -18,10 +16,12 @@ PYBIND11_MODULE(libiqtree2, m) {
           py::arg("tree1"), py::arg("tree2"), 
           "Calculates the Robinson-Foulds distance between two trees");
 
-    m.def("phylogenetic_analysis", &phylogenetic_analysis, 
+    m.def("phylogenic_analysis", &phylogenic_analysis, 
           py::arg("alignment"), 
           py::arg("partition") = "", 
           py::arg("initial_tree") = "", 
-          "Performs phylogenetic analysis");
+          "Performs phylogenic analysis");
+
+    m.def("version", &version, "Returns the version of the IQTree2");
 
 }

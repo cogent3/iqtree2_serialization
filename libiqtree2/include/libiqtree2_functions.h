@@ -14,6 +14,6 @@ std::string generate_random_tree(int numtaxa, int seed = -1, std::string branch_
 int calculate_RF_distance(const std::string& tree1, const std::string& tree2);
 
 // Performs phylogenetic analysis
-std::string phylogenetic_analysis(const std::string& alignment, const std::string& partition = "", const std::string& initial_tree = "");
+std::string phylogenic_analysis(const std::string& alignment, const std::string& partition = "", const std::string& initial_tree = "");
 
 #endif // LIBIQTREE2_FUNCTIONS_H

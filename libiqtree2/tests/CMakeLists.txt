@@ -8,7 +8,7 @@ add_executable(libiqtree2_tests
     c++/src/main.cpp
     c++/src/test_version.cpp
     c++/src/test_calculate_RF_distance.cpp
-    c++/src/test_phylogenetic_analysis.cpp
+    c++/src/test_phylogenic_analysis.cpp
     c++/src/test_generate_random_tree.cpp
 )
 

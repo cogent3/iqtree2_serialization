@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','libs')))
 import libiqtree2 as iqtree  # Adjust the import according to your actual module name
 
 def test_generate_random_tree():
