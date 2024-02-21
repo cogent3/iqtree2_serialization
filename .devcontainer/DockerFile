@@ -37,14 +37,14 @@ RUN mkdir -p /usr/local/include/plf && \
 # Set the working directory
 WORKDIR /iqtree2
 
-# Clone LSD2 into the expected subdirectory after copying the contents
-RUN git clone https://github.com/tothuhien/lsd2.git lsd2
+# initialize git submodels (LSD2 and Catch2) and update them
+RUN git submodule init && git submodule update --remote
 
 # Create a Python virtual environment
 RUN python3 -m venv /venv && \
     . /venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install jupyter pytest ipykernel
+    pip install jupyter pytest pybind11 ipykernel
 
 # Activate the virtual environment by default whenever a shell is started
 ENV PATH="/venv/bin:$PATH"
