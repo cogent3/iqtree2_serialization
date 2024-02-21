@@ -36,3 +36,4 @@ piqtree2/libs/iqtree2core.so
 *.pyc
 .vscode/settings.json
 venv/
+*.so
