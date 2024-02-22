@@ -1,6 +1,4 @@
 [submodule "lsd2"]
 	path = lsd2
 	url = https://github.com/tothuhien/lsd2.git
-[submodule "libiqtree2/tests/extern/Catch2"]
-	path = libiqtree2/tests/extern/Catch2
-	url = https://github.com/catchorg/Catch2.git
+
