@@ -3,6 +3,7 @@
 #define LIBIQTREE2_FUNCTIONS_H
 
 #include <string>
+#include <functional>
 
 // Returns the version of the library
 std::string version();
@@ -14,6 +15,11 @@ std::string generate_random_tree(int numtaxa, int seed = -1, std::string branch_
 int calculate_RF_distance(const std::string& tree1, const std::string& tree2);
 
 // Performs phylogenetic analysis
-std::string phylogenic_analysis(const std::string& alignment, const std::string& partition = "", const std::string& initial_tree = "");
+std::string phylogenic_analysis(
+    const std::string& alignment, 
+    const std::string& partition = "", 
+    const std::string& model = "", 
+    const std::string& initial_tree = "",
+    std::function<void(const std::string)> log_callback = nullptr);
 
 #endif // LIBIQTREE2_FUNCTIONS_H

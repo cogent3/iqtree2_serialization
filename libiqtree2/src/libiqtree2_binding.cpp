@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 #include "libiqtree2_functions.h"
 
 namespace py = pybind11;
@@ -19,7 +20,9 @@ PYBIND11_MODULE(libiqtree2, m) {
     m.def("phylogenic_analysis", &phylogenic_analysis, 
           py::arg("alignment"), 
           py::arg("partition") = "", 
-          py::arg("initial_tree") = "", 
+          py::arg("model") = "", 
+          py::arg("initial_tree") = "",
+          py::arg("log_callback") = nullptr, 
           "Performs phylogenic analysis");
 
     m.def("version", &version, "Returns the version of the IQTree2");
