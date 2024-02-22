@@ -1,7 +1,7 @@
 // File: test_calculate_RF_distance.cpp
 
-#include <catch2/catch.hpp>
-#include "../../include/libiqtree2_functions.h"
+#include <catch2/catch_all.hpp>
+#include "libiqtree2_functions.h"
 
 TEST_CASE("calculate_RF_distance returns expected distance", "[calculate_RF_distance]") {
     std::string tree1 = "(A,B);";

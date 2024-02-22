@@ -1,8 +1,8 @@
-# add catch2 to the build
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Specify the directory containing the Catch.cmake and CatchAddTests.cmake files
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
+set(CATCH_BUILD_TESTING OFF)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libiqtree2/tests/extern/Catch2)
 
 add_executable(libiqtree2_tests
     c++/src/main.cpp
@@ -12,7 +12,9 @@ add_executable(libiqtree2_tests
     c++/src/test_generate_random_tree.cpp
 )
 
-target_link_libraries(libiqtree2_tests PRIVATE Catch2::Catch2 libiqtree2)
+target_include_directories(libiqtree2_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
+
+target_link_libraries(libiqtree2_tests PRIVATE libiqtree2 Catch2::Catch2WithMain)
 
 # Enable CTest integration
 include(CTest)

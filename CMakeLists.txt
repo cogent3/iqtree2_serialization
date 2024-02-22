@@ -1033,8 +1033,6 @@ add_custom_command(TARGET libiqtree2 POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libiqtree2> ${CMAKE_SOURCE_DIR}/libiqtree2/libs
                    COMMAND ${CMAKE_COMMAND} -E echo "Copying $<TARGET_FILE:libiqtree2> to ${CMAKE_SOURCE_DIR}/libiqtree2/libs")
 
-option(BUILD_LIBIQTREE2_TESTS "Build libiqtree2 tests" ON)                   
-if (BUILD_LIBIQTREE2_TESTS)
-    enable_testing() 
-    add_subdirectory(libiqtree2/tests)
-endif()
+# Add C++ unit testing using Catch2
+enable_testing() 
+add_subdirectory(libiqtree2/tests)
