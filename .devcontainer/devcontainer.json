@@ -20,8 +20,7 @@
       "ms-vscode.cmake-tools",
       "ms-python.python",
       "ms-python.vscode-pytest",
-      "ms-vscode.cpptools-extension-pack"
-    ],
+      "ms-vscode.cpptools-extension-pack"    ],
     "forwardPorts": [
       // Any ports you want to forward
     ],
@@ -31,6 +30,7 @@
       "/run/host-services/ssh-auth.sock:/ssh-auth.sock", 
       "-e", 
       "SSH_AUTH_SOCK=/ssh-auth.sock"
-    ]
+    ],
+    "postStartCommand": "cd /iqtree2 && git submodule init && git submodule update --remote"
   }
   

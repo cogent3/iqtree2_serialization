@@ -1,6 +1,6 @@
 // File: test_phylogenic_analysis.cpp
 
-#include <catch2/catch_all.hpp>
+#include <catch2/catch.hpp>
 #include "libiqtree2_functions.h"
 
 TEST_CASE("phylogenic_analysis returns expected result", "[phylogenic_analysis]") {

@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     python3.11-venv \
     zsh \
     autojump \ 
-    Catch2
+    catch2 
 
 # Download header files for plf_nanotimer and plf_colony
 RUN mkdir -p /usr/local/include/plf && \
@@ -37,9 +37,6 @@ RUN mkdir -p /usr/local/include/plf && \
 
 # Set the working directory
 WORKDIR /iqtree2
-
-# initialize git submodels (LSD2 and Catch2) and update them
-RUN git submodule init && git submodule update --remote
 
 # Create a Python virtual environment
 RUN python3 -m venv /venv && \

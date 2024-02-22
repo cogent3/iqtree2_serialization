@@ -20,4 +20,6 @@ target_link_libraries(libiqtree2_tests PRIVATE libiqtree2 Catch2::Catch2WithMain
 
 # Enable CTest integration
 include(CTest)
+include(Catch)
+
 catch_discover_tests(libiqtree2_tests)
