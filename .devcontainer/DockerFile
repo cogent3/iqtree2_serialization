@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     python3.11-venv \
     zsh \
-    autojump
+    autojump \ 
+    Catch2
 
 # Download header files for plf_nanotimer and plf_colony
 RUN mkdir -p /usr/local/include/plf && \
