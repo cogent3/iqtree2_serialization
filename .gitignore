@@ -38,3 +38,4 @@ piqtree2/libs/iqtree2core.so
 venv/
 *.so
 libiqtree2.so
+piqtree2/libs/libiqtree2.so
