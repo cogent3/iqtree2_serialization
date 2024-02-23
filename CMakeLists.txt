@@ -976,7 +976,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 # Get the site-packages directory
-execute_process(COMMAND ${Python3_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+execute_process(COMMAND ${Python3_EXECUTABLE} -c "from sysconfig import get_paths; print(get_paths()['purelib'])"
                 RESULT_VARIABLE result
                 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
                 OUTPUT_STRIP_TRAILING_WHITESPACE)

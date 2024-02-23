@@ -6,6 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Find the Catch2 package
 find_package(Catch2 REQUIRED)
 
+# Find the old Catch2 header
+find_path(CATCH2_OLD_HEADER catch2/catch.hpp)
+
+if(CATCH2_OLD_HEADER)
+    target_compile_definitions(libiqtree2_tests PRIVATE CATCH2_OLD_HEADER)
+endif()
+
 add_executable(libiqtree2_tests
     c++/src/main.cpp
     c++/src/test_version.cpp

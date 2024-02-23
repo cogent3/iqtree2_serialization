@@ -1,6 +1,10 @@
 // File: test_calculate_RF_distance.cpp
 
-#include <catch2/catch.hpp>
+#ifdef CATCH2_OLD_HEADER
+    #include <catch2/catch.hpp>
+#else
+    #include <catch2/catch_all.hpp>
+#endif
 #include "libiqtree2_functions.h"
 
 TEST_CASE("calculate_RF_distance returns expected distance", "[calculate_RF_distance]") {

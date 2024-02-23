@@ -1,6 +1,10 @@
 // File: test_generate_random_tree.cpp
 
-#include <catch2/catch.hpp>
+#ifdef CATCH2_OLD_HEADER
+    #include <catch2/catch.hpp>
+#else
+    #include <catch2/catch_all.hpp>
+#endif
 #include "libiqtree2_functions.h"
 
 TEST_CASE("generate_random_tree returns non-empty string", "[generate_random_tree]") {
