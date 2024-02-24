@@ -9,10 +9,6 @@ find_package(Catch2 REQUIRED)
 # Find the old Catch2 header
 find_path(CATCH2_OLD_HEADER catch2/catch.hpp)
 
-if(CATCH2_OLD_HEADER)
-    target_compile_definitions(libiqtree2_tests PRIVATE CATCH2_OLD_HEADER)
-endif()
-
 add_executable(libiqtree2_tests
     c++/src/main.cpp
     c++/src/test_version.cpp
@@ -20,6 +16,11 @@ add_executable(libiqtree2_tests
     c++/src/test_phylogenic_analysis.cpp
     c++/src/test_generate_random_tree.cpp
 )
+
+if(CATCH2_OLD_HEADER)
+    target_compile_definitions(libiqtree2_tests PRIVATE CATCH2_OLD_HEADER)
+endif()
+
 
 target_include_directories(libiqtree2_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
