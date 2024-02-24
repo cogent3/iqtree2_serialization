@@ -9,7 +9,10 @@
 std::string version();
 
 // Generates a random phylogenetic tree
-std::string generate_random_tree(int numtaxa, int seed = -1, std::string branch_length_mode = "default");
+std::string generate_random_tree(
+    int numtaxa, 
+    int seed = -1, 
+    std::string tree_gen_mode = "UNIFORM");
 
 // Calculates the RF distance between two trees
 int calculate_RF_distance(const std::string& tree1, const std::string& tree2);
