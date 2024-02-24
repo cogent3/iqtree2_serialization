@@ -10,7 +10,7 @@ std::string version();
 
 // Generates a random phylogenetic tree
 std::string generate_random_tree(
-    int numtaxa, 
+    int num_taxa, 
     int seed = -1, 
     std::string tree_gen_mode = "UNIFORM");
 
