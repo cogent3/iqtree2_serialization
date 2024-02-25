@@ -33,7 +33,7 @@ test_scripts/
 vectorclass/
 zlib-1.2.7/
 
-# Python file types that should not be stored in the repository 
+# Python file types that should not be stored in the repository
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
