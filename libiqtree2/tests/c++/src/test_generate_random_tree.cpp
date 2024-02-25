@@ -55,8 +55,6 @@ TEST_CASE("generate_random_tree throws exception when num_taxa is less than thre
 
 #include <regex>
 
-#include <regex>
-
 TEST_CASE("generate_random_tree returns tree with correct number of taxa", "[generate_random_tree][!shouldfail]") {
     std::vector<int> num_taxa_values = {5, 10, 20};
 
