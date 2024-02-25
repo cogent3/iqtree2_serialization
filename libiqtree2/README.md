@@ -2,6 +2,10 @@
 
 libiqtree2 is a C++ library for running IQ-TREE 2 from Python. It is a wrapper around the IQ-TREE 2 library, that exports IQTREE2 functions to C++ and python consumers - using pybind11 to map between C++ and python.
 
+The library is built using CMake and the build process is managed by the root CMakeLists.txt file.
+
+The library project includes C++ unit tests using Catch2 and Python unit tests using pytest.  The C++ tests are intended to be developed first as features are implemented, and then translated to Python tests to serve as a documentation for use case by python development of the piqtree2 python package.
+
 ```mermaid
 graph LR
     subgraph " "
@@ -28,7 +32,7 @@ graph LR
     end
 ```
 
-The following document focuses on the libiqtree2 library and it's unit tests.  See the documentation in the piqtree2 directory for details on installing it and running it's unit tests.
+The following document focuses on the libiqtree2 library and it's unit tests.  See the documentation in the piqtree2 directory for details on installing the python package, and developing it.
 
 ## Project structure
 
@@ -85,6 +89,8 @@ Create a python virtual environment and install the required python packages int
     pip install pytest, pybind11, cogent3
 ```
 
+Once built this virtual environment can always be reloaded with the command `source venv/bin/activate`.  Note if you are using VS-Code you should set the IDEs python interpreter to the one in the virtual environment.  If you are using Jupyter notebooks you should install the virtual environment as it's default kernel.
+
 Create a new build subdirectry from the repo root if one does not already exist;
 
 ```bash
@@ -98,7 +104,7 @@ Run cmake on the CMakeLists.txt file in the repo root;
     cmake ..
 ```
 
-Now make the C++ library without unit tests;
+Now make the C++ library without C++ unit tests;
 
 ```bash
     make libiqtree2
@@ -177,13 +183,16 @@ collected 12 items
 
 ## Development cycle
 
-- identify a feature of IQTREE2 to be exposed in libiqtree2 eg: generate_random_tree
-- implement feature
-  - add C++ code to invoke the feature eg: libiqtree2/src/generate_random_tree.cpp
-  - add libraries to the root CMakeLists.txt file to compile the feature in target libiqtree2
-  - describe the interface to the feature in libiqtree2/include/libiqtree2_functions.h
-  - add a binding for the function in libiqtree2/src/libiqtree2_binding.cpp
-- create a Catch2 test for the feature eg: libiqtree2/tests/c++/src/test_generate_random_tree.cpp
-  - add test cases to the test that probe the expected behaviour of the feature
-- iterate on the feature and re-test until all tests pass
-- translate the C++ test cases to a python test for the feature eg: libiqtree2/tests/python/test_generate_random_tree.py
+- C++
+  - identify a feature of IQTREE2 to be exposed in libiqtree2 eg: generate_random_tree
+  - implement feature
+    - add C++ code to invoke the feature as a function eg: libiqtree2/src/generate_random_tree.cpp
+    - add link libraries and interfaces to the root CMakeLists.txt file so you can  compile the feature in the target `libiqtree2`
+    - describe the interface to the function in libiqtree2/include/libiqtree2_functions.h
+    - add a binding for the function in libiqtree2/src/libiqtree2_binding.cpp
+  - create a Catch2 test for the feature eg: libiqtree2/tests/c++/src/test_generate_random_tree.cpp
+    - add test cases to the test that probe the expected behaviour of the feature
+  - iterate on the feature and re-test until all tests pass
+- Python
+  - translate the C++ test cases to a python test for the feature eg: libiqtree2/tests/python/test_generate_random_tree.py
+  - these will form a contract for the feature for the piqtree2 package
