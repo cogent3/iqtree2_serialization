@@ -4,7 +4,10 @@
     "workspaceMount": "source=.,target=/iqtree2,type=bind",
     "workspaceFolder": "/iqtree2",
     "settings": { 
-      "C_Cpp.default.compilerPath": "/usr/bin/clang",
+      "C_Cpp.default.intelliSenseEngine": "Disabled",
+      "C_Cpp.default.intelliSenseEngineFallback": "Disabled",
+      "C_Cpp.clangdExecutable": "/usr/bin/clangd-14",
+      "C_Cpp.default.compilerPath": "/usr/bin/clang-14",
       "C_Cpp.default.intelliSenseMode": "clang-x64",
       "cmake.cmakePath": "/usr/bin/cmake",
       "cmake.generator": "Unix Makefiles",
