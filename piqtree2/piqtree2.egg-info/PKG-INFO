@@ -1,10 +1,11 @@
 Metadata-Version: 2.1
 Name: piqtree2
 Version: 0.1
-Summary: A Python wrapper for the iqtree2core library
+Summary: A Python wrapper for the libiqtree2 library
 Author: Richard Morris
 Author-email: richard.morris@anu.edu.au
 Requires-Dist: cogent3
+Requires-Dist: pybind11
 Provides-Extra: dev
 Requires-Dist: black==23.9.1; extra == "dev"
 Requires-Dist: isort==5.12.0; extra == "dev"

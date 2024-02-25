@@ -33,7 +33,7 @@ class CMakeBuild(build_ext):
         cmake_args = [
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + libs_dir,
             "-DPYTHON_EXECUTABLE=" + sys.executable,  # path to the Python executable
-            "-DIQTREE_FLAGS=static",  # statically link the iqtree2core library
+            "-DIQTREE_FLAGS=static",  # statically link the libiqtree2 library
         ]
 
         cfg = "Debug" if self.debug else "Release"
@@ -54,7 +54,7 @@ class CMakeBuild(build_ext):
 
             print("Building with CMake...")
             process = subprocess.Popen(
-                ["cmake", "--build", ".", "--target", "iqtree2core"] + build_args,
+                ["cmake", "--build", ".", "--target", "libiqtree2"] + build_args,
                 cwd=build_temp,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
@@ -72,7 +72,7 @@ setup(
     version="0.1",
     author="Richard Morris",
     author_email="richard.morris@anu.edu.au",
-    description="A Python wrapper for the iqtree2core library",
+    description="A Python wrapper for the libiqtree2 library",
     long_description="",
     packages=["piqtree2"],
     ext_modules=[CMakeExtension("piqtree2", sourcedir="..")],
@@ -80,6 +80,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "cogent3",
+        "pybind11",
     ],
     extras_require={
         "dev": [

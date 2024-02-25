@@ -1,4 +1,4 @@
-def get_iqtree_version() -> str:
-    from piqtree2 import iqtree2core
+def iqtree_version() -> str:
+    from piqtree2 import libiqtree2
 
-    return iqtree2core.get_iqtree_version()
+    return libiqtree2.version()
