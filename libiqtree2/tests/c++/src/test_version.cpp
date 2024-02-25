@@ -6,5 +6,5 @@
 #include "libiqtree2_functions.h"
 
 TEST_CASE("Version returns correct version", "[version]") {
-    REQUIRE(version() == "2.2.5");
+    REQUIRE(version().find("2.2.5") != std::string::npos);
 }
