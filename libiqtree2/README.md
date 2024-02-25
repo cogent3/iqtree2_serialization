@@ -11,15 +11,15 @@ graph LR
     subgraph " "
     iqtree2["IQTREE2 project"] 
     end
-    iqtree2 --> libiqtree2 --> piqtree2
-    subgraph "libiqtree2 library (C++)"
-    libiqtree2{<b>IQTREE2 functions</b>}
-    subgraph "C++ unit tests"
-    catch2["Catch2"]
-    end
     subgraph "Python unit tests"
     
     pytest["pytest"]
+    end
+    iqtree2 --> libiqtree2 --> piqtree2
+    subgraph "libiqtree2 library (C++)"
+    libiqtree2{<b>IQTREE2 features</b>}
+    subgraph "C++ unit tests"
+    catch2["Catch2"]
     end
     libiqtree2 --> catch2
     libiqtree2 --> pytest
