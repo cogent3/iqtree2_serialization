@@ -20,7 +20,11 @@
       "ms-vscode.cmake-tools",
       "ms-python.python",
       "ms-python.vscode-pytest",
-      "ms-vscode.cpptools-extension-pack"    ],
+      "ms-vscode.cpptools-extension-pack",
+      "ms-toolsai.jupyter",
+      "ms-vscode.markdown-language-features",
+      "bierner.markdown-mermaid"
+    ],
     "forwardPorts": [
       // Any ports you want to forward
     ],
@@ -31,6 +35,8 @@
       "-e", 
       "SSH_AUTH_SOCK=/ssh-auth.sock"
     ],
-    "postStartCommand": "cd /iqtree2 && git submodule init && git submodule update --remote"
+    "postStartCommand": "cd /iqtree2 && git submodule init && git submodule update --remote",
+    "postCreateCommand": "cd /iqtree2 && mkdir -p .vscode && echo '{\"version\": \"2.0.0\",\"tasks\": [{\"label\": \"Build and Test libiqtree2\",\"type\": \"shell\",\"command\": \"cd /iqtree2 && cmake .. && make libiqtree2_tests && libiqtree2/tests/libiqtree2_tests  && pytest ../libiqtree2/tests/python\",\"group\": {\"kind\": \"build\",\"isDefault\": true}},{\"label\": \"Install piqtree2 Package\",\"type\": \"shell\",\"command\": \"cd /iqtree2 && pip install -e piqtree2\",\"group\": \"build\"}]}' > .vscode/tasks.json",
+
   }
   
