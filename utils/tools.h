@@ -1226,8 +1226,8 @@ public:
     void from_json(const json& j);
     json get_param(const std::string& name) const;
     void setDefault();
-private:
     Params () {}; // Disable constructor
+private:
     // Temoprarily commented out because void PhyloSuperTree::readPartition(Params &params)
     // make a copy of params?
     //Params (Params const&) {}; // Disable copy constructor

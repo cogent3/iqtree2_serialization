@@ -1,8 +1,8 @@
-#include "libiqtree2_functions.h"
+#include <libiqtree2_functions.h>
 #include <pybind11/pybind11.h>
 #include <sstream>
 #include <string>
-#include "iqtree_config.h"
+#include <iqtree_config.h>
 
 // Assuming iqtree_VERSION_MAJOR, iqtree_VERSION_MINOR, and iqtree_VERSION_PATCH are defined somewhere globally
 extern const int iqtree_version_major = iqtree_VERSION_MAJOR;

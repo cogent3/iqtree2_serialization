@@ -2180,7 +2180,7 @@ int main(){
 */
 
 
-int main(int argc, char *argv[]) {
+int _main(int argc, char *argv[]) {
 
     /*
     Instruction set ID reported by vectorclass::instrset_detect

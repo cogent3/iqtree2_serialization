@@ -294,8 +294,8 @@ if (MSVC)
         elseif (ICC)
             add_definitions(/O3)
         endif()
+        endif()
     endif()
-endif()
 
 # enable link time optimization
 if (IQTREE_FLAGS MATCHES "lto")
@@ -731,7 +731,7 @@ target_link_libraries(kernelfma vectorclass)
     endif()
 endif()
 
-add_executable(iqtree2
+add_library(iqtree2
 obsolete/parsmultistate.cpp
 obsolete/parsmultistate.h
 )
@@ -1003,22 +1003,24 @@ set (LIBIQTREE2_FUNCTIONS "${LIBIQTREE2_SRC}/functions")
 
 
 # Add the module and any dependencies
-add_library(libiqtree2 SHARED
+add_library(libiqtree2 
   ${LIBIQTREE2_SRC}/libiqtree2_binding.cpp
   ${LIBIQTREE2_FUNCTIONS}/version.cpp
   ${LIBIQTREE2_FUNCTIONS}/generate_random_tree.cpp
   ${LIBIQTREE2_FUNCTIONS}/phygenic_analysis.cpp
-  ${LIBIQTREE2_FUNCTIONS}/calculate_RF_distance.cpp)
+  ${LIBIQTREE2_FUNCTIONS}/calculate_RF_distance.cpp
+  )
 
 # Add the include directories 
 target_include_directories(libiqtree2
   PUBLIC
     $<BUILD_INTERFACE:${LIBIQTREE2}/include>
     $<INSTALL_INTERFACE:include>
+    
 )
 
 # Link against the pybind11::module target
-target_link_libraries(libiqtree2 PRIVATE pybind11::module Python3::Python)
+target_link_libraries(libiqtree2 PRIVATE pybind11::module Python3::Python iqtree2)
 
 
 set_target_properties(libiqtree2 PROPERTIES PREFIX "")
