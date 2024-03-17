@@ -2,7 +2,7 @@ from   distutils.core import setup, Extension
 
 dirs   = [".."]
 flags  = ['-std=c++11']
-link_flags = []
+link_flags = ['-lstdc++']
 
 #
 #This is how I hacked OpenMP support on OS X 12.4
@@ -23,7 +23,9 @@ if ('CXXFLAGS' in os.environ):
 module1 = Extension("pyIQTREE2",
                     sources = ["pyIQTREE2.cpp",  
                                "generateRandomTree.cpp",
-                               "../main/alisim.cpp"],
+                               "pyutils.cpp",
+                            #    "../main/alisim.cpp",
+                               ],
                     include_dirs = dirs,
                     extra_compile_args = flags,
                     extra_link_args= link_flags,

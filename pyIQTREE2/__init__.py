@@ -1,1 +1,1 @@
-import pyIQTREE2
+from .pyIQTREE2 import generateRandomTree

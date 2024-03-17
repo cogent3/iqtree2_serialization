@@ -1,12 +1,10 @@
-// File: generateRandomTree.h
-
-#ifndef GENERATE_RANDOM_TREE_H
-#define GENERATE_RANDOM_TREE_H
+#ifndef GENERATERANDOMTREE_H
+#define GENERATERANDOMTREE_H
 
 #include <Python.h>
-#include <string>
 
-// Forward declaration of the function used in the .cpp file
-static PyObject* pyIQTREE2_generateRandomTree(PyObject* self, PyObject* args, PyObject* keywords);
+extern "C" {
+    __attribute__((visibility("default"))) PyObject* pyIQTREE2_generateRandomTree(PyObject* self, PyObject* args, PyObject* kwargs);
+}
 
-#endif // GENERATE_RANDOM_TREE_H
+#endif // GENERATERANDOMTREE_H

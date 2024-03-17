@@ -4,23 +4,11 @@
 
 # configure a header file to pass some of the CMake settings
 # to the source code
-configure_file (
-  "${PROJECT_SOURCE_DIR}/iqtree_config.h.in"
-  "${PROJECT_BINARY_DIR}/iqtree_config.h"
-  )
+# configure_file (
+#   "${PROJECT_SOURCE_DIR}/iqtree_config.h.in"
+#   "${PROJECT_BINARY_DIR}/iqtree_config.h"
+#   )
 
-# Get the path to the currently active Python interpreter
-execute_process(COMMAND which python3
-                RESULT_VARIABLE result
-                OUTPUT_VARIABLE Python3_EXECUTABLE
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-if(result)
-  message(FATAL_ERROR "Failed to find the currently active Python interpreter")
-endif()
-
-# Find Python interpreter, libraries, and headers
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 # Get the site-packages directory
 execute_process(COMMAND ${Python3_EXECUTABLE} -c "from sysconfig import get_paths; print(get_paths()['purelib'])"
@@ -36,19 +24,13 @@ if(Python3_FOUND)
   message("Python Include directory: ${Python3_INCLUDE_DIRS}")
   include_directories(${Python3_INCLUDE_DIRS})
   message("Python Libraries:         ${Python3_LIBRARIES}")
-
   message("Python Executable:        ${Python3_EXECUTABLE}")
-  exec_program(${Python3_EXECUTABLE}
-              ARGS "-c \"import numpy; print(numpy.get_include())\""
-              OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-              RETURN_VALUE NUMPY_NOT_FOUND
-              )
 
   add_library(pyIQTREE2 SHARED
       pyIQTREE2.cpp 
-      pyutils.cpp pyutils.h
-      generateRandomTree.cpp generateRandomTree.h
-      ../main/alisim.cpp ../main/alisim.h
+      pyutils.cpp 
+      generateRandomTree.cpp 
+#      ../main/alisim.cpp 
       )
 
   if (APPLE)
