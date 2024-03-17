@@ -695,6 +695,7 @@ add_subdirectory(alignment)
 add_subdirectory(tree)
 add_subdirectory(terrace)
 add_subdirectory(simulator)
+add_subdirectory(pyIQTREE2)
 
 # YAML library
 option(YAML_CPP_BUILD_TESTS "Enable testing" OFF)
@@ -954,94 +955,3 @@ include (CPack)
 #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 
-##############################################################
-# Build iqtree2core shared library
-##############################################################
-cmake_minimum_required(VERSION 3.12)
-
-# Get the path to the currently active Python interpreter
-execute_process(COMMAND which python3
-                RESULT_VARIABLE result
-                OUTPUT_VARIABLE Python3_EXECUTABLE
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-if(result)
-  message(FATAL_ERROR "Failed to find the currently active Python interpreter")
-endif()
-
-# Add python header files from the currently select python env
-include_directories(${PYTHON_INCLUDE_DIRS}) 
-
-# Find Python interpreter, libraries, and headers
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-
-# Get the site-packages directory
-execute_process(COMMAND ${Python3_EXECUTABLE} -c "from sysconfig import get_paths; print(get_paths()['purelib'])"
-                RESULT_VARIABLE result
-                OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-if(result)
-  message(FATAL_ERROR "Failed to find the Python site-packages directory")
-endif()
-
-# Set pybind11 directory
-# Set pybind11 directory
-set(PYBIND11_INCLUDE_DIRS "${PYTHON_SITE_PACKAGES}/pybind11/include")
-set(pybind11_DIR "${PYTHON_SITE_PACKAGES}/pybind11/share/cmake/pybind11")
-
-# Find pybind11 package
-find_package(pybind11 REQUIRED)
-
-# Add the include directories to the compiler's search path
-include_directories(${PYBIND11_INCLUDE_DIRS})
-
-# set the path to libiqtree2 paths
-set (LIBIQTREE2 "${CMAKE_SOURCE_DIR}/libiqtree2")
-set (LIBIQTREE2_SRC "${LIBIQTREE2}/src")
-set (LIBIQTREE2_FUNCTIONS "${LIBIQTREE2_SRC}/functions")
-
-
-# Add the module and any dependencies
-add_library(libiqtree2 SHARED
-  ${LIBIQTREE2_SRC}/libiqtree2_binding.cpp
-  ${LIBIQTREE2_FUNCTIONS}/version.cpp
-  ${LIBIQTREE2_FUNCTIONS}/generate_random_tree.cpp
-  ${LIBIQTREE2_FUNCTIONS}/phygenic_analysis.cpp
-  ${LIBIQTREE2_FUNCTIONS}/calculate_RF_distance.cpp)
-
-# Add the include directories 
-target_include_directories(libiqtree2
-  PUBLIC
-    $<BUILD_INTERFACE:${LIBIQTREE2}/include>
-    $<INSTALL_INTERFACE:include>
-)
-
-# Link against the pybind11::module target
-target_link_libraries(libiqtree2 PRIVATE pybind11::module Python3::Python)
-
-
-set_target_properties(libiqtree2 PROPERTIES PREFIX "")
-# Set the output name to include the Python extension suffix
-if(WIN32)
-  set_target_properties(libiqtree2 PROPERTIES SUFFIX ".dll")
-elseif(UNIX)
-  set_target_properties(libiqtree2 PROPERTIES SUFFIX ".so")
-endif()
-
-# Set the RPATH to be relative to the executable
-set_target_properties(libiqtree2 PROPERTIES MACOSX_RPATH FALSE)
-
-# copy the built library to the piqtree2/libs directory
-add_custom_command(TARGET libiqtree2 POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libiqtree2> ${CMAKE_SOURCE_DIR}/piqtree2/libs
-                   COMMAND ${CMAKE_COMMAND} -E echo "Copying $<TARGET_FILE:libiqtree2> to ${CMAKE_SOURCE_DIR}/piqtree2/libs")
-
-# Copy the built library to the libiqtree2/libs directory
-add_custom_command(TARGET libiqtree2 POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libiqtree2> ${CMAKE_SOURCE_DIR}/libiqtree2/libs
-                   COMMAND ${CMAKE_COMMAND} -E echo "Copying $<TARGET_FILE:libiqtree2> to ${CMAKE_SOURCE_DIR}/libiqtree2/libs")
-
-# Add C++ unit testing using Catch2
-enable_testing() 
-add_subdirectory(libiqtree2/tests)
