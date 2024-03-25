@@ -51,16 +51,19 @@ void generate_random_tree_file(int numtaxa, int seed, string tree_gen_mode, stri
     }
 
     Params params = Params::getInstance();
+    params.setDefault();
     params.sub_size = numtaxa;
     params.tree_gen = genMode;
     params.user_file = (char *) outfile.c_str();
-    
+    params.ignore_checkpoint = true; // overrid the output file if exists
+
     // default parameter values
+    /*
     params.repeated_time = 1; // one random tree to generate
     params.max_len = 1.0; // maximum branch length
     params.min_len = 1e-6; // minimum branch length
-    params.mean_len = 0.1; // mean branch length
-    params.ignore_checkpoint = true; // overrid the output file if exists
+    params.mean_len = 0.1; // mean branch length\
+    */
 
     generateRandomTree(params);
 }
