@@ -14,6 +14,8 @@ terraceanalysis.cpp
 terraceanalysis.h
 ../obsolete/parsmultistate.h
 ../obsolete/parsmultistate.cpp
+libiqtree2_fun.cpp
+libiqtree2_fun.h
 )
 
 if (USE_BOOSTER)

@@ -71,6 +71,8 @@
     #include <omp.h>
 #endif
 
+#include "libiqtree2_fun.h"
+
 using namespace std;
 
 inline void separator(ostream &out, int type = 0) {
@@ -2182,6 +2184,48 @@ int main(){
 
 int main(int argc, char *argv[]) {
 
+    
+    // ====================================================
+    // for testing the available functions for PiQTree
+    // ====================================================
+    if (strcmp(argv[1],"--piqtree") == 0) {
+        
+        if (argc < 3) {
+            // show the available options for testing piqtree
+            std::cout << "available options:" << endl;
+            std::cout << "calculate RF distance: --piqtree 1 [tree1 newick string] [tree2 newick string]" << endl;
+            std::cout << "generate random tree: --piqtree 2 [num taxa] [seed] [mode (e.g. 'YULE_HARDING')] [out filename]" << endl;
+            return 0;
+        }
+
+        if (atoi(argv[2]) == 1) {
+            // calculate the RF distance
+            if (argc < 5) {
+                std::cout << "Syntax: " << argv[0] << " --piqtree 1 [tree1 newick string] [tree2 newick string]" << endl;
+                return 0;
+            }
+            std::string tree1 = argv[3];
+            std::string tree2 = argv[4];
+            std::cout << "RF dist: " << calculate_RF_distance(tree1, tree2) << std::endl;
+            return 0;
+        }
+        
+        if (atoi(argv[2]) == 2) {
+            // generate a random tree
+            if (argc < 7) {
+                std::cout << "Syntax: " << argv[0] << " --piqtree 2 [num taxa] [seed] [mode (e.g. 'YULE_HARDING')] [out filename]" << endl;
+                return 0;
+            }
+            int numtaxa = atoi(argv[3]);
+            int seed = atoi(argv[4]);
+            string gen_mode = argv[5];
+            string outfilename = argv[6];
+            generate_random_tree_file(numtaxa, seed, gen_mode, outfilename);
+            return 0;
+        }
+    }
+
+    
     /*
     Instruction set ID reported by vectorclass::instrset_detect
     0           = 80386 instruction set
