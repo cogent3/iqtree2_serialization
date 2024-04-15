@@ -999,26 +999,25 @@ include_directories(${PYBIND11_INCLUDE_DIRS})
 # set the path to libiqtree2 paths
 set (LIBIQTREE2 "${CMAKE_SOURCE_DIR}/libiqtree2")
 set (LIBIQTREE2_SRC "${LIBIQTREE2}/src")
-set (LIBIQTREE2_FUNCTIONS "${LIBIQTREE2_SRC}/functions")
 
 
 # Add the module and any dependencies
 add_library(libiqtree2 SHARED
   ${LIBIQTREE2_SRC}/libiqtree2_binding.cpp
-  ${LIBIQTREE2_FUNCTIONS}/version.cpp
-  ${LIBIQTREE2_FUNCTIONS}/generate_random_tree.cpp
-  ${LIBIQTREE2_FUNCTIONS}/phygenic_analysis.cpp
-  ${LIBIQTREE2_FUNCTIONS}/calculate_RF_distance.cpp)
+  )
 
-# Add the include directories 
-target_include_directories(libiqtree2
-  PUBLIC
-    $<BUILD_INTERFACE:${LIBIQTREE2}/include>
-    $<INSTALL_INTERFACE:include>
-)
+# # Add the include directories 
+# target_include_directories(libiqtree2
+#   PUBLIC
+#     $<BUILD_INTERFACE:${LIBIQTREE2}/include>
+#     $<INSTALL_INTERFACE:include>
+# )
 
 # Link against the pybind11::module target
-target_link_libraries(libiqtree2 PRIVATE pybind11::module Python3::Python)
+target_link_libraries(libiqtree2 
+                        PRIVATE pybind11::module Python3::Python
+                        main
+                        tree)
 
 
 set_target_properties(libiqtree2 PROPERTIES PREFIX "")

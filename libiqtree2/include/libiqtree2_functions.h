@@ -18,11 +18,8 @@ std::string generate_random_tree(
 int calculate_RF_distance(const std::string& tree1, const std::string& tree2);
 
 // Performs phylogenetic analysis
-std::string phylogenic_analysis(
-    const std::string& alignment, 
-    const std::string& partition = "", 
-    const std::string& model = "", 
-    const std::string& initial_tree = "",
-    std::function<void(const std::string)> log_callback = nullptr);
+std::string phylogenetic_analysis(
+    const std::string& align_file, 
+    int ncpus = 1);
 
 #endif // LIBIQTREE2_FUNCTIONS_H
